@@ -135,6 +135,7 @@ ul.l li{margin-bottom:4px}
 <section id="einstieg">
 <h2>Einstieg · Wie weit fährt das Auto?</h2>
 <p>Ein Auto fährt 4 s lang mit der konstanten Geschwindigkeit 15 m/s. Dann gilt für den zurückgelegten Weg s = v · t = 15 m/s · 4 s = 60 m. Im v-t-Diagramm ist das genau der <b>Flächeninhalt des Rechtecks</b> unter dem Graphen.</p>
+<div class="box"><p><b>Leitidee:</b> Die Geschwindigkeit ist eine <b>Änderungsrate</b> (Weg pro Zeit), der Weg ein <b>Bestand</b>. Die Fläche unter dem Graphen einer Änderungsrate gibt an, wie sich der Bestand insgesamt ändert. Diese Idee begleitet dich durch alle drei Phasen.</p></div>
 <p>Jetzt beschleunigt das Auto gleichmäßig. Seine Geschwindigkeit beträgt v(t) = 0,5·t + 2 (v in m/s, t in s) für 0 ≤ t ≤ 4.</p>
 
 <div class="applet" id="ap1">
@@ -178,12 +179,12 @@ ul.l li{margin-bottom:4px}
 <section id="phase1">
 <h2>Phase 1 · Flächen mit Rechtecken einfangen</h2>
 <h3>Aufgabe 2 · Eine Fläche ohne Formel</h3>
-<p>Gegeben ist f(x) = 0,2·x² + 1 im Intervall [0; 6]. Für die Fläche unter dem gekrümmten Graphen kennst du keine Formel.</p>
+<p>Ein leerer Tank wird mit Wasser gefüllt. Der Zufluss beträgt z(t) = 0,2·t² + 1 (z in m³/min, t in min) für 0 ≤ t ≤ 6. Wie viel Wasser ist nach 6 Minuten im Tank? Für die Fläche unter dem gekrümmten Graphen kennst du keine Formel. (Im Werkzeug heißt die Funktion f(x), x steht für t.)</p>
 <div class="task">
-  <div class="q"><b>a)</b><span>Berechne U<sub>6</sub> und O<sub>6</sub> mit dem Taschenrechner (Streifenbreite 1). Kontrolliere mit dem Werkzeug oben (Funktion „0,2·x² + 1“, n = 6).</span></div>
+  <div class="q"><b>a)</b><span>Berechne U<sub>6</sub> und O<sub>6</sub> mit dem Taschenrechner (Streifenbreite 1 min). Kontrolliere mit dem Werkzeug oben (Funktion „Zufluss 0,2·t² + 1“, n = 6). Deute beide Werte: Welche Wassermenge ist mindestens, welche höchstens im Tank?</span></div>
   <textarea data-save="a2a" aria-label="Antwort Aufgabe 2 a"></textarea>
   <details class="tip"><summary>Tipp</summary><p>Die Funktion wächst. Dann ist links der kleinste, rechts der größte Funktionswert eines Streifens. Bei Breite 1 addierst du nur Funktionswerte: f(0) + f(1) + … + f(5) für U<sub>6</sub>.</p></details>
-  <div class="sol teacher"><b class="l">Lösung</b>U<sub>6</sub> = 0,2·(0+1+4+9+16+25) + 6 = 17; O<sub>6</sub> = 0,2·(1+4+9+16+25+36) + 6 = 24,2.</div>
+  <div class="sol teacher"><b class="l">Lösung</b>U<sub>6</sub> = 0,2·(0+1+4+9+16+25) + 6 = 17; O<sub>6</sub> = 0,2·(1+4+9+16+25+36) + 6 = 24,2. Deutung: Weil der Zufluss wächst, sind mindestens 17 m³ und höchstens 24,2 m³ im Tank.</div>
   <div class="q"><b>b)</b><span>Erhöhe im Werkzeug die Anzahl n der Streifen und trage die Werte ein.</span></div>
   <div class="scroll"><table class="t">
     <tr><th>n</th><th>6</th><th>12</th><th>30</th><th>60</th><th>600</th></tr>
@@ -192,9 +193,9 @@ ul.l li{margin-bottom:4px}
     <tr><td>Differenz O<sub>n</sub> − U<sub>n</sub></td><td><input data-save="t2d1" aria-label="D6"></td><td><input data-save="t2d2" aria-label="D12"></td><td><input data-save="t2d3" aria-label="D30"></td><td><input data-save="t2d4" aria-label="D60"></td><td><input data-save="t2d5" aria-label="D600"></td></tr>
   </table></div>
   <div class="sol teacher"><b class="l">Lösung</b><div class="scroll"><table class="t"><tr><th>n</th><th>6</th><th>12</th><th>30</th><th>60</th><th>600</th></tr><tr><td>U<sub>n</sub></td><td>17</td><td>18,65</td><td>19,688</td><td>20,042</td><td>20,364</td></tr><tr><td>O<sub>n</sub></td><td>24,2</td><td>22,25</td><td>21,128</td><td>20,762</td><td>20,436</td></tr><tr><td>Differenz</td><td>7,2</td><td>3,6</td><td>1,44</td><td>0,72</td><td>0,072</td></tr></table></div></div>
-  <div class="q"><b>c)</b><span>Beschreibe, was mit U<sub>n</sub> und O<sub>n</sub> passiert, wenn n wächst. Gib einen Schätzwert für den Flächeninhalt an, auf eine Dezimale genau. Blende erst danach den Grenzwert im Werkzeug ein und vergleiche.</span></div>
+  <div class="q"><b>c)</b><span>Beschreibe, was mit U<sub>n</sub> und O<sub>n</sub> passiert, wenn n wächst. Gib einen Schätzwert für den Flächeninhalt an, auf eine Dezimale genau, und sage, was er im Sachzusammenhang bedeutet. Blende erst danach den Grenzwert im Werkzeug ein und vergleiche.</span></div>
   <textarea data-save="a2c" aria-label="Antwort Aufgabe 2 c"></textarea>
-  <div class="sol teacher"><b class="l">Lösung</b>U<sub>n</sub> wächst, O<sub>n</sub> fällt, beide nähern sich; die Differenz ist 43,2/n. Schätzwert ≈ 20,4 (exakt 20,4).</div>
+  <div class="sol teacher"><b class="l">Lösung</b>U<sub>n</sub> wächst, O<sub>n</sub> fällt, beide nähern sich; die Differenz ist 43,2/n. Schätzwert ≈ 20,4: Nach 6 Minuten sind etwa 20,4 m³ Wasser im Tank (exakt 20,4 m³).</div>
 </div>
 
 <h3>Aufgabe 3 (Zusatz) · Die Differenz O<sub>n</sub> − U<sub>n</sub> berechnen</h3>
@@ -219,6 +220,7 @@ ul.l li{margin-bottom:4px}
   <p>Ist f stetig auf [a; b] und f(x) ≥ 0, dann streben Untersumme U<sub>n</sub> und Obersumme O<sub>n</sub> für n → ∞ gegen <input class="blank" data-save="m1a" data-ans="denselben|gemeinsamen|den gleichen|selben" aria-label="Lücke 1"> Grenzwert. Diesen Grenzwert nennt man das <input class="blank" data-save="m1b" data-ans="bestimmte|bestimmtes" aria-label="Lücke 2"> Integral von f in den Grenzen a und b:</p>
   <div class="eq">∫<sub>a</sub><sup>b</sup> f(x) dx = lim<sub>n→∞</sub> U<sub>n</sub> = lim<sub>n→∞</sub> O<sub>n</sub></div>
   <p>Er gibt den <input class="blank" data-save="m1c" data-ans="flächeninhalt|inhalt|flaecheninhalt" aria-label="Lücke 3"> der Fläche zwischen dem Graphen von f und der x-Achse an. Dabei sind a und b die Integrationsgrenzen und f ist der Integrand.</p>
+  <p><b>Im Sachzusammenhang:</b> Ist f eine Änderungsrate (z. B. Zufluss in m³/min), dann gibt das Integral die <b>Gesamtänderung des Bestands</b> an (z. B. die zugeflossene Wassermenge).</p>
   <button class="btn" data-check>Prüfen</button>
   <p class="note" style="font-size:.88rem">Du hast das nur an wachsenden Funktionen beobachtet. Für alle stetigen Funktionen mit f(x) ≥ 0 gilt es auch, das zeigt die Theorie später.</p>
 </div>
@@ -275,7 +277,7 @@ ul.l li{margin-bottom:4px}
 <!-- ============ PHASE 3 ============ -->
 <section id="phase3">
 <h2>Phase 3 · Beides verbinden</h2>
-<p>Du kennst jetzt zwei Wege: den Flächeninhalt als Grenzwert von Rechtecksummen und die Stammfunktion als Umkehrung des Ableitens. Hängt beides zusammen? Dazu lässt du die rechte Grenze wandern: A(x) ist der Flächeninhalt von der festen linken Grenze bis zur Stelle x. Im Auto-Beispiel wäre A(x) der Weg, der bis zum Zeitpunkt x zurückgelegt ist.</p>
+<p>Du kennst jetzt zwei Wege: den Flächeninhalt als Grenzwert von Rechtecksummen und die Stammfunktion als Umkehrung des Ableitens. Hängt beides zusammen? Dazu lässt du die rechte Grenze wandern: A(x) ist der Flächeninhalt von der festen linken Grenze bis zur Stelle x. Ist f eine Änderungsrate, dann ist A(x) der <b>Bestand</b>, der seit dem Start hinzugekommen ist, im Auto-Beispiel der bis zum Zeitpunkt x zurückgelegte Weg.</p>
 
 <div class="applet" id="ap3">
   <div class="ttl">Werkzeug · Flächeninhaltsfunktion</div>
@@ -295,24 +297,31 @@ ul.l li{margin-bottom:4px}
 
 <h3>Aufgabe 6 · Flächeninhaltsfunktion einer linearen Funktion</h3>
 <div class="task">
-  <div class="q"><b>a)</b><span>Gegeben ist f(x) = x + 2, die linke Grenze ist 0. Bestimme A(x) mit der Trapezformel.</span></div>
+  <p>Die Geschwindigkeit eines Autos ist v(t) = t + 2 (v in m/s, t in s), die Messung startet bei t = 0. A(x) ist der bis zum Zeitpunkt x zurückgelegte Weg (im Werkzeug: f(x) = x + 2).</p>
+  <div class="q"><b>a)</b><span>Bestimme A(x) mit der Trapezformel.</span></div>
   <textarea data-save="a6a" aria-label="Antwort Aufgabe 6 a"></textarea>
   <div class="sol teacher"><b class="l">Lösung</b>A(x) = (f(0) + f(x))/2 · x = (2 + x + 2)/2 · x = x²/2 + 2x.</div>
-  <div class="q"><b>b)</b><span>Leite A(x) ab und vergleiche mit f(x). Was vermutest du? Berechne außerdem A(3).</span></div>
+  <div class="q"><b>b)</b><span>Leite A(x) ab und vergleiche mit f(x). Was vermutest du? Berechne außerdem A(3) und gib die Einheit an.</span></div>
   <textarea data-save="a6b" aria-label="Antwort Aufgabe 6 b"></textarea>
-  <div class="sol teacher"><b class="l">Lösung</b>A′(x) = x + 2 = f(x): Vermutung, A ist eine Stammfunktion von f. A(3) = 4,5 + 6 = 10,5.</div>
+  <div class="sol teacher"><b class="l">Lösung</b>A′(x) = x + 2 = f(x): Vermutung, A ist eine Stammfunktion von f. A(3) = 4,5 + 6 = 10,5 m.</div>
+  <div class="q"><b>c)</b><span>Deute A′(x) = f(x) im Sachzusammenhang: Was sagt das über Weg und Geschwindigkeit?</span></div>
+  <textarea data-save="a6c" aria-label="Antwort Aufgabe 6 c"></textarea>
+  <div class="sol teacher"><b class="l">Lösung</b>Die Geschwindigkeit ist die momentane Änderungsrate des Weges: Wie schnell der Bestand „Weg“ wächst, ist genau der Funktionswert v(x).</div>
 </div>
 
 <h3>Aufgabe 7 · Die Flächeninhaltsfunktion experimentell erkunden</h3>
-<p>Gegeben ist f(x) = 0,1·x² mit der festen unteren Grenze a = −3. Wähle diese Funktion im Werkzeug und ziehe die obere Grenze x von −3 nach rechts. Die Spur zeigt A(x).</p>
+<p>Ein Regenwassertank ist bei t = −3 (in Minuten, t = 0 ist 12:00 Uhr) leer. Der Zufluss ist z(t) = 0,1·t² in m³/min. A(x) ist die Wassermenge, die seit t = −3 zugeflossen ist, also der Füllstand zur Zeit x. Wähle im Werkzeug „Zufluss 0,1·t²“ und ziehe die obere Grenze x von −3 nach rechts. Die Spur zeigt A(x).</p>
 <div class="task">
-  <div class="q"><b>a)</b><span>Sage voraus, wie die Spur von A verlaufen wird, bevor du den Regler bewegst. Beschreibe dann den Verlauf von A: Wo ist A(x) am kleinsten, wo steigt A am stärksten? Vergleiche mit dem Graphen von f.</span></div>
+  <div class="q"><b>a)</b><span>Sage voraus, wie der Füllstand A(x) verlaufen wird, bevor du den Regler bewegst. Beschreibe dann den Verlauf: Wo füllt sich der Tank am langsamsten, wo am schnellsten? Vergleiche mit dem Graphen von f.</span></div>
   <textarea data-save="a7a" aria-label="Antwort Aufgabe 7 a"></textarea>
-  <div class="sol teacher"><b class="l">Lösung</b>A startet bei x = −3 mit 0 und wächst, da f ≥ 0. Bei x = 0 ist f(0) = 0, dort ist A am flachsten (waagerechte Tangente). Am stärksten steigt A, wo f am größten ist (rechter Rand).</div>
+  <div class="sol teacher"><b class="l">Lösung</b>Der Füllstand startet bei 0 und wächst, da z ≥ 0. Bei t = 0 ist der Zufluss 0, dort ist A am flachsten (waagerechte Tangente). Am schnellsten füllt sich der Tank, wo z am größten ist (rechter Rand).</div>
   <div class="q"><b>b)</b><span>Stelle eine Vermutung zum Zusammenhang zwischen A und f auf. Eine Stammfunktion von f ist F(x) = x³/30. Bestimme die Konstante c so, dass A(x) = F(x) + c gilt.</span></div>
   <textarea data-save="a7b" aria-label="Antwort Aufgabe 7 b"></textarea>
-  <details class="tip"><summary>Tipp</summary><p>Setze x = −3 in A(x) = F(x) + c ein. Was muss A(−3) sein? Löse die Gleichung nach c auf.</p></details>
+  <details class="tip"><summary>Tipp</summary><p>Setze x = −3 in A(x) = F(x) + c ein. Was muss A(−3) sein, wenn der Tank bei t = −3 leer ist? Löse die Gleichung nach c auf.</p></details>
   <div class="sol teacher"><b class="l">Lösung</b>A ist eine Stammfunktion von f. Aus A(−3) = 0 folgt −27/30 + c = 0, also c = 0,9 und A(x) = x³/30 + 0,9. Probe: A(3) = 1,8 = ∫<sub>−3</sub><sup>3</sup> 0,1x² dx.</div>
+  <div class="q"><b>c)</b><span>Deute im Sachzusammenhang: Was bedeutet A(3) = 1,8? Was bedeutet c, und warum hängt es vom Startzeitpunkt ab?</span></div>
+  <textarea data-save="a7c" aria-label="Antwort Aufgabe 7 c"></textarea>
+  <div class="sol teacher"><b class="l">Lösung</b>Bis t = 3 sind 1,8 m³ Wasser zugeflossen. Die Konstante c legt den Anfangsbestand fest: Weil der Tank bei t = −3 leer ist, wird c so gewählt, dass A(−3) = 0 gilt. Bei anderem Startzeitpunkt oder Anfangsbestand verschiebt sich die Kurve um eine Konstante.</div>
 </div>
 
 <div class="merke" data-merke>
@@ -320,6 +329,7 @@ ul.l li{margin-bottom:4px}
   <p>Ist f stetig auf [a; b] und F irgendeine Stammfunktion von f, dann gilt</p>
   <div class="eq"><b>∫<sub>a</sub><sup>b</sup> f(x) dx = F(b) − F(a)</b></div>
   <p>Die Flächeninhaltsfunktion A(x) ist eine <input class="blank" data-save="m3a" data-ans="stammfunktion" aria-label="Lücke"> von f mit A(a) = 0. Darum genügt es, eine beliebige Stammfunktion an den Grenzen auszuwerten.</p>
+  <p><b>Im Sachzusammenhang:</b> Ist f die Änderungsrate eines Bestands, dann ändert sich der Bestand von a bis b um F(b) − F(a). Die Ableitung des Bestands ist die Änderungsrate.</p>
   <button class="btn" data-check>Prüfen</button>
 </div>
 </section>
@@ -328,7 +338,7 @@ ul.l li{margin-bottom:4px}
 <section id="abschluss">
 <h2>Anwendung und Reflexion</h2>
 <h3>Aufgabe 8 · Hauptsatz anwenden und mit Phase 1 vergleichen</h3>
-<p>Bestimme jeweils eine Stammfunktion, berechne das Integral und vergleiche mit deinen Ergebnissen aus Phase 1.</p>
+<p>Bestimme jeweils eine Stammfunktion, berechne das Integral und vergleiche mit deinen Ergebnissen aus Phase 1. Gib zum ersten Integral den Weg (in m) und zum zweiten die Wassermenge (in m³) an.</p>
 <div class="task">
   <div class="scroll"><table class="t">
     <tr><th>Integral</th><th>Stammfunktion F</th><th>F(b) − F(a)</th><th>Vergleich</th></tr>
@@ -339,10 +349,10 @@ ul.l li{margin-bottom:4px}
   <div class="sol teacher"><b class="l">Lösung</b>0,25x² + 2x → 4 + 8 = 12 (Aufgabe 1 a) · x³/15 + x → 14,4 + 6 = 20,4 (Aufgabe 2 c) · x³/3 → 125/3 − 1/3 = 124/3 ≈ 41,33 (Aufgabe 3 b).</div>
 </div>
 <h3>Aufgabe 9 · Reflexion</h3>
-<p>Erkläre in drei Sätzen, warum man dasselbe Integral einmal als Fläche (Rechtecksummen) und einmal mit einer Stammfunktion berechnen kann. Nutze die Begriffe Flächeninhaltsfunktion, Ableitung und Stammfunktion.</p>
+<p>Erkläre in drei Sätzen, warum man dasselbe Integral einmal als Fläche (Rechtecksummen) und einmal mit einer Stammfunktion berechnen kann. Nutze die Begriffe Flächeninhaltsfunktion, Ableitung und Stammfunktion und deute am Beispiel des Wassertanks: Was ist die Änderungsrate, was der Bestand?</p>
 <div class="task">
   <textarea data-save="a9" aria-label="Antwort Aufgabe 9" style="min-height:120px"></textarea>
-  <div class="sol teacher"><b class="l">Erwartungshorizont</b>Das Integral ist der Grenzwert von Rechtecksummen und damit der Flächeninhalt. Lässt man die rechte Grenze wandern, entsteht die Flächeninhaltsfunktion A(x), deren Ableitung f(x) ist; A ist also eine Stammfunktion von f. Zwei Stammfunktionen unterscheiden sich nur um eine Konstante, deshalb liefert F(b) − F(a) denselben Wert wie die Fläche.</div>
+  <div class="sol teacher"><b class="l">Erwartungshorizont</b>Das Integral ist der Grenzwert von Rechtecksummen und damit der Flächeninhalt. Lässt man die rechte Grenze wandern, entsteht die Flächeninhaltsfunktion A(x), deren Ableitung f(x) ist; A ist also eine Stammfunktion von f. Zwei Stammfunktionen unterscheiden sich nur um eine Konstante, deshalb liefert F(b) − F(a) denselben Wert wie die Fläche. Im Tank-Beispiel: Der Zufluss ist die Änderungsrate, die Wassermenge im Tank der Bestand; der Bestand wächst in jedem Moment genau so schnell, wie der Zufluss angibt.</div>
 </div>
 </section>
 
@@ -362,7 +372,7 @@ ul.l li{margin-bottom:4px}
 
 <h3>Didaktischer Kommentar</h3>
 <ul class="l">
- <li><b>Zugang:</b> Fläche, ergänzt durch die Bestandsdeutung im Tacho-Kontext (Weg als Fläche unter v(t)). So sind beide Grundvorstellungen angelegt.</li>
+ <li><b>Zugang:</b> Fläche und Bestand werden durchgängig verknüpft: Tacho-Einstieg (Weg), Wassertank (Aufgabe 2), Auto (Aufgabe 6), Regenwassertank (Aufgabe 7). A(x) wird als Bestandsfunktion gedeutet, A′ = f als Änderungsrate des Bestands. Das begründet den Hauptsatz inhaltlich.</li>
  <li><b>Erst linear, dann gekrümmt:</b> Bei v(t) = 0,5t + 2 ist der exakte Wert bekannt und prüft die Einschließung.</li>
  <li><b>Nur wachsende Funktionen:</b> Unter- und Obersumme sind ohne Fallunterscheidung definiert. Bei fallenden Funktionen vertauschen sich die Randwerte.</li>
  <li><b>Stammfunktion nach dem Integralbegriff:</b> Rückwärts-Ableiten mit Richtungsfeld; die Konstante c wird erlebt, nicht behauptet.</li>
@@ -389,7 +399,7 @@ ul.l li{margin-bottom:4px}
 </ul>
 <h4>Wo das Vorgehen von der aktuellen Diskussion abweicht oder verbessert werden sollte</h4>
 <ul class="l">
- <li><b>Flächenvorstellung dominiert.</b> Nach dem Einstieg werden Aufgaben 2 bis 8 kontextfrei und rein geometrisch bearbeitet. In der aktuellen Diskussion gilt das Integral als „Bestand aus Änderungsrate“ (Kirsch 1976; Hahn &amp; Prediger 2008) als tragfähiger Zugang, weil er den Hauptsatz inhaltlich begründet: A(x) ist der Bestand, f die Änderungsrate. Empfehlung: Aufgabe 2 und 7 in einem Kontext (Zufluss in l/min, Verbrauch in kW) führen und A(x) ausdrücklich als Bestandsfunktion deuten. In der App ist die Bestandsdeutung in Phase 3 ergänzt.</li>
+ <li><b>Flächenvorstellung dominiert (in der App umgesetzt: Aufgaben 2, 6, 7, 8, 9 sowie Merke 1 und 3 tragen jetzt Kontext und Deutungsfragen).</b> Nach dem Einstieg werden Aufgaben 2 bis 8 kontextfrei und rein geometrisch bearbeitet. In der aktuellen Diskussion gilt das Integral als „Bestand aus Änderungsrate“ (Kirsch 1976; Hahn &amp; Prediger 2008) als tragfähiger Zugang, weil er den Hauptsatz inhaltlich begründet: A(x) ist der Bestand, f die Änderungsrate. Empfehlung: Aufgabe 2 und 7 in einem Kontext (Zufluss in l/min, Verbrauch in kW) führen und A(x) ausdrücklich als Bestandsfunktion deuten. In der App ist die Bestandsdeutung in Phase 3 ergänzt.</li>
  <li><b>Hauptsatz in derselben Doppelstunde.</b> Der Hauptsatz ist die zentrale Idee der Analysis und wird hier aus zwei Beispielen vermutet. Das ist als <i>Ausblick</i> vertretbar, als <i>Erarbeitung</i> in 25 Minuten zu knapp; das Risiko ist ein Rezept ohne Verständnis (Danckwerts &amp; Vogel). Empfehlung: Stunde als Überblick und Vermutung kennzeichnen, die Begründung (A′ = f über den Differenzenquotienten) und die Anwendung in einer eigenen Folgestunde.</li>
  <li><b>Umfang und kognitive Last.</b> Neun Aufgaben, drei Merkkästen und drei Werkzeuge in 90 Minuten sind sehr dicht. Empfehlung: Aufgabe 3 und 9 streichen oder auslagern, Aufgabe 5 auf zwei Zeilen kürzen.</li>
  <li><b>Merke 1 überzieht die Evidenz.</b> Der Satz gilt für stetige Funktionen, beobachtet wurde er an wachsenden. In der App steht ein Hinweis; im Arbeitsblatt sollte ebenfalls die Beschränkung genannt werden.</li>
@@ -475,8 +485,8 @@ function curve(g,sx,sy,f,a,b,col,lw,xr,yr){g.save();g.beginPath();g.rect(sx(xr[0
 
 /* ---------- Werkzeug 1: Rechtecksummen ---------- */
 const F1=[
- {t:'f(x) = 0,5·x + 2  auf [0; 4]',f:x=>.5*x+2,a:0,b:4,F:x=>.25*x*x+2*x,ym:5,xm:4.4,chips:[4,10,50,200]},
- {t:'f(x) = 0,2·x² + 1  auf [0; 6]',f:x=>.2*x*x+1,a:0,b:6,F:x=>x**3/15+x,ym:9,xm:6.4,chips:[6,12,30,60,600]},
+ {t:'v(t) = 0,5·t + 2 (Geschwindigkeit) auf [0; 4]',f:x=>.5*x+2,a:0,b:4,F:x=>.25*x*x+2*x,ym:5,xm:4.4,chips:[4,10,50,200]},
+ {t:'Zufluss z(t) = 0,2·t² + 1 auf [0; 6]',f:x=>.2*x*x+1,a:0,b:6,F:x=>x**3/15+x,ym:9,xm:6.4,chips:[6,12,30,60,600]},
  {t:'f(x) = x²  auf [1; 5]',f:x=>x*x,a:1,b:5,F:x=>x**3/3,ym:27,xm:5.4,chips:[4,10,100,1000]}];
 const f1=$('f1'),n1=$('n1');F1.forEach((o,i)=>f1.add(new Option(o.t,i)));f1.value=0;n1.value=4;
 function sums(o,n){const w=(o.b-o.a)/n;let u=0,s=0;for(let i=0;i<n;i++){u+=o.f(o.a+i*w);s+=o.f(o.a+(i+1)*w);}return[u*w,s*w];}
@@ -527,9 +537,9 @@ f2.onchange=draw2;c2.oninput=draw2;$('all2').onchange=draw2;
 
 /* ---------- Werkzeug 3: Flächeninhaltsfunktion ---------- */
 const F3=[
- {t:'f(x) = x + 2,  linke Grenze 0',f:x=>x+2,a:0,b:5,F:x=>x*x/2+2*x,ym:8,Am:25},
- {t:'f(x) = 0,1·x²,  linke Grenze −3',f:x=>.1*x*x,a:-3,b:4,F:x=>x**3/30,ym:2,Am:4},
- {t:'f(x) = 0,2·x² + 1,  linke Grenze 0',f:x=>.2*x*x+1,a:0,b:6,F:x=>x**3/15+x,ym:9,Am:24}];
+ {t:'Auto v(t) = t + 2, Start bei 0',f:x=>x+2,a:0,b:5,F:x=>x*x/2+2*x,ym:8,Am:25},
+ {t:'Zufluss z(t) = 0,1·t², Start bei t = −3',f:x=>.1*x*x,a:-3,b:4,F:x=>x**3/30,ym:2,Am:4},
+ {t:'Zufluss z(t) = 0,2·t² + 1, Start bei 0',f:x=>.2*x*x+1,a:0,b:6,F:x=>x**3/15+x,ym:9,Am:24}];
 const f3=$('f3'),x3=$('x3');F3.forEach((o,i)=>f3.add(new Option(o.t,i)));f3.value=0;
 function area(o,x){const n=800,w=(x-o.a)/n;let s=0;for(let i=0;i<n;i++){s+=(o.f(o.a+i*w)+o.f(o.a+(i+1)*w))/2;}return s*w;}
 function draw3(){
