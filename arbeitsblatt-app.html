@@ -179,13 +179,30 @@ ul.l li{margin-bottom:4px}
 <section id="phase1">
 <h2>Phase 1 · Flächen mit Rechtecken einfangen</h2>
 <h3>Aufgabe 2 · Eine Fläche ohne Formel</h3>
-<p>Ein leerer Tank wird mit Wasser gefüllt. Der Zufluss beträgt z(t) = 0,2·t² + 1 (z in m³/min, t in min) für 0 ≤ t ≤ 6. Wie viel Wasser ist nach 6 Minuten im Tank? Für die Fläche unter dem gekrümmten Graphen kennst du keine Formel. (Im Werkzeug heißt die Funktion f(x), x steht für t.)</p>
+<p>Ein leerer Tank wird mit Wasser gefüllt. Der Zufluss beträgt z(t) = 0,2·t² + 1 (z in m³/min, t in min) für 0 ≤ t ≤ 6. Wie viel Wasser ist nach 6 Minuten im Tank? Für die Fläche unter dem gekrümmten Graphen kennst du keine Formel. </p>
+<div class="applet" id="apT">
+  <div class="ttl">Schieberegler · Zufluss z(t) = 0,2·t² + 1</div>
+  <div class="controls">
+    <div><label class="l" for="nT">Anzahl der Streifen n = <span class="val" id="nTv">6</span> (Breite <span class="val" id="wT">1</span> min)</label>
+      <input type="range" id="nT" min="1" max="600" value="6"><div class="chips" id="nTc"></div></div>
+    <div><label class="check"><input type="checkbox" id="showET"> Grenzwert anzeigen (erst nach deiner Schätzung)</label>
+      <button class="btn" type="button" id="takeT" style="margin-top:8px">Werte in die Tabelle eintragen</button>
+      <div id="takeFb" role="status" style="font:.85rem var(--sans);color:var(--muted);min-height:1.2em;margin-top:4px"></div></div>
+  </div>
+  <canvas id="cT" width="1600" height="720" role="img" aria-label="Zufluss z(t) mit Rechtecken für Unter- und Obersumme"></canvas>
+  <div class="read">
+    <div class="u"><small>Untersumme U<sub>n</sub> (m³)</small><b id="rUT">–</b></div>
+    <div class="o"><small>Obersumme O<sub>n</sub> (m³)</small><b id="rOT">–</b></div>
+    <div><small>Differenz O<sub>n</sub> − U<sub>n</sub></small><b id="rDT">–</b></div>
+    <div class="e"><small>Grenzwert (m³)</small><b id="rET">verborgen</b></div>
+  </div>
+</div>
 <div class="task">
-  <div class="q"><b>a)</b><span>Berechne U<sub>6</sub> und O<sub>6</sub> mit dem Taschenrechner (Streifenbreite 1 min). Kontrolliere mit dem Werkzeug oben (Funktion „Zufluss 0,2·t² + 1“, n = 6). Deute beide Werte: Welche Wassermenge ist mindestens, welche höchstens im Tank?</span></div>
+  <div class="q"><b>a)</b><span>Berechne U<sub>6</sub> und O<sub>6</sub> mit dem Taschenrechner (Streifenbreite 1 min). Kontrolliere mit dem Schieberegler (n = 6). Deute beide Werte: Welche Wassermenge ist mindestens, welche höchstens im Tank?</span></div>
   <textarea data-save="a2a" aria-label="Antwort Aufgabe 2 a"></textarea>
   <details class="tip"><summary>Tipp</summary><p>Die Funktion wächst. Dann ist links der kleinste, rechts der größte Funktionswert eines Streifens. Bei Breite 1 addierst du nur Funktionswerte: f(0) + f(1) + … + f(5) für U<sub>6</sub>.</p></details>
   <div class="sol teacher"><b class="l">Lösung</b>U<sub>6</sub> = 0,2·(0+1+4+9+16+25) + 6 = 17; O<sub>6</sub> = 0,2·(1+4+9+16+25+36) + 6 = 24,2. Deutung: Weil der Zufluss wächst, sind mindestens 17 m³ und höchstens 24,2 m³ im Tank.</div>
-  <div class="q"><b>b)</b><span>Erhöhe im Werkzeug die Anzahl n der Streifen und trage die Werte ein.</span></div>
+  <div class="q"><b>b)</b><span>Stelle mit dem Schieberegler die Anzahl n der Streifen ein und trage die Werte ein. Mit den Knöpfen unter dem Regler springst du zu den n-Werten der Tabelle.</span></div>
   <div class="scroll"><table class="t">
     <tr><th>n</th><th>6</th><th>12</th><th>30</th><th>60</th><th>600</th></tr>
     <tr><td>Untersumme U<sub>n</sub></td><td><input data-save="t2u1" aria-label="U6"></td><td><input data-save="t2u2" aria-label="U12"></td><td><input data-save="t2u3" aria-label="U30"></td><td><input data-save="t2u4" aria-label="U60"></td><td><input data-save="t2u5" aria-label="U600"></td></tr>
@@ -562,7 +579,33 @@ function draw3(){
   if(!n.hidden){const Fx=o.F(x),Fa=o.F(o.a);n.innerHTML='<b>Hauptsatz:</b> F(x) − F(a) = '+de(Fx,3)+' − ('+de(Fa,3)+') = <span class="ok">'+de(Fx-Fa,3)+'</span>, gemessen: A(x) = '+de(A,3)+'. Die Steigung der unteren Kurve stimmt mit f(x) überein, also ist A eine Stammfunktion von f.';}}
 f3.onchange=draw3;x3.oninput=draw3;$('haupt').onchange=draw3;
 
-function redraw(){draw1();draw2();draw3();}
+/* ---------- Schieberegler bei Aufgabe 2: Tank ---------- */
+const oT={f:x=>.2*x*x+1,a:0,b:6,F:x=>x**3/15+x,ym:9,xm:6.4};
+const nT=$('nT'),colIdx={6:1,12:2,30:3,60:4,600:5};
+function chipsT(){const box=$('nTc');box.innerHTML='';[6,12,30,60,600].forEach(v=>{const b=document.createElement('button');b.type='button';b.textContent='n = '+v;b.setAttribute('aria-pressed',+nT.value===v);b.onclick=()=>{nT.value=v;drawT();};box.appendChild(b);});}
+function drawT(){
+  const o=oT,n=+nT.value;$('nTv').textContent=n;$('wT').textContent=de(6/n,3);
+  const{g,w,h}=setup($('cT'));const box={l:44,t:12,w:w-60,h:h-40};
+  const xr=[-.3,o.xm],yr=[0,o.ym];const{sx,sy}=frame(g,box,xr,yr,{ty:2});
+  const wd=(o.b-o.a)/n,thin=n<=80;g.lineWidth=1;
+  for(let i=0;i<n;i++){const x0=o.a+i*wd,x1=x0+wd;
+    let y=o.f(x1);g.fillStyle=css('--over');g.globalAlpha=.32;g.fillRect(sx(x0),sy(y),sx(x1)-sx(x0)+.6,sy(0)-sy(y));g.globalAlpha=1;if(thin){g.strokeStyle=css('--over');g.strokeRect(sx(x0),sy(y),sx(x1)-sx(x0),sy(0)-sy(y));}
+    y=o.f(x0);g.fillStyle=css('--under');g.globalAlpha=.42;g.fillRect(sx(x0),sy(y),sx(x1)-sx(x0)+.6,sy(0)-sy(y));g.globalAlpha=1;if(thin){g.strokeStyle=css('--under');g.strokeRect(sx(x0),sy(y),sx(x1)-sx(x0),sy(0)-sy(y));}}
+  curve(g,sx,sy,o.f,o.a,o.b,css('--navy'),2.6,xr,yr);
+  g.fillStyle=css('--muted');g.font='13px '+FONT;g.textAlign='left';g.fillText('t in min',box.l+box.w-48,sy(0)-8);g.fillText('z in m³/min',box.l+6,box.t+14);
+  const[U,O]=sums(o,n),E=o.F(o.b)-o.F(o.a);
+  $('rUT').textContent=de(U);$('rOT').textContent=de(O);$('rDT').textContent=de(O-U);
+  $('rET').textContent=$('showET').checked?de(E,4):'verborgen';
+  chipsT();}
+nT.oninput=drawT;$('showET').onchange=drawT;
+$('takeT').addEventListener('click',()=>{
+  const n=+nT.value,k=colIdx[n],fb=$('takeFb');
+  if(!k){fb.textContent='Stelle n auf 6, 12, 30, 60 oder 600 ein.';return;}
+  const[U,O]=sums(oT,n),vals={u:U,o:O,d:O-U};
+  for(const key of ['u','o','d']){const el=document.querySelector('[data-save="t2'+key+k+'"]');if(el){el.value=de(vals[key]);el.dispatchEvent(new Event('input'));}}
+  fb.textContent='Eingetragen für n = '+n+'.';setTimeout(()=>{if(fb.textContent.startsWith('Eingetragen'))fb.textContent=''},3000);});
+
+function redraw(){draw1();drawT();draw2();draw3();}
 let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(redraw,80)});
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change',redraw);
 new MutationObserver(redraw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
