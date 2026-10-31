@@ -220,6 +220,17 @@ ul.l li{margin-bottom:4px}
   <div class="sol teacher"><b class="l">Lösung</b>U<sub>n</sub> wächst, O<sub>n</sub> fällt, beide nähern sich; die Differenz ist 43,2/n. Schätzwert ≈ 20,4: Nach 6 Minuten sind etwa 20,4 m³ Wasser im Tank (exakt 20,4 m³).</div>
 </div>
 
+<div class="merke" data-merke>
+  <div class="t">Merke 1 · Das bestimmte Integral</div>
+  <p>Ist f stetig auf [a; b] und f(x) ≥ 0, dann streben Untersumme U<sub>n</sub> und Obersumme O<sub>n</sub> für n → ∞ gegen <input class="blank" data-save="m1a" data-ans="denselben|gemeinsamen|den gleichen|selben" aria-label="Lücke 1"> Grenzwert. Diesen Grenzwert nennt man das <input class="blank" data-save="m1b" data-ans="bestimmte|bestimmtes" aria-label="Lücke 2"> Integral von f in den Grenzen a und b:</p>
+  <div class="eq">∫<sub>a</sub><sup>b</sup> f(x) dx = lim<sub>n→∞</sub> U<sub>n</sub> = lim<sub>n→∞</sub> O<sub>n</sub></div>
+  <p>Er gibt den <input class="blank" data-save="m1c" data-ans="flächeninhalt|inhalt|flaecheninhalt" aria-label="Lücke 3"> der Fläche zwischen dem Graphen von f und der x-Achse an. Dabei sind a und b die Integrationsgrenzen und f ist der Integrand.</p>
+  <p><b>Zum Zeichen:</b> ∫ ist ein gestrecktes S für „Summe“. dx steht für die schmale Streifenbreite Δx. ∫ f(x) dx ist also die Summe aller Streifen f(x)·Δx, wenn die Streifen immer schmaler werden.</p>
+  <p><b>Im Sachzusammenhang:</b> Ist f eine Änderungsrate (z. B. Zufluss in m³/min), dann gibt das Integral die <b>Gesamtänderung des Bestands</b> an (z. B. die zugeflossene Wassermenge).</p>
+  <button class="btn" data-check>Prüfen</button>
+  <p class="note" style="font-size:.88rem">Du hast das nur an wachsenden Funktionen beobachtet. Für alle stetigen Funktionen mit f(x) ≥ 0 gilt es auch, das zeigt die Theorie später.</p>
+</div>
+
 <h3>Aufgabe 3 (Zusatz) · Die Differenz O<sub>n</sub> − U<sub>n</sub> berechnen</h3>
 <p>Gegeben ist f(x) = x² im Intervall [1; 5] (im Werkzeug wählbar). Bei n Streifen ist die Breite 4/n und die linken Ränder sind x<sub>i</sub> = 1 + i·4/n.</p>
 <div class="task">
@@ -237,20 +248,12 @@ ul.l li{margin-bottom:4px}
   <div class="sol teacher"><b class="l">Lösung</b>n = 4: 30 | 54 | 24; n = 10: 36,64 | 46,24 | 9,6; n = 100: 40,854 | 41,814 | 0,96; n = 1000: 41,285 | 41,381 | 0,096. Grenzwert ≈ 41,3 (exakt 124/3 ≈ 41,33).</div>
 </div>
 
-<div class="merke" data-merke>
-  <div class="t">Merke 1 · Das bestimmte Integral</div>
-  <p>Ist f stetig auf [a; b] und f(x) ≥ 0, dann streben Untersumme U<sub>n</sub> und Obersumme O<sub>n</sub> für n → ∞ gegen <input class="blank" data-save="m1a" data-ans="denselben|gemeinsamen|den gleichen|selben" aria-label="Lücke 1"> Grenzwert. Diesen Grenzwert nennt man das <input class="blank" data-save="m1b" data-ans="bestimmte|bestimmtes" aria-label="Lücke 2"> Integral von f in den Grenzen a und b:</p>
-  <div class="eq">∫<sub>a</sub><sup>b</sup> f(x) dx = lim<sub>n→∞</sub> U<sub>n</sub> = lim<sub>n→∞</sub> O<sub>n</sub></div>
-  <p>Er gibt den <input class="blank" data-save="m1c" data-ans="flächeninhalt|inhalt|flaecheninhalt" aria-label="Lücke 3"> der Fläche zwischen dem Graphen von f und der x-Achse an. Dabei sind a und b die Integrationsgrenzen und f ist der Integrand.</p>
-  <p><b>Im Sachzusammenhang:</b> Ist f eine Änderungsrate (z. B. Zufluss in m³/min), dann gibt das Integral die <b>Gesamtänderung des Bestands</b> an (z. B. die zugeflossene Wassermenge).</p>
-  <button class="btn" data-check>Prüfen</button>
-  <p class="note" style="font-size:.88rem">Du hast das nur an wachsenden Funktionen beobachtet. Für alle stetigen Funktionen mit f(x) ≥ 0 gilt es auch, das zeigt die Theorie später.</p>
-</div>
 </section>
 
 <!-- ============ PHASE 2 ============ -->
 <section id="phase2">
 <h2>Phase 2 · Rückwärts ableiten</h2>
+<div class="box"><p><b>Warum rückwärts ableiten?</b> Im Auto-Beispiel kennst du die Geschwindigkeit v(t) und suchst den Weg s(t). Die Geschwindigkeit ist die Änderungsrate des Weges, also gilt v = s′. Gesucht ist demnach eine Funktion, deren Ableitung die gegebene Funktion ist.</p></div>
 <p>Beim Ableiten machst du aus einer Funktion F die Steigungsfunktion f = F′. Jetzt gehst du den Weg zurück: Die Steigung ist gegeben, die Funktion wird gesucht.</p>
 
 <div class="applet" id="ap2">
@@ -338,7 +341,9 @@ ul.l li{margin-bottom:4px}
   <div class="controls">
     <div><label class="l" for="xS">Zeitpunkt x = <span class="val" id="xSv"></span> min</label><input type="range" id="xS" min="0" max="1" step="0.001" value="0"></div>
     <div><label class="check"><input type="checkbox" id="traceS"> Spur von A(x) einblenden (erst nach deiner Vorhersage)</label>
-      <label class="check"><input type="checkbox" id="hauptS"> Stammfunktion F(x) = x³/30 und c prüfen (erst nach Teil b)</label></div>
+      <label class="check"><input type="checkbox" id="hauptS"> Stammfunktion F(x) = x³/30 und c prüfen (erst nach Teil b)</label>
+      <label class="check"><input type="checkbox" id="stripS"> Schmalen Streifen einblenden (für Teil d)</label>
+      <label class="l" for="hS" style="margin-top:4px">Streifenbreite h = <span class="val" id="hSv">0,5</span> min</label><input type="range" id="hS" min="0.02" max="1" step="0.01" value="0.5"></div>
   </div>
   <canvas id="cS" width="1600" height="1000" role="img" aria-label="Zufluss mit Fläche und darunter der Füllstand"></canvas>
   <div class="tankrow">
@@ -350,6 +355,7 @@ ul.l li{margin-bottom:4px}
     </div>
   </div>
   <p class="note" id="nS" hidden></p>
+  <p class="note" id="nS2" hidden></p>
 </div>
 <div class="task">
   <div class="q"><b>a)</b><span>Sage voraus, wie der Füllstand A(x) verlaufen wird, bevor du den Regler bewegst. Beschreibe dann den Verlauf: Wo füllt sich der Tank am langsamsten, wo am schnellsten? Vergleiche mit dem Graphen von f.</span></div>
@@ -362,8 +368,15 @@ ul.l li{margin-bottom:4px}
   <div class="q"><b>c)</b><span>Deute im Sachzusammenhang: Was bedeutet A(3) = 1,8? Was bedeutet c, und warum hängt es vom Startzeitpunkt ab?</span></div>
   <textarea data-save="a7c" aria-label="Antwort Aufgabe 7 c"></textarea>
   <div class="sol teacher"><b class="l">Lösung</b>Bis t = 3 sind 1,8 m³ Wasser zugeflossen. Die Konstante c legt den Anfangsbestand fest: Weil der Tank bei t = −3 leer ist, wird c so gewählt, dass A(−3) = 0 gilt. Bei anderem Startzeitpunkt oder Anfangsbestand verschiebt sich die Kurve um eine Konstante.</div>
+  <div class="q"><b>d)</b><span><b>Warum gilt das immer?</b> Blende im Werkzeug den schmalen Streifen der Breite h ein. Der Füllstand wächst zwischen x und x + h um ΔA = A(x + h) − A(x). Begründe, dass ΔA ungefähr z(x)·h beträgt, und folge daraus A′(x) = z(x). Was passiert mit ΔA/h, wenn h kleiner wird?</span></div>
+  <textarea data-save="a7d" aria-label="Antwort Aufgabe 7 d"></textarea>
+  <details class="tip"><summary>Tipp</summary><p>Wenn h sehr klein ist, ändert sich der Zufluss in dieser Zeit kaum. Das Wasser, das in der Zeit h zufließt, ist dann fast ein Rechteck mit Höhe z(x) und Breite h.</p></details>
+  <div class="sol teacher"><b class="l">Lösung</b>Bei schmalem Streifen ist der Zufluss fast konstant z(x): ΔA ≈ z(x)·h. Teilt man durch h, folgt ΔA/h ≈ z(x). Für h → 0 wird aus dem Differenzenquotienten die Ableitung: A′(x) = z(x). Damit ist A eine Stammfunktion von z, nicht nur bei diesem Beispiel, sondern für jede stetige Zuflussfunktion. Hier schließt sich der Kreis zur Rechteckidee aus Phase 1.</div>
 </div>
 
+<h3>Dein Satz zum Hauptsatz</h3>
+<p>Formuliere in eigenen Worten: Wie berechnest du ein bestimmtes Integral, wenn du eine Stammfunktion kennst? Vergleiche danach mit dem Merkkasten.</p>
+<textarea data-save="a7e" aria-label="Eigene Formulierung des Hauptsatzes"></textarea>
 <div class="merke" data-merke>
   <div class="t">Merke 3 · Hauptsatz der Differenzial- und Integralrechnung</div>
   <p>Ist f stetig auf [a; b] und F irgendeine Stammfunktion von f, dann gilt</p>
@@ -416,7 +429,8 @@ ul.l li{margin-bottom:4px}
  <li><b>Erst linear, dann gekrümmt:</b> Bei v(t) = 0,5t + 2 ist der exakte Wert bekannt und prüft die Einschließung.</li>
  <li><b>Nur wachsende Funktionen:</b> Unter- und Obersumme sind ohne Fallunterscheidung definiert. Bei fallenden Funktionen vertauschen sich die Randwerte.</li>
  <li><b>Stammfunktion nach dem Integralbegriff:</b> Rückwärts-Ableiten mit Richtungsfeld; die Konstante c wird erlebt, nicht behauptet.</li>
- <li><b>Hauptsatz aus Beobachtung:</b> Aufgabe 6 (exakt, linear) und 7 (experimentell, Parabel) tragen die Vermutung A′ = f; Aufgabe 8 zeigt den Gewinn gegenüber Phase 1.</li>
+ <li><b>Hauptsatz aus Beobachtung und Begründung:</b> Aufgabe 6 (exakt, linear) und 7 a bis c (experimentell, Parabel) tragen die Vermutung A′ = f. Aufgabe 7 d liefert das Streifenargument ΔA ≈ z(x)·h und damit die Begründung für jede stetige Funktion. Aufgabe 8 zeigt den Gewinn gegenüber Phase 1. Die SuS formulieren den Hauptsatz vor Merke 3 selbst.</li>
+ <li><b>Phase 2 motiviert:</b> Der Kasten „Warum rückwärts ableiten?“ knüpft an v = s′ im Auto-Beispiel an. Das Integralzeichen wird in Merke 1 als gestrecktes S und dx als Streifenbreite erklärt. Merke 1 steht vor dem Zusatz Aufgabe 3.</li>
  <li><b>Technik:</b> Das Werkzeug verbirgt den Grenzwert, bis die Schätzung steht. Aufgabe 7 a verlangt eine Vorhersage vor dem Experiment.</li>
 </ul>
 <h4>Typische Fehlvorstellungen</h4>
@@ -440,7 +454,7 @@ ul.l li{margin-bottom:4px}
 <h4>Wo das Vorgehen von der aktuellen Diskussion abweicht oder verbessert werden sollte</h4>
 <ul class="l">
  <li><b>Flächenvorstellung dominiert (in der App umgesetzt: Aufgaben 2, 6, 7, 8, 9 sowie Merke 1 und 3 tragen jetzt Kontext und Deutungsfragen).</b> Nach dem Einstieg werden Aufgaben 2 bis 8 kontextfrei und rein geometrisch bearbeitet. In der aktuellen Diskussion gilt das Integral als „Bestand aus Änderungsrate“ (Kirsch 1976; Hahn &amp; Prediger 2008) als tragfähiger Zugang, weil er den Hauptsatz inhaltlich begründet: A(x) ist der Bestand, f die Änderungsrate. Empfehlung: Aufgabe 2 und 7 in einem Kontext (Zufluss in l/min, Verbrauch in kW) führen und A(x) ausdrücklich als Bestandsfunktion deuten. In der App ist die Bestandsdeutung in Phase 3 ergänzt.</li>
- <li><b>Hauptsatz in derselben Doppelstunde.</b> Der Hauptsatz ist die zentrale Idee der Analysis und wird hier aus zwei Beispielen vermutet. Das ist als <i>Ausblick</i> vertretbar, als <i>Erarbeitung</i> in 25 Minuten zu knapp; das Risiko ist ein Rezept ohne Verständnis (Danckwerts &amp; Vogel). Empfehlung: Stunde als Überblick und Vermutung kennzeichnen, die Begründung (A′ = f über den Differenzenquotienten) und die Anwendung in einer eigenen Folgestunde.</li>
+ <li><b>Hauptsatz in derselben Doppelstunde.</b> Der Hauptsatz ist die zentrale Idee der Analysis und wird hier aus zwei Beispielen vermutet; Aufgabe 7 d ergänzt das Streifenargument als Begründung. Das ist als <i>Ausblick</i> vertretbar, als <i>Erarbeitung</i> in 25 Minuten zu knapp; das Risiko ist ein Rezept ohne Verständnis (Danckwerts &amp; Vogel). Empfehlung: Stunde als Überblick und Vermutung kennzeichnen, die Begründung (A′ = f über den Differenzenquotienten) und die Anwendung in einer eigenen Folgestunde.</li>
  <li><b>Umfang und kognitive Last.</b> Neun Aufgaben, drei Merkkästen und drei Werkzeuge in 90 Minuten sind sehr dicht. Empfehlung: Aufgabe 3 und 9 streichen oder auslagern, Aufgabe 5 auf zwei Zeilen kürzen.</li>
  <li><b>Merke 1 überzieht die Evidenz.</b> Der Satz gilt für stetige Funktionen, beobachtet wurde er an wachsenden. In der App steht ein Hinweis; im Arbeitsblatt sollte ebenfalls die Beschränkung genannt werden.</li>
  <li><b>Vorhersage vor dem Experiment.</b> Nach dem Predict-Observe-Explain-Muster sollen die SuS vor dem Schieberegler eine Vorhersage notieren. Das ist in Aufgabe 7 a eingebaut, in Aufgabe 2 durch den verborgenen Grenzwert. Im Papierarbeitsblatt fehlt das noch.</li>
@@ -644,6 +658,16 @@ function drawS(){
   g.fillStyle=css('--navy');g.font='600 13px '+FONT;g.textAlign='left';g.fillText('Zufluss z(t) in m³/min',bx1.l+8,bx1.t+16);g.fillText('Füllstand A(t) in m³',bx2.l+8,bx2.t+16);
   g.fillStyle=css('--muted');g.font='13px '+FONT;g.fillText('t in min',bx2.l+bx2.w-52,t2.sy(0)-8);
   const A=area(o,x);
+  const hv=+$('hS').value;$('hSv').textContent=de(hv,2);
+  const n2=$('nS2');n2.hidden=!$('stripS').checked;
+  if(!n2.hidden){const xb=Math.min(x+hv,o.b),he=xb-x;
+    if(he>1e-9){const zx=o.f(x);
+      g.beginPath();g.moveTo(t1.sx(x),t1.sy(0));for(let i=0;i<=40;i++){const xx=x+he*i/40;g.lineTo(t1.sx(xx),t1.sy(o.f(xx)));}g.lineTo(t1.sx(xb),t1.sy(0));g.closePath();
+      g.fillStyle=css('--navy');g.globalAlpha=.35;g.fill();g.globalAlpha=1;
+      g.strokeStyle=css('--over');g.lineWidth=2;g.strokeRect(t1.sx(x),t1.sy(zx),t1.sx(xb)-t1.sx(x),t1.sy(0)-t1.sy(zx));
+      const dA=area(o,xb)-A;
+      n2.innerHTML='<b>Schmaler Streifen:</b> Zuwachs ΔA = A(x+h) − A(x) = '+de(dA,4)+' m³. Rechteck z(x)·h = '+de(zx*he,4)+' m³. Quotient ΔA/h = <span class="ok">'+de(dA/he,4)+'</span> m³/min, zum Vergleich z(x) = <b>'+de(zx,4)+'</b> m³/min. Verkleinere h und beobachte den Quotienten.';}
+    else{n2.textContent='Am rechten Rand gibt es keinen Streifen mehr. Wähle ein kleineres x.';}}
   if($('traceS').checked){curve(g,t2.sx,t2.sy,xx=>area(o,xx),o.a,x,css('--over'),3,xr,[0,o.Am]);
     g.fillStyle=css('--over');g.beginPath();g.arc(t2.sx(x),t2.sy(A),6,0,7);g.fill();
     const h2=.01,xa=Math.max(x-h2,o.a),xb=Math.min(x+h2,o.b),S=(area(o,xb)-area(o,xa))/(xb-xa);
@@ -654,7 +678,7 @@ function drawS(){
   $('lvlS').style.height=Math.round(A/area(o,o.b)*100)+'%';
   const n=$('nS');n.hidden=!$('hauptS').checked;
   if(!n.hidden){const c=-o.F(o.a);n.innerHTML='<b>Prüfung:</b> F(x) = x³/30 = '+de(o.F(x),3)+'. Mit c = '+de(c,2)+' ergibt F(x) + c = <span class="ok">'+de(o.F(x)+c,3)+'</span>, gemessen: A(x) = '+de(A,3)+'. Der leere Tank bei t = −3 legt c fest: A(−3) = 0.';}}
-xS.oninput=drawS;$('traceS').onchange=drawS;$('hauptS').onchange=drawS;
+xS.oninput=drawS;$('hS').oninput=drawS;$('traceS').onchange=drawS;$('hauptS').onchange=drawS;$('stripS').onchange=drawS;
 
 function redraw(){draw1();drawT();draw2();draw3();drawS();}
 let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(redraw,80)});
