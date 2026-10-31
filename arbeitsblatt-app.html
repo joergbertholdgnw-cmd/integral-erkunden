@@ -85,6 +85,11 @@ canvas{display:block;width:100%;height:auto;background:var(--card)}
 .tl{display:flex;justify-content:space-between;gap:8px;font:.78rem var(--sans);color:var(--muted)}
 .note{margin:10px 0 0;padding:8px 12px;background:var(--panel);border-left:4px solid var(--navy);font-size:.95rem}
 .ok{color:var(--ok);font-weight:700}
+.tankrow{display:flex;gap:16px;align-items:stretch;flex-wrap:wrap;margin:10px 0}
+.tankrow .read{flex:1 1 320px;margin:0}
+.tank{flex:0 0 96px;display:flex;flex-direction:column;align-items:center;font:600 .78rem var(--sans);color:var(--muted)}
+.tank .vessel{position:relative;width:64px;height:120px;border:3px solid var(--navy);border-top:none;border-radius:0 0 8px 8px;background:var(--card);overflow:hidden}
+.tank .lvl{position:absolute;left:0;right:0;bottom:0;background:var(--under);opacity:.75;height:0}
 /* Lehrkraft */
 .teacher{display:none}
 body.teach .teacher{display:block}
@@ -327,7 +332,25 @@ ul.l li{margin-bottom:4px}
 </div>
 
 <h3>Aufgabe 7 · Die Flächeninhaltsfunktion experimentell erkunden</h3>
-<p>Ein Regenwassertank ist bei t = −3 (in Minuten, t = 0 ist 12:00 Uhr) leer. Der Zufluss ist z(t) = 0,1·t² in m³/min. A(x) ist die Wassermenge, die seit t = −3 zugeflossen ist, also der Füllstand zur Zeit x. Wähle im Werkzeug „Zufluss 0,1·t²“ und ziehe die obere Grenze x von −3 nach rechts. Die Spur zeigt A(x).</p>
+<p>Ein Regenwassertank ist bei t = −3 (in Minuten, t = 0 ist 12:00 Uhr) leer. Der Zufluss ist z(t) = 0,1·t² in m³/min. A(x) ist die Wassermenge, die seit t = −3 zugeflossen ist, also der Füllstand zur Zeit x. Ziehe unten den Zeitpunkt x von −3 nach rechts. Die Spur zeigt A(x).</p>
+<div class="applet" id="apS">
+  <div class="ttl">Schieberegler · Regenwassertank, Zufluss z(t) = 0,1·t²</div>
+  <div class="controls">
+    <div><label class="l" for="xS">Zeitpunkt x = <span class="val" id="xSv"></span> min</label><input type="range" id="xS" min="0" max="1" step="0.001" value="0"></div>
+    <div><label class="check"><input type="checkbox" id="traceS"> Spur von A(x) einblenden (erst nach deiner Vorhersage)</label>
+      <label class="check"><input type="checkbox" id="hauptS"> Stammfunktion F(x) = x³/30 und c prüfen (erst nach Teil b)</label></div>
+  </div>
+  <canvas id="cS" width="1600" height="1000" role="img" aria-label="Zufluss mit Fläche und darunter der Füllstand"></canvas>
+  <div class="tankrow">
+    <div class="tank"><div class="vessel"><div class="lvl" id="lvlS"></div></div><span>Füllstand</span></div>
+    <div class="read">
+      <div><small>Zufluss z(x) (m³/min)</small><b id="rZS">–</b></div>
+      <div class="u"><small>Füllstand A(x) (m³)</small><b id="rAS">–</b></div>
+      <div class="o"><small>Steigung von A bei x</small><b id="rSS">–</b></div>
+    </div>
+  </div>
+  <p class="note" id="nS" hidden></p>
+</div>
 <div class="task">
   <div class="q"><b>a)</b><span>Sage voraus, wie der Füllstand A(x) verlaufen wird, bevor du den Regler bewegst. Beschreibe dann den Verlauf: Wo füllt sich der Tank am langsamsten, wo am schnellsten? Vergleiche mit dem Graphen von f.</span></div>
   <textarea data-save="a7a" aria-label="Antwort Aufgabe 7 a"></textarea>
@@ -605,7 +628,35 @@ $('takeT').addEventListener('click',()=>{
   for(const key of ['u','o','d']){const el=document.querySelector('[data-save="t2'+key+k+'"]');if(el){el.value=de(vals[key]);el.dispatchEvent(new Event('input'));}}
   fb.textContent='Eingetragen für n = '+n+'.';setTimeout(()=>{if(fb.textContent.startsWith('Eingetragen'))fb.textContent=''},3000);});
 
-function redraw(){draw1();drawT();draw2();draw3();}
+/* ---------- Schieberegler bei Aufgabe 7: Regenwassertank ---------- */
+const oS={f:x=>.1*x*x,a:-3,b:4,F:x=>x**3/30,ym:2,Am:4};
+const xS=$('xS');
+function drawS(){
+  const o=oS,x=o.a+(o.b-o.a)*(+xS.value);$('xSv').textContent=de(x,2);
+  const{g,w,h}=setup($('cS'));const gap=34,hh=(h-gap-34)/2;
+  const bx1={l:50,t:10,w:w-66,h:hh},bx2={l:50,t:10+hh+gap,w:w-66,h:hh};
+  const xr=[o.a-(o.b-o.a)*.06,o.b+(o.b-o.a)*.04];
+  const t1=frame(g,bx1,xr,[0,o.ym],{tx:1,ty:.5}),t2=frame(g,bx2,xr,[0,o.Am],{tx:1,ty:1});
+  g.beginPath();g.moveTo(t1.sx(o.a),t1.sy(0));for(let i=0;i<=240;i++){const xx=o.a+(x-o.a)*i/240;g.lineTo(t1.sx(xx),t1.sy(o.f(xx)));}g.lineTo(t1.sx(x),t1.sy(0));g.closePath();
+  g.fillStyle=css('--under');g.globalAlpha=.35;g.fill();g.globalAlpha=1;
+  curve(g,t1.sx,t1.sy,o.f,o.a,o.b,css('--navy'),2.6,xr,[0,o.ym]);
+  g.strokeStyle=css('--over');g.lineWidth=1.5;g.setLineDash([5,4]);g.beginPath();g.moveTo(t1.sx(x),t1.sy(0));g.lineTo(t1.sx(x),t1.sy(o.f(x)));g.stroke();g.setLineDash([]);
+  g.fillStyle=css('--navy');g.font='600 13px '+FONT;g.textAlign='left';g.fillText('Zufluss z(t) in m³/min',bx1.l+8,bx1.t+16);g.fillText('Füllstand A(t) in m³',bx2.l+8,bx2.t+16);
+  g.fillStyle=css('--muted');g.font='13px '+FONT;g.fillText('t in min',bx2.l+bx2.w-52,t2.sy(0)-8);
+  const A=area(o,x);
+  if($('traceS').checked){curve(g,t2.sx,t2.sy,xx=>area(o,xx),o.a,x,css('--over'),3,xr,[0,o.Am]);
+    g.fillStyle=css('--over');g.beginPath();g.arc(t2.sx(x),t2.sy(A),6,0,7);g.fill();
+    const h2=.01,xa=Math.max(x-h2,o.a),xb=Math.min(x+h2,o.b),S=(area(o,xb)-area(o,xa))/(xb-xa);
+    const ts=(o.b-o.a)*.12;g.strokeStyle=css('--navy');g.lineWidth=2;g.beginPath();g.moveTo(t2.sx(x-ts),t2.sy(A-S*ts));g.lineTo(t2.sx(x+ts),t2.sy(A+S*ts));g.stroke();
+    $('rSS').textContent=de(S,3);}
+  else{g.fillStyle=css('--muted');g.font='italic 14px '+FONT;g.textAlign='center';g.fillText('Hier entsteht die Spur. Notiere zuerst deine Vorhersage.',bx2.l+bx2.w/2,bx2.t+bx2.h/2);$('rSS').textContent='verborgen';}
+  $('rZS').textContent=de(o.f(x),3);$('rAS').textContent=de(A,3);
+  $('lvlS').style.height=Math.round(A/area(o,o.b)*100)+'%';
+  const n=$('nS');n.hidden=!$('hauptS').checked;
+  if(!n.hidden){const c=-o.F(o.a);n.innerHTML='<b>Prüfung:</b> F(x) = x³/30 = '+de(o.F(x),3)+'. Mit c = '+de(c,2)+' ergibt F(x) + c = <span class="ok">'+de(o.F(x)+c,3)+'</span>, gemessen: A(x) = '+de(A,3)+'. Der leere Tank bei t = −3 legt c fest: A(−3) = 0.';}}
+xS.oninput=drawS;$('traceS').onchange=drawS;$('hauptS').onchange=drawS;
+
+function redraw(){draw1();drawT();draw2();draw3();drawS();}
 let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(redraw,80)});
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change',redraw);
 new MutationObserver(redraw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
