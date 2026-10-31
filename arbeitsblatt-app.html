@@ -1,0 +1,568 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>Integralrechnung – Einstieg</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<style>
+/* Layout: eine Lesespalte, feste Navigation oben, je Phase Applet und Aufgaben untereinander; Lehrkraft-Teil per Schalter. Farben wie das GNW-Arbeitsblatt. */
+:root{
+  --bg:#f7f8fa; --panel:#edeff3; --ink:#1b2333; --muted:#5a6477; --navy:#1f3864; --line:#c9cfdb;
+  --under:#2e75b6; --over:#c0504d; --ok:#2f7d4f; --bad:#b3402f; --grid:#d9dde6; --card:#ffffff; --teach:#fff6e0; --teachline:#d9a21b;
+  --serif:'Source Serif 4',Cambria,Georgia,serif; --sans:'Source Sans 3',system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#141a26; --panel:#1d2535; --ink:#e7eaf1; --muted:#9aa5ba; --navy:#8fb0ea; --line:#37425a;
+  --under:#5aa2e6; --over:#e47f7b; --ok:#6fcf93; --bad:#ef8c7a; --grid:#2a3347; --card:#18202f; --teach:#2a2615; --teachline:#c79a2b; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#141a26; --panel:#1d2535; --ink:#e7eaf1; --muted:#9aa5ba; --navy:#8fb0ea; --line:#37425a;
+  --under:#5aa2e6; --over:#e47f7b; --ok:#6fcf93; --bad:#ef8c7a; --grid:#2a3347; --card:#18202f; --teach:#2a2615; --teachline:#c79a2b; color-scheme:dark;}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:70px;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--serif);font-size:16.5px;line-height:1.55;
+  padding-bottom:60px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:820px;margin:0 auto}
+header.top{padding-top:calc(20px + env(safe-area-inset-top,0px))}
+h1{font-size:2rem;line-height:1.15;margin:0 0 4px;color:var(--navy);text-wrap:balance}
+.sub{margin:0 0 14px;color:var(--muted);font-style:italic}
+h2{font-size:1.4rem;color:var(--navy);border-bottom:2px solid var(--navy);padding-bottom:4px;margin:44px 0 12px;text-wrap:balance}
+h3{font-size:1.1rem;color:var(--navy);margin:26px 0 6px}
+h4{font:700 .95rem var(--sans);color:var(--navy);margin:16px 0 4px;text-transform:uppercase;letter-spacing:.05em}
+p{margin:0 0 10px;max-width:68ch}
+nav.nav{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line);margin:0 calc(-1*max(16px,env(safe-area-inset-left,0px)));padding:0 max(16px,env(safe-area-inset-left,0px));padding-top:env(safe-area-inset-top,0px)}
+nav.nav .in{max-width:820px;margin:0 auto;display:flex;gap:4px;overflow-x:auto;padding:6px 0;font-family:var(--sans)}
+nav.nav a{white-space:nowrap;padding:6px 12px;border-radius:999px;color:var(--ink);text-decoration:none;font-weight:600;font-size:.9rem;border:1px solid transparent}
+nav.nav a.cur{background:var(--navy);color:var(--bg)}
+nav.nav a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid var(--under);outline-offset:2px}
+.me{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin:8px 0 14px;font-family:var(--sans)}
+label.f{display:block;font-weight:600;font-size:.85rem;color:var(--muted)}
+input[type=text],textarea,select{width:100%;font:1rem var(--serif);padding:8px 10px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:3px}
+textarea{resize:vertical;min-height:84px;line-height:1.45}
+.box{background:var(--panel);border-left:5px solid var(--navy);padding:12px 16px;margin:12px 0;max-width:72ch}
+.box p:last-child{margin-bottom:0}
+.merke{background:var(--panel);border:1px solid var(--line);border-left:5px solid var(--navy);padding:12px 16px;margin:20px 0}
+.merke .t{font:700 .95rem var(--sans);color:var(--navy);margin-bottom:6px}
+.eq{text-align:center;font-size:1.15rem;margin:8px 0}
+input.blank{width:9.5em;display:inline-block;padding:2px 6px;border:none;border-bottom:2px solid var(--navy);border-radius:0;background:transparent;text-align:center;font-family:var(--serif)}
+input.blank.right{border-bottom-color:var(--ok);color:var(--ok);font-weight:700}
+input.blank.wrong{border-bottom-color:var(--bad);color:var(--bad)}
+button.btn{font:600 .9rem var(--sans);padding:6px 14px;border:1px solid var(--navy);background:var(--card);color:var(--navy);border-radius:4px;cursor:pointer}
+button.btn:hover{background:var(--navy);color:var(--bg)}
+.task{margin:16px 0}
+.task>.q{display:grid;grid-template-columns:2em 1fr;gap:4px;margin:10px 0 6px}
+.task .q b{color:var(--navy)}
+table.t{border-collapse:collapse;margin:8px 0 14px;font-family:var(--sans);font-size:.95rem;min-width:100%}
+table.t th{background:var(--navy);color:var(--bg);padding:6px 8px;font-weight:600}
+table.t td,table.t th{border:1px solid var(--line)}
+table.t td:first-child{background:var(--panel);font-weight:600;padding:6px 8px}
+table.t td input{width:100%;min-width:64px;border:none;background:transparent;padding:8px 6px;text-align:center;font:1rem var(--serif);color:var(--ink)}
+.scroll{overflow-x:auto}
+details.tip{margin:6px 0 10px;font-family:var(--sans);font-size:.95rem}
+details.tip summary{cursor:pointer;color:var(--under);font-weight:600}
+details.tip p{margin:6px 0 0;font-family:var(--serif)}
+/* Applet */
+.applet{background:var(--card);border:1px solid var(--line);padding:14px;margin:14px 0 18px}
+.applet .ttl{font:700 .85rem var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--navy);margin-bottom:8px}
+.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px 18px;margin-bottom:8px;font-family:var(--sans)}
+.controls label.l{display:block;font-weight:600;font-size:.88rem;margin-bottom:4px}
+input[type=range]{width:100%;accent-color:var(--navy)}
+.val{font-variant-numeric:tabular-nums;color:var(--navy);font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.chips button{font:600 .85rem var(--sans);padding:4px 10px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;cursor:pointer}
+.chips button[aria-pressed="true"]{background:var(--navy);color:var(--bg);border-color:var(--navy)}
+.check{display:flex;gap:8px;align-items:center;font:600 .9rem var(--sans);margin:2px 0}
+canvas{display:block;width:100%;height:auto;background:var(--card)}
+.read{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:8px;margin:10px 0;font-family:var(--sans)}
+.read div{background:var(--panel);padding:7px 10px;border-left:4px solid var(--navy)}
+.read .u{border-left-color:var(--under)} .read .o{border-left-color:var(--over)} .read .e{border-left-color:var(--ok)}
+.read small{display:block;color:var(--muted);font-size:.75rem;letter-spacing:.04em;text-transform:uppercase}
+.read b{font-size:1.15rem;font-variant-numeric:tabular-nums}
+.track{position:relative;height:26px;background:var(--panel);margin:6px 0 2px;border:1px solid var(--line)}
+.track .band{position:absolute;top:0;bottom:0;background:linear-gradient(90deg,color-mix(in srgb,var(--under) 45%,transparent),color-mix(in srgb,var(--over) 45%,transparent))}
+.track .ex{position:absolute;top:-4px;bottom:-4px;width:3px;background:var(--ok)}
+.tl{display:flex;justify-content:space-between;gap:8px;font:.78rem var(--sans);color:var(--muted)}
+.note{margin:10px 0 0;padding:8px 12px;background:var(--panel);border-left:4px solid var(--navy);font-size:.95rem}
+.ok{color:var(--ok);font-weight:700}
+/* Lehrkraft */
+.teacher{display:none}
+body.teach .teacher{display:block}
+body.teach table.teacher{display:table}
+.sol{background:var(--teach);border-left:5px solid var(--teachline);padding:8px 14px;margin:8px 0 14px;font-size:.96rem}
+.sol b.l{font:700 .75rem var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--teachline);display:block;margin-bottom:2px}
+.teachsec{background:var(--teach);border:1px solid var(--teachline);padding:6px 18px 14px;margin-top:30px}
+.teachsec h2{border-color:var(--teachline);margin-top:22px}
+footer{margin-top:50px;padding-top:14px;border-top:1px solid var(--line);font:.85rem var(--sans);color:var(--muted)}
+footer .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:8px}
+#gate{display:none;gap:8px;align-items:center;flex-wrap:wrap;margin:8px 0}
+#gate.on{display:flex}
+#gate input{width:14em}
+#fb{min-height:1.2em}
+ul.l{margin:0 0 10px;padding-left:1.2em;max-width:70ch}
+ul.l li{margin-bottom:4px}
+.cols{display:grid;gap:12px}
+@media (max-width:560px){body{font-size:16px}.task>.q{grid-template-columns:1.6em 1fr}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media print{nav.nav,footer,.applet,#gate{display:none}textarea{border:1px solid #999}}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <h1>Integralrechnung – Einstieg</h1>
+  <p class="sub">Vom Flächeninhalt zum Hauptsatz · Gymnasium Neu Wulmstorf · Mathematik, Jahrgang 12</p>
+  <div class="me">
+    <div><label class="f" for="name">Name</label><input type="text" id="name" data-save="name" autocomplete="name"></div>
+    <div><label class="f" for="datum">Datum</label><input type="text" id="datum" data-save="datum"></div>
+  </div>
+</header>
+<nav class="nav" aria-label="Abschnitte"><div class="in">
+  <a href="#einstieg">Einstieg</a><a href="#phase1">Phase 1</a><a href="#phase2">Phase 2</a><a href="#phase3">Phase 3</a><a href="#abschluss">Abschluss</a>
+  <a href="#lehrkraft" class="teacher" style="display:none" id="navT">Lehrkraft</a>
+</div></nav>
+
+<div class="box" style="margin-top:16px">
+  <p><b>Dein Weg heute</b></p>
+  <p><b>Phase 1 · Flächen mit Rechtecken einfangen.</b> Du näherst Flächeninhalte durch Rechtecke an und findest das <b>bestimmte Integral</b>.</p>
+  <p><b>Phase 2 · Rückwärts ableiten.</b> Du suchst zu einer Steigungsfunktion die Funktion selbst: die <b>Stammfunktion</b>.</p>
+  <p><b>Phase 3 · Beides verbinden.</b> Du entdeckst, warum Flächeninhalt und Stammfunktion zusammengehören: der <b>Hauptsatz</b>.</p>
+  <p style="font-style:italic;font-size:.92rem">Deine Eingaben werden in diesem Browser gespeichert. Nichts wird an einen Server gesendet.</p>
+</div>
+
+<!-- ============ EINSTIEG ============ -->
+<section id="einstieg">
+<h2>Einstieg · Wie weit fährt das Auto?</h2>
+<p>Ein Auto fährt 4 s lang mit der konstanten Geschwindigkeit 15 m/s. Dann gilt für den zurückgelegten Weg s = v · t = 15 m/s · 4 s = 60 m. Im v-t-Diagramm ist das genau der <b>Flächeninhalt des Rechtecks</b> unter dem Graphen.</p>
+<p>Jetzt beschleunigt das Auto gleichmäßig. Seine Geschwindigkeit beträgt v(t) = 0,5·t + 2 (v in m/s, t in s) für 0 ≤ t ≤ 4.</p>
+
+<div class="applet" id="ap1">
+  <div class="ttl">Werkzeug · Rechtecksummen</div>
+  <p style="font-size:.95rem">Die Fläche unter dem Graphen wird durch n Rechtecke angenähert. Die Untersumme nimmt je Streifen den kleinsten, die Obersumme den größten Funktionswert.</p>
+  <div class="controls">
+    <div><label class="l" for="f1">Funktion</label><select id="f1"></select></div>
+    <div><label class="l" for="n1">Anzahl der Streifen n = <span class="val" id="n1v">4</span></label><input type="range" id="n1" min="1" max="1000" value="4"><div class="chips" id="n1c"></div></div>
+  </div>
+  <div class="controls">
+    <label class="check"><input type="checkbox" id="showU" checked> Untersumme zeigen</label>
+    <label class="check"><input type="checkbox" id="showO" checked> Obersumme zeigen</label>
+    <label class="check"><input type="checkbox" id="showE"> Grenzwert anzeigen (erst nach deiner Schätzung)</label>
+  </div>
+  <canvas id="c1" width="1600" height="760" role="img" aria-label="Graph mit Rechtecken für Unter- und Obersumme"></canvas>
+  <div class="read">
+    <div class="u"><small>Untersumme U<sub>n</sub></small><b id="rU">–</b></div>
+    <div class="o"><small>Obersumme O<sub>n</sub></small><b id="rO">–</b></div>
+    <div><small>Differenz O<sub>n</sub> − U<sub>n</sub></small><b id="rD">–</b></div>
+    <div class="e"><small>Grenzwert</small><b id="rE">verborgen</b></div>
+  </div>
+  <div class="track" aria-hidden="true"><div class="band" id="band"></div><div class="ex" id="ex" hidden></div></div>
+  <div class="tl"><span id="tlo"></span><span>farbiges Band: Bereich zwischen U<sub>n</sub> und O<sub>n</sub>; grüne Marke: Grenzwert</span><span id="thi"></span></div>
+</div>
+
+<h3>Aufgabe 1 · Unter- und Obersumme bei einer linearen Funktion</h3>
+<div class="task">
+  <div class="q"><b>a)</b><span>Skizziere den Graphen von v im Intervall [0; 4] (Wähle im Werkzeug „f(x) = 0,5·x + 2“). Berechne den Flächeninhalt zwischen Graph und t-Achse mit der Trapezformel. Was bedeutet dieser Wert im Sachzusammenhang?</span></div>
+  <textarea data-save="a1a" aria-label="Antwort Aufgabe 1 a"></textarea>
+  <div class="sol teacher"><b class="l">Lösung</b>A = (2 + 4)/2 · 4 = 12. Der Wert ist der zurückgelegte Weg: 12 m.</div>
+  <div class="q"><b>b)</b><span>Du darfst nur Rechtecke verwenden. Teile [0; 4] in n = 4 Streifen der Breite 1 s. Für die <b>Untersumme</b> U<sub>4</sub> nimmst du als Höhe den kleineren, für die <b>Obersumme</b> O<sub>4</sub> den größeren Funktionswert eines Streifens. Berechne beide Summen.</span></div>
+  <textarea data-save="a1b" aria-label="Antwort Aufgabe 1 b"></textarea>
+  <div class="sol teacher"><b class="l">Lösung</b>U<sub>4</sub> = 2 + 2,5 + 3 + 3,5 = 11; O<sub>4</sub> = 2,5 + 3 + 3,5 + 4 = 13.</div>
+  <div class="q"><b>c)</b><span>Vergleiche U<sub>4</sub> und O<sub>4</sub> mit dem Wert aus a). Wie kannst du die Einschließung verbessern? Teste deine Idee mit dem Schieberegler für n.</span></div>
+  <textarea data-save="a1c" aria-label="Antwort Aufgabe 1 c"></textarea>
+  <div class="sol teacher"><b class="l">Lösung</b>11 &lt; 12 &lt; 13. Der exakte Wert liegt zwischen den Summen (hier genau in der Mitte, weil v linear ist). Mehr, schmalere Streifen verkleinern den Abstand O<sub>n</sub> − U<sub>n</sub>.</div>
+</div>
+</section>
+
+<!-- ============ PHASE 1 ============ -->
+<section id="phase1">
+<h2>Phase 1 · Flächen mit Rechtecken einfangen</h2>
+<h3>Aufgabe 2 · Eine Fläche ohne Formel</h3>
+<p>Gegeben ist f(x) = 0,2·x² + 1 im Intervall [0; 6]. Für die Fläche unter dem gekrümmten Graphen kennst du keine Formel.</p>
+<div class="task">
+  <div class="q"><b>a)</b><span>Berechne U<sub>6</sub> und O<sub>6</sub> mit dem Taschenrechner (Streifenbreite 1). Kontrolliere mit dem Werkzeug oben (Funktion „0,2·x² + 1“, n = 6).</span></div>
+  <textarea data-save="a2a" aria-label="Antwort Aufgabe 2 a"></textarea>
+  <details class="tip"><summary>Tipp</summary><p>Die Funktion wächst. Dann ist links der kleinste, rechts der größte Funktionswert eines Streifens. Bei Breite 1 addierst du nur Funktionswerte: f(0) + f(1) + … + f(5) für U<sub>6</sub>.</p></details>
+  <div class="sol teacher"><b class="l">Lösung</b>U<sub>6</sub> = 0,2·(0+1+4+9+16+25) + 6 = 17; O<sub>6</sub> = 0,2·(1+4+9+16+25+36) + 6 = 24,2.</div>
+  <div class="q"><b>b)</b><span>Erhöhe im Werkzeug die Anzahl n der Streifen und trage die Werte ein.</span></div>
+  <div class="scroll"><table class="t">
+    <tr><th>n</th><th>6</th><th>12</th><th>30</th><th>60</th><th>600</th></tr>
+    <tr><td>Untersumme U<sub>n</sub></td><td><input data-save="t2u1" aria-label="U6"></td><td><input data-save="t2u2" aria-label="U12"></td><td><input data-save="t2u3" aria-label="U30"></td><td><input data-save="t2u4" aria-label="U60"></td><td><input data-save="t2u5" aria-label="U600"></td></tr>
+    <tr><td>Obersumme O<sub>n</sub></td><td><input data-save="t2o1" aria-label="O6"></td><td><input data-save="t2o2" aria-label="O12"></td><td><input data-save="t2o3" aria-label="O30"></td><td><input data-save="t2o4" aria-label="O60"></td><td><input data-save="t2o5" aria-label="O600"></td></tr>
+    <tr><td>Differenz O<sub>n</sub> − U<sub>n</sub></td><td><input data-save="t2d1" aria-label="D6"></td><td><input data-save="t2d2" aria-label="D12"></td><td><input data-save="t2d3" aria-label="D30"></td><td><input data-save="t2d4" aria-label="D60"></td><td><input data-save="t2d5" aria-label="D600"></td></tr>
+  </table></div>
+  <div class="sol teacher"><b class="l">Lösung</b><div class="scroll"><table class="t"><tr><th>n</th><th>6</th><th>12</th><th>30</th><th>60</th><th>600</th></tr><tr><td>U<sub>n</sub></td><td>17</td><td>18,65</td><td>19,688</td><td>20,042</td><td>20,364</td></tr><tr><td>O<sub>n</sub></td><td>24,2</td><td>22,25</td><td>21,128</td><td>20,762</td><td>20,436</td></tr><tr><td>Differenz</td><td>7,2</td><td>3,6</td><td>1,44</td><td>0,72</td><td>0,072</td></tr></table></div></div>
+  <div class="q"><b>c)</b><span>Beschreibe, was mit U<sub>n</sub> und O<sub>n</sub> passiert, wenn n wächst. Gib einen Schätzwert für den Flächeninhalt an, auf eine Dezimale genau. Blende erst danach den Grenzwert im Werkzeug ein und vergleiche.</span></div>
+  <textarea data-save="a2c" aria-label="Antwort Aufgabe 2 c"></textarea>
+  <div class="sol teacher"><b class="l">Lösung</b>U<sub>n</sub> wächst, O<sub>n</sub> fällt, beide nähern sich; die Differenz ist 43,2/n. Schätzwert ≈ 20,4 (exakt 20,4).</div>
+</div>
+
+<h3>Aufgabe 3 (Zusatz) · Die Differenz O<sub>n</sub> − U<sub>n</sub> berechnen</h3>
+<p>Gegeben ist f(x) = x² im Intervall [1; 5] (im Werkzeug wählbar). Bei n Streifen ist die Breite 4/n und die linken Ränder sind x<sub>i</sub> = 1 + i·4/n.</p>
+<div class="task">
+  <div class="q"><b>a)</b><span>Begründe: Bei dieser wachsenden Funktion unterscheiden sich O<sub>n</sub> und U<sub>n</sub> nur um ein einziges Rechteck. Zeige damit O<sub>n</sub> − U<sub>n</sub> = 96/n.</span></div>
+  <textarea data-save="a3a" aria-label="Antwort Aufgabe 3 a"></textarea>
+  <div class="sol teacher"><b class="l">Lösung</b>Beide Summen haben Breite 4/n; U<sub>n</sub> nutzt f(x<sub>0</sub>) … f(x<sub>n−1</sub>), O<sub>n</sub> nutzt f(x<sub>1</sub>) … f(x<sub>n</sub>). Übrig bleibt f(5) − f(1): O<sub>n</sub> − U<sub>n</sub> = (4/n)·(25 − 1) = 96/n.</div>
+  <div class="q"><b>b)</b><span>Bestimme U<sub>n</sub> und O<sub>n</sub> für n = 4, 10, 100 und 1000 (Werkzeug) und schätze den Grenzwert.</span></div>
+  <div class="scroll"><table class="t">
+    <tr><th>n</th><th>4</th><th>10</th><th>100</th><th>1000</th></tr>
+    <tr><td>U<sub>n</sub></td><td><input data-save="t3u1" aria-label="U4"></td><td><input data-save="t3u2" aria-label="U10"></td><td><input data-save="t3u3" aria-label="U100"></td><td><input data-save="t3u4" aria-label="U1000"></td></tr>
+    <tr><td>O<sub>n</sub></td><td><input data-save="t3o1" aria-label="O4"></td><td><input data-save="t3o2" aria-label="O10"></td><td><input data-save="t3o3" aria-label="O100"></td><td><input data-save="t3o4" aria-label="O1000"></td></tr>
+    <tr><td>O<sub>n</sub> − U<sub>n</sub></td><td><input data-save="t3d1" aria-label="D4"></td><td><input data-save="t3d2" aria-label="D10"></td><td><input data-save="t3d3" aria-label="D100"></td><td><input data-save="t3d4" aria-label="D1000"></td></tr>
+  </table></div>
+  <textarea data-save="a3b" aria-label="Schätzung Grenzwert" placeholder="Dein Schätzwert für den Grenzwert:" style="min-height:52px"></textarea>
+  <div class="sol teacher"><b class="l">Lösung</b>n = 4: 30 | 54 | 24; n = 10: 36,64 | 46,24 | 9,6; n = 100: 40,854 | 41,814 | 0,96; n = 1000: 41,285 | 41,381 | 0,096. Grenzwert ≈ 41,3 (exakt 124/3 ≈ 41,33).</div>
+</div>
+
+<div class="merke" data-merke>
+  <div class="t">Merke 1 · Das bestimmte Integral</div>
+  <p>Ist f stetig auf [a; b] und f(x) ≥ 0, dann streben Untersumme U<sub>n</sub> und Obersumme O<sub>n</sub> für n → ∞ gegen <input class="blank" data-save="m1a" data-ans="denselben|gemeinsamen|den gleichen|selben" aria-label="Lücke 1"> Grenzwert. Diesen Grenzwert nennt man das <input class="blank" data-save="m1b" data-ans="bestimmte|bestimmtes" aria-label="Lücke 2"> Integral von f in den Grenzen a und b:</p>
+  <div class="eq">∫<sub>a</sub><sup>b</sup> f(x) dx = lim<sub>n→∞</sub> U<sub>n</sub> = lim<sub>n→∞</sub> O<sub>n</sub></div>
+  <p>Er gibt den <input class="blank" data-save="m1c" data-ans="flächeninhalt|inhalt|flaecheninhalt" aria-label="Lücke 3"> der Fläche zwischen dem Graphen von f und der x-Achse an. Dabei sind a und b die Integrationsgrenzen und f ist der Integrand.</p>
+  <button class="btn" data-check>Prüfen</button>
+  <p class="note" style="font-size:.88rem">Du hast das nur an wachsenden Funktionen beobachtet. Für alle stetigen Funktionen mit f(x) ≥ 0 gilt es auch, das zeigt die Theorie später.</p>
+</div>
+</section>
+
+<!-- ============ PHASE 2 ============ -->
+<section id="phase2">
+<h2>Phase 2 · Rückwärts ableiten</h2>
+<p>Beim Ableiten machst du aus einer Funktion F die Steigungsfunktion f = F′. Jetzt gehst du den Weg zurück: Die Steigung ist gegeben, die Funktion wird gesucht.</p>
+
+<div class="applet" id="ap2">
+  <div class="ttl">Werkzeug · Richtungsfeld und Stammfunktion</div>
+  <p style="font-size:.95rem">Jeder Strich zeigt die Steigung f(x) an seiner Stelle. Eine Funktion F, deren Graph den Strichen folgt, ist eine Stammfunktion von f.</p>
+  <div class="controls">
+    <div><label class="l" for="f2">Steigungsfunktion f</label><select id="f2"></select></div>
+    <div><label class="l" for="c2">Konstante c = <span class="val" id="c2v">0</span></label><input type="range" id="c2" min="-3" max="3" step="0.5" value="0">
+      <label class="check" style="margin-top:8px"><input type="checkbox" id="all2"> Alle Kurven zeigen</label></div>
+  </div>
+  <canvas id="cvs2" width="1000" height="760" role="img" aria-label="Richtungsfeld mit Stammfunktion"></canvas>
+  <p class="note" id="n2"></p>
+</div>
+
+<h3>Aufgabe 4 · Mit dem Richtungsfeld zur Funktion</h3>
+<p>Von einer Funktion F kennst du nur die Steigung: f(x) = 2x − 2. Wähle im Werkzeug diese Funktion.</p>
+<div class="task">
+  <div class="q"><b>a)</b><span>Verschiebe die Kurve mit c so, dass sie durch (0 | 0) geht, danach durch (0 | 2) und durch (0 | −1). Welche Werte von c gehören dazu? Schalte „Alle Kurven zeigen“ ein.</span></div>
+  <textarea data-save="a4a" aria-label="Antwort Aufgabe 4 a"></textarea>
+  <details class="tip"><summary>Tipp</summary><p>Beginne bei (0 | 0) und folge den Strichen von links nach rechts. Wo ist die Steigung 0? Setze f(x) = 0. Welche Kurve kennst du, die dort ihren tiefsten Punkt hat?</p></details>
+  <div class="sol teacher"><b class="l">Lösung</b>c = 0, c = 2 und c = −1. Alle Kurven sind in y-Richtung verschobene Parabeln mit tiefstem Punkt bei x = 1, weil f(1) = 0.</div>
+  <div class="q"><b>b)</b><span>Was fällt dir an den Kurven auf? Gib eine Gleichung für F an und prüfe sie durch Ableiten. Warum legt die Steigung allein die Funktion F nicht eindeutig fest?</span></div>
+  <textarea data-save="a4b" aria-label="Antwort Aufgabe 4 b"></textarea>
+  <div class="sol teacher"><b class="l">Lösung</b>F(x) = x² − 2x + c, F′(x) = 2x − 2 = f(x). Eine Verschiebung in y-Richtung ändert keine Steigung, deshalb ist F nur bis auf die Konstante c bestimmt; ein Startpunkt legt c fest.</div>
+</div>
+
+<h3>Aufgabe 5 · Vermuten und überprüfen</h3>
+<p>Stelle zu jeder Funktion f eine Vermutung für eine Stammfunktion F auf und überprüfe sie durch Ableiten. Das Richtungsfeld im Werkzeug dient zur Kontrolle.</p>
+<div class="task">
+  <div class="scroll"><table class="t">
+    <tr><th>f(x)</th><th>Vermutung F(x)</th><th>Probe: F′(x) = ?</th></tr>
+    <tr><td>2</td><td><input data-save="t5a1" aria-label="F zu 2"></td><td><input data-save="t5b1" aria-label="Probe 1"></td></tr>
+    <tr><td>0,3·x²</td><td><input data-save="t5a2" aria-label="F zu 0,3x²"></td><td><input data-save="t5b2" aria-label="Probe 2"></td></tr>
+    <tr><td>sin(x)</td><td><input data-save="t5a3" aria-label="F zu sin"></td><td><input data-save="t5b3" aria-label="Probe 3"></td></tr>
+    <tr><td>1/x (x &gt; 0)</td><td><input data-save="t5a4" aria-label="F zu 1/x"></td><td><input data-save="t5b4" aria-label="Probe 4"></td></tr>
+  </table></div>
+  <div class="sol teacher"><b class="l">Lösung</b>2x + c · 0,1x³ + c · −cos(x) + c · ln(x) + c. Probe jeweils: 2 · 0,3x² · sin(x) · 1/x.</div>
+</div>
+<div class="merke" data-merke>
+  <div class="t">Merke 2 · Stammfunktion</div>
+  <p>Eine Funktion F mit F′(x) = f(x) heißt <input class="blank" data-save="m2a" data-ans="stammfunktion" aria-label="Lücke 1"> von f. Mit F ist auch F(x) + c (c ∈ ℝ) eine Stammfunktion von f. Die Menge aller Stammfunktionen heißt <input class="blank" data-save="m2b" data-ans="unbestimmte|unbestimmtes" aria-label="Lücke 2"> Integral von f.</p>
+  <button class="btn" data-check>Prüfen</button>
+</div>
+</section>
+
+<!-- ============ PHASE 3 ============ -->
+<section id="phase3">
+<h2>Phase 3 · Beides verbinden</h2>
+<p>Du kennst jetzt zwei Wege: den Flächeninhalt als Grenzwert von Rechtecksummen und die Stammfunktion als Umkehrung des Ableitens. Hängt beides zusammen? Dazu lässt du die rechte Grenze wandern: A(x) ist der Flächeninhalt von der festen linken Grenze bis zur Stelle x. Im Auto-Beispiel wäre A(x) der Weg, der bis zum Zeitpunkt x zurückgelegt ist.</p>
+
+<div class="applet" id="ap3">
+  <div class="ttl">Werkzeug · Flächeninhaltsfunktion</div>
+  <div class="controls">
+    <div><label class="l" for="f3">Funktion</label><select id="f3"></select></div>
+    <div><label class="l" for="x3">Obere Grenze x = <span class="val" id="x3v"></span></label><input type="range" id="x3" min="0" max="1" step="0.001" value="0.5"></div>
+  </div>
+  <canvas id="c3" width="1600" height="1000" role="img" aria-label="Funktion mit Fläche und darunter die Flächeninhaltsfunktion"></canvas>
+  <div class="read">
+    <div class="u"><small>Fläche A(x)</small><b id="rA">–</b></div>
+    <div><small>Funktionswert f(x)</small><b id="rf">–</b></div>
+    <div class="o"><small>Steigung von A bei x</small><b id="rS">–</b></div>
+  </div>
+  <label class="check"><input type="checkbox" id="haupt"> Stammfunktion F einblenden und Hauptsatz prüfen (erst nach Aufgabe 7)</label>
+  <p class="note" id="n3" hidden></p>
+</div>
+
+<h3>Aufgabe 6 · Flächeninhaltsfunktion einer linearen Funktion</h3>
+<div class="task">
+  <div class="q"><b>a)</b><span>Gegeben ist f(x) = x + 2, die linke Grenze ist 0. Bestimme A(x) mit der Trapezformel.</span></div>
+  <textarea data-save="a6a" aria-label="Antwort Aufgabe 6 a"></textarea>
+  <div class="sol teacher"><b class="l">Lösung</b>A(x) = (f(0) + f(x))/2 · x = (2 + x + 2)/2 · x = x²/2 + 2x.</div>
+  <div class="q"><b>b)</b><span>Leite A(x) ab und vergleiche mit f(x). Was vermutest du? Berechne außerdem A(3).</span></div>
+  <textarea data-save="a6b" aria-label="Antwort Aufgabe 6 b"></textarea>
+  <div class="sol teacher"><b class="l">Lösung</b>A′(x) = x + 2 = f(x): Vermutung, A ist eine Stammfunktion von f. A(3) = 4,5 + 6 = 10,5.</div>
+</div>
+
+<h3>Aufgabe 7 · Die Flächeninhaltsfunktion experimentell erkunden</h3>
+<p>Gegeben ist f(x) = 0,1·x² mit der festen unteren Grenze a = −3. Wähle diese Funktion im Werkzeug und ziehe die obere Grenze x von −3 nach rechts. Die Spur zeigt A(x).</p>
+<div class="task">
+  <div class="q"><b>a)</b><span>Sage voraus, wie die Spur von A verlaufen wird, bevor du den Regler bewegst. Beschreibe dann den Verlauf von A: Wo ist A(x) am kleinsten, wo steigt A am stärksten? Vergleiche mit dem Graphen von f.</span></div>
+  <textarea data-save="a7a" aria-label="Antwort Aufgabe 7 a"></textarea>
+  <div class="sol teacher"><b class="l">Lösung</b>A startet bei x = −3 mit 0 und wächst, da f ≥ 0. Bei x = 0 ist f(0) = 0, dort ist A am flachsten (waagerechte Tangente). Am stärksten steigt A, wo f am größten ist (rechter Rand).</div>
+  <div class="q"><b>b)</b><span>Stelle eine Vermutung zum Zusammenhang zwischen A und f auf. Eine Stammfunktion von f ist F(x) = x³/30. Bestimme die Konstante c so, dass A(x) = F(x) + c gilt.</span></div>
+  <textarea data-save="a7b" aria-label="Antwort Aufgabe 7 b"></textarea>
+  <details class="tip"><summary>Tipp</summary><p>Setze x = −3 in A(x) = F(x) + c ein. Was muss A(−3) sein? Löse die Gleichung nach c auf.</p></details>
+  <div class="sol teacher"><b class="l">Lösung</b>A ist eine Stammfunktion von f. Aus A(−3) = 0 folgt −27/30 + c = 0, also c = 0,9 und A(x) = x³/30 + 0,9. Probe: A(3) = 1,8 = ∫<sub>−3</sub><sup>3</sup> 0,1x² dx.</div>
+</div>
+
+<div class="merke" data-merke>
+  <div class="t">Merke 3 · Hauptsatz der Differenzial- und Integralrechnung</div>
+  <p>Ist f stetig auf [a; b] und F irgendeine Stammfunktion von f, dann gilt</p>
+  <div class="eq"><b>∫<sub>a</sub><sup>b</sup> f(x) dx = F(b) − F(a)</b></div>
+  <p>Die Flächeninhaltsfunktion A(x) ist eine <input class="blank" data-save="m3a" data-ans="stammfunktion" aria-label="Lücke"> von f mit A(a) = 0. Darum genügt es, eine beliebige Stammfunktion an den Grenzen auszuwerten.</p>
+  <button class="btn" data-check>Prüfen</button>
+</div>
+</section>
+
+<!-- ============ ABSCHLUSS ============ -->
+<section id="abschluss">
+<h2>Anwendung und Reflexion</h2>
+<h3>Aufgabe 8 · Hauptsatz anwenden und mit Phase 1 vergleichen</h3>
+<p>Bestimme jeweils eine Stammfunktion, berechne das Integral und vergleiche mit deinen Ergebnissen aus Phase 1.</p>
+<div class="task">
+  <div class="scroll"><table class="t">
+    <tr><th>Integral</th><th>Stammfunktion F</th><th>F(b) − F(a)</th><th>Vergleich</th></tr>
+    <tr><td>∫<sub>0</sub><sup>4</sup> (0,5x + 2) dx</td><td><input data-save="t8a1" aria-label="F 1"></td><td><input data-save="t8b1" aria-label="Wert 1"></td><td><input data-save="t8c1" aria-label="Vergleich 1"></td></tr>
+    <tr><td>∫<sub>0</sub><sup>6</sup> (0,2x² + 1) dx</td><td><input data-save="t8a2" aria-label="F 2"></td><td><input data-save="t8b2" aria-label="Wert 2"></td><td><input data-save="t8c2" aria-label="Vergleich 2"></td></tr>
+    <tr><td>∫<sub>1</sub><sup>5</sup> x² dx</td><td><input data-save="t8a3" aria-label="F 3"></td><td><input data-save="t8b3" aria-label="Wert 3"></td><td><input data-save="t8c3" aria-label="Vergleich 3"></td></tr>
+  </table></div>
+  <div class="sol teacher"><b class="l">Lösung</b>0,25x² + 2x → 4 + 8 = 12 (Aufgabe 1 a) · x³/15 + x → 14,4 + 6 = 20,4 (Aufgabe 2 c) · x³/3 → 125/3 − 1/3 = 124/3 ≈ 41,33 (Aufgabe 3 b).</div>
+</div>
+<h3>Aufgabe 9 · Reflexion</h3>
+<p>Erkläre in drei Sätzen, warum man dasselbe Integral einmal als Fläche (Rechtecksummen) und einmal mit einer Stammfunktion berechnen kann. Nutze die Begriffe Flächeninhaltsfunktion, Ableitung und Stammfunktion.</p>
+<div class="task">
+  <textarea data-save="a9" aria-label="Antwort Aufgabe 9" style="min-height:120px"></textarea>
+  <div class="sol teacher"><b class="l">Erwartungshorizont</b>Das Integral ist der Grenzwert von Rechtecksummen und damit der Flächeninhalt. Lässt man die rechte Grenze wandern, entsteht die Flächeninhaltsfunktion A(x), deren Ableitung f(x) ist; A ist also eine Stammfunktion von f. Zwei Stammfunktionen unterscheiden sich nur um eine Konstante, deshalb liefert F(b) − F(a) denselben Wert wie die Fläche.</div>
+</div>
+</section>
+
+<!-- ============ LEHRKRAFT ============ -->
+<section id="lehrkraft" class="teacher teachsec">
+<h2>Lehrkraft · Verlauf und didaktischer Kommentar</h2>
+<h3>Verlaufsplan (90 min)</h3>
+<div class="scroll"><table class="t teacher">
+ <tr><th>Zeit</th><th>Phase</th><th>Inhalt</th><th>Sozialform</th></tr>
+ <tr><td>0–10</td><td>Einstieg</td><td>Impuls Weg = Fläche, Aufgabe 1 a</td><td>Plenum, EA</td></tr>
+ <tr><td>10–35</td><td>Phase 1</td><td>Aufgabe 1 b, c und 2, Sicherung Merke 1</td><td>PA, Plenum</td></tr>
+ <tr><td>35–55</td><td>Phase 2</td><td>Aufgabe 4, 5, Merke 2</td><td>PA, Plenum</td></tr>
+ <tr><td>55–80</td><td>Phase 3</td><td>Aufgabe 6, 7, Merke 3</td><td>PA, Plenum</td></tr>
+ <tr><td>80–90</td><td>Abschluss</td><td>Aufgabe 8, 9 (9 auch Hausaufgabe)</td><td>EA</td></tr>
+</table></div>
+<p>Aufgabe 3 ist Zusatz für schnelle Paare. Der Plan ist dicht (siehe Einordnung unten).</p>
+
+<h3>Didaktischer Kommentar</h3>
+<ul class="l">
+ <li><b>Zugang:</b> Fläche, ergänzt durch die Bestandsdeutung im Tacho-Kontext (Weg als Fläche unter v(t)). So sind beide Grundvorstellungen angelegt.</li>
+ <li><b>Erst linear, dann gekrümmt:</b> Bei v(t) = 0,5t + 2 ist der exakte Wert bekannt und prüft die Einschließung.</li>
+ <li><b>Nur wachsende Funktionen:</b> Unter- und Obersumme sind ohne Fallunterscheidung definiert. Bei fallenden Funktionen vertauschen sich die Randwerte.</li>
+ <li><b>Stammfunktion nach dem Integralbegriff:</b> Rückwärts-Ableiten mit Richtungsfeld; die Konstante c wird erlebt, nicht behauptet.</li>
+ <li><b>Hauptsatz aus Beobachtung:</b> Aufgabe 6 (exakt, linear) und 7 (experimentell, Parabel) tragen die Vermutung A′ = f; Aufgabe 8 zeigt den Gewinn gegenüber Phase 1.</li>
+ <li><b>Technik:</b> Das Werkzeug verbirgt den Grenzwert, bis die Schätzung steht. Aufgabe 7 a verlangt eine Vorhersage vor dem Experiment.</li>
+</ul>
+<h4>Typische Fehlvorstellungen</h4>
+<ul class="l">
+ <li>n Streifen, aber n + 1 Funktionswerte summiert.</li>
+ <li>„Untersumme = links“ auch bei fallenden Funktionen.</li>
+ <li>Stammfunktion ohne +c oder als „die“ Stammfunktion; „A ist die Stammfunktion“ statt „eine“.</li>
+ <li>Potenzregel auf 1/x übertragen (x⁰/0).</li>
+ <li>Hauptsatz als Rechenrezept ohne Begründung; Integral immer als positive Fläche.</li>
+</ul>
+
+<h2>Fachdidaktische Einordnung (Prüfung durch einen Fachseminarleiter)</h2>
+<h4>Was der aktuellen Diskussion entspricht</h4>
+<ul class="l">
+ <li><b>Grundvorstellungen als Leitlinie.</b> Der Entwurf verknüpft die Flächenvorstellung mit der Rekonstruktion von Beständen (Tacho-Einstieg). Das entspricht der Grundvorstellungsorientierung (u. a. Greefrath, Oldenburg, Siller, Ulm &amp; Weigand 2016; Danckwerts &amp; Vogel 2006).</li>
+ <li><b>Handlungsorientierung und Darstellungswechsel.</b> Hand (Richtungsfeld, Summen), Bild (Graph, Streifen) und Symbol (Integralzeichen) wechseln sich ab, ein bewährtes Prinzip im Sinne von Bruner.</li>
+ <li><b>Vorstrukturierung.</b> Der Wegweiser „Dein Weg heute“ wirkt als Advance Organizer; die Phasenfolge ist transparent.</li>
+ <li><b>Technologie mit Sinn.</b> Der Schieberegler macht den Grenzprozess erfahrbar, den man von Hand nicht abbilden kann. Das ist der typische Mehrwert dynamischer Werkzeuge.</li>
+ <li><b>Vermutung, Probe, Begründung.</b> Aufgaben 4 bis 7 verlangen Vermuten und Prüfen; das stützt die prozessbezogenen Kompetenzen Argumentieren und Kommunizieren.</li>
+</ul>
+<h4>Wo das Vorgehen von der aktuellen Diskussion abweicht oder verbessert werden sollte</h4>
+<ul class="l">
+ <li><b>Flächenvorstellung dominiert.</b> Nach dem Einstieg werden Aufgaben 2 bis 8 kontextfrei und rein geometrisch bearbeitet. In der aktuellen Diskussion gilt das Integral als „Bestand aus Änderungsrate“ (Kirsch 1976; Hahn &amp; Prediger 2008) als tragfähiger Zugang, weil er den Hauptsatz inhaltlich begründet: A(x) ist der Bestand, f die Änderungsrate. Empfehlung: Aufgabe 2 und 7 in einem Kontext (Zufluss in l/min, Verbrauch in kW) führen und A(x) ausdrücklich als Bestandsfunktion deuten. In der App ist die Bestandsdeutung in Phase 3 ergänzt.</li>
+ <li><b>Hauptsatz in derselben Doppelstunde.</b> Der Hauptsatz ist die zentrale Idee der Analysis und wird hier aus zwei Beispielen vermutet. Das ist als <i>Ausblick</i> vertretbar, als <i>Erarbeitung</i> in 25 Minuten zu knapp; das Risiko ist ein Rezept ohne Verständnis (Danckwerts &amp; Vogel). Empfehlung: Stunde als Überblick und Vermutung kennzeichnen, die Begründung (A′ = f über den Differenzenquotienten) und die Anwendung in einer eigenen Folgestunde.</li>
+ <li><b>Umfang und kognitive Last.</b> Neun Aufgaben, drei Merkkästen und drei Werkzeuge in 90 Minuten sind sehr dicht. Empfehlung: Aufgabe 3 und 9 streichen oder auslagern, Aufgabe 5 auf zwei Zeilen kürzen.</li>
+ <li><b>Merke 1 überzieht die Evidenz.</b> Der Satz gilt für stetige Funktionen, beobachtet wurde er an wachsenden. In der App steht ein Hinweis; im Arbeitsblatt sollte ebenfalls die Beschränkung genannt werden.</li>
+ <li><b>Vorhersage vor dem Experiment.</b> Nach dem Predict-Observe-Explain-Muster sollen die SuS vor dem Schieberegler eine Vorhersage notieren. Das ist in Aufgabe 7 a eingebaut, in Aufgabe 2 durch den verborgenen Grenzwert. Im Papierarbeitsblatt fehlt das noch.</li>
+ <li><b>Applet zeigt zu viel.</b> In der ersten Fassung war der Grenzwert sofort sichtbar und entwertete die Schätzaufgabe. In der App ist er verborgen, bis die SuS ihn einblenden.</li>
+ <li><b>Begriff „unbestimmtes Integral“.</b> Er ist in Merke 2 enthalten, wird aber in der Fachdiskussion kritisch gesehen (Verwechslung mit dem bestimmten Integral als Zahl). Alternativ: „Menge aller Stammfunktionen“ und den Begriff später nachziehen.</li>
+ <li><b>Voraussetzungen prüfen.</b> Aufgabe 5 verlangt ln(x) als Stammfunktion von 1/x. Das setzt voraus, dass die Ableitung von ln bekannt ist. Andernfalls Zeile streichen oder als Hinweis geben.</li>
+ <li><b>Vorzeichen und orientierter Flächeninhalt.</b> Alles bleibt bewusst bei f ≥ 0. Wichtig ist, dies in der Folgestunde aufzugreifen (Flächen unter der x-Achse, Integral als Bilanz), sonst verfestigt sich „Integral = Fläche“.</li>
+ <li><b>Notation.</b> Die Schreibweise A(x) = ∫<sub>a</sub><sup>x</sup> f(t) dt mit eigener Integrationsvariable fehlt noch und gehört in die Folgestunde.</li>
+</ul>
+<h4>Gesamturteil</h4>
+<p>Das Vorgehen ist fachdidaktisch tragfähig und im Kern zeitgemäß: Grundvorstellungen, Handlungsorientierung, sinnvolle Technologie, Vermutung und Begründung. Es bleibt zu stark bei der Flächenvorstellung und überlädt die Doppelstunde. Mit Bestandskontext, Vorhersage vor dem Experiment und einer Entzerrung des Hauptsatzes entspricht es der heutigen Diskussion.</p>
+<p style="font-size:.88rem;color:var(--muted)">Literaturangaben aus dem Gedächtnis zusammengestellt, bitte vor der Verwendung prüfen. Die Zuordnung zum Kerncurriculum Niedersachsen ist gegen die aktuelle Fassung abzugleichen.</p>
+<p style="font-size:.88rem;color:var(--muted)">Grundstruktur nach H. Heugl, G. Aumayr, CAS-Projekt T3 Österreich: Integralrechnung 1, Einstieg, 2018; für Jahrgang 12 neu gefasst.</p>
+</section>
+
+<footer>
+  <div class="row">
+    <button class="btn" id="reset">Meine Eingaben löschen</button>
+    <button class="btn" id="tbtn">Lehrkraft-Ansicht</button>
+    <span id="fb" role="status"></span>
+  </div>
+  <form id="gate" autocomplete="off"><label class="f" for="code">Code</label><input type="text" id="code" autocomplete="off"><button class="btn" type="submit">Öffnen</button></form>
+  <p style="max-width:70ch">Hinweis: Die Lehrkraft-Ansicht ist nur durch einen Code verdeckt. Wer den Quelltext der Seite liest, kann die Lösungen trotzdem finden.</p>
+</footer>
+</div>
+
+<script>
+(function(){
+/* ---------- Lehrkraft-Code: SHA-256 des Codes. Neuen Code setzen: Hash von neuem Text hier eintragen. ---------- */
+const TEACH_HASH='71a8a2d12dc6aa9106818fefeba52f73f736aac601e89f2c8c9343921d622ce8';
+const $=id=>document.getElementById(id);
+const de=(v,d=3)=>v.toLocaleString('de-DE',{minimumFractionDigits:0,maximumFractionDigits:d});
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const FONT='"Source Sans 3",system-ui,sans-serif';
+const store={get(k){try{return localStorage.getItem('ia12:'+k)}catch(e){return null}},set(k,v){try{localStorage.setItem('ia12:'+k,v)}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+
+/* ---------- Eingaben speichern ---------- */
+document.querySelectorAll('[data-save]').forEach(el=>{
+  const v=store.get(el.dataset.save);if(v!==null)el.value=v;
+  el.addEventListener('input',()=>store.set(el.dataset.save,el.value));});
+/* ---------- Lücken prüfen ---------- */
+document.querySelectorAll('[data-merke]').forEach(m=>{
+  const btn=m.querySelector('[data-check]');if(!btn)return;
+  btn.addEventListener('click',()=>{m.querySelectorAll('input.blank').forEach(i=>{
+    const a=i.dataset.ans.split('|'),v=i.value.trim().toLowerCase();
+    i.classList.remove('right','wrong');if(!v)return;i.classList.add(a.includes(v)?'right':'wrong');});});});
+/* ---------- Zurücksetzen ---------- */
+$('reset').addEventListener('click',()=>{
+  if(!$('reset').dataset.sure){$('reset').dataset.sure=1;$('reset').textContent='Wirklich alles löschen? Nochmal klicken';setTimeout(()=>{delete $('reset').dataset.sure;$('reset').textContent='Meine Eingaben löschen'},4000);return;}
+  try{Object.keys(localStorage).filter(k=>k.startsWith('ia12:')).forEach(k=>localStorage.removeItem(k));}catch(e){}
+  document.querySelectorAll('[data-save]').forEach(el=>el.value='');
+  document.querySelectorAll('input.blank').forEach(i=>i.classList.remove('right','wrong'));
+  delete $('reset').dataset.sure;$('reset').textContent='Meine Eingaben löschen';$('fb').textContent='Eingaben gelöscht.';setTimeout(()=>$('fb').textContent='',3000);});
+/* ---------- Lehrkraft-Ansicht ---------- */
+function teach(on){document.body.classList.toggle('teach',on);$('navT').style.display=on?'':'none';$('tbtn').textContent=on?'Lehrkraft-Ansicht beenden':'Lehrkraft-Ansicht';store.set('teach',on?'1':'0');}
+async function sha(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');}
+$('tbtn').addEventListener('click',()=>{if(document.body.classList.contains('teach')){teach(false);return;}$('gate').classList.toggle('on');if($('gate').classList.contains('on'))$('code').focus();});
+$('gate').addEventListener('submit',async e=>{e.preventDefault();let ok=false;try{ok=(await sha($('code').value.trim()))===TEACH_HASH}catch(err){}
+  if(ok){teach(true);$('gate').classList.remove('on');$('code').value='';$('fb').textContent='';}else{$('fb').textContent='Code stimmt nicht.';}});
+/* Kein Merken der Lehrkraft-Ansicht über Neuladen: bewusst, damit sie nicht auf Schülergeräten offen bleibt. */
+
+/* ---------- Zeichenhilfen ---------- */
+function setup(cv){const r=cv.getBoundingClientRect();const k=Math.max(1,window.devicePixelRatio||1);const w=Math.round(r.width||800);
+  const ratio=cv.dataset.ratio||(cv.height/cv.width);cv.dataset.ratio=ratio;const H=Math.round(w*ratio);cv.width=w*k;cv.height=H*k;cv.style.height=H+'px';const g=cv.getContext('2d');g.setTransform(k,0,0,k,0,0);return{g,w,h:H};}
+function frame(g,box,xr,yr,o={}){
+  const sx=x=>box.l+(x-xr[0])/(xr[1]-xr[0])*(box.w), sy=y=>box.t+box.h-(y-yr[0])/(yr[1]-yr[0])*box.h;
+  g.save();g.font='12px '+FONT;g.fillStyle=css('--muted');g.strokeStyle=css('--grid');g.lineWidth=1;
+  const tx=o.tx||1,ty=o.ty||1;
+  g.beginPath();for(let x=Math.ceil(xr[0]/tx)*tx;x<=xr[1]+1e-9;x+=tx){g.moveTo(sx(x),box.t);g.lineTo(sx(x),box.t+box.h);}
+  for(let y=Math.ceil(yr[0]/ty)*ty;y<=yr[1]+1e-9;y+=ty){g.moveTo(box.l,sy(y));g.lineTo(box.l+box.w,sy(y));}g.stroke();
+  g.strokeStyle=css('--muted');g.lineWidth=1.3;g.beginPath();
+  if(yr[0]<=0&&yr[1]>=0){g.moveTo(box.l,sy(0));g.lineTo(box.l+box.w,sy(0));}
+  if(xr[0]<=0&&xr[1]>=0){g.moveTo(sx(0),box.t);g.lineTo(sx(0),box.t+box.h);}g.stroke();
+  g.textAlign='center';g.textBaseline='top';const ay=Math.min(Math.max(sy(0),box.t),box.t+box.h);
+  for(let x=Math.ceil(xr[0]/tx)*tx;x<=xr[1]+1e-9;x+=tx){if(Math.abs(x)<1e-9&&xr[0]<0)continue;g.fillText(de(Math.round(x*100)/100,2),sx(x),Math.min(ay+4,box.t+box.h+4));}
+  g.textAlign='right';g.textBaseline='middle';
+  for(let y=Math.ceil(yr[0]/ty)*ty;y<=yr[1]+1e-9;y+=ty){if(Math.abs(y)<1e-9&&yr[0]<0)continue;g.fillText(de(Math.round(y*100)/100,2),box.l-6,sy(y));}
+  g.restore();return{sx,sy};}
+function curve(g,sx,sy,f,a,b,col,lw,xr,yr){g.save();g.beginPath();g.rect(sx(xr[0]),sy(yr[1]),sx(xr[1])-sx(xr[0]),sy(yr[0])-sy(yr[1]));g.clip();
+  g.strokeStyle=col;g.lineWidth=lw;g.beginPath();let first=true;const N=400;
+  for(let i=0;i<=N;i++){const x=a+(b-a)*i/N,y=f(x);if(!isFinite(y)){first=true;continue;}if(first){g.moveTo(sx(x),sy(y));first=false}else g.lineTo(sx(x),sy(y));}g.stroke();g.restore();}
+
+/* ---------- Werkzeug 1: Rechtecksummen ---------- */
+const F1=[
+ {t:'f(x) = 0,5·x + 2  auf [0; 4]',f:x=>.5*x+2,a:0,b:4,F:x=>.25*x*x+2*x,ym:5,xm:4.4,chips:[4,10,50,200]},
+ {t:'f(x) = 0,2·x² + 1  auf [0; 6]',f:x=>.2*x*x+1,a:0,b:6,F:x=>x**3/15+x,ym:9,xm:6.4,chips:[6,12,30,60,600]},
+ {t:'f(x) = x²  auf [1; 5]',f:x=>x*x,a:1,b:5,F:x=>x**3/3,ym:27,xm:5.4,chips:[4,10,100,1000]}];
+const f1=$('f1'),n1=$('n1');F1.forEach((o,i)=>f1.add(new Option(o.t,i)));f1.value=0;n1.value=4;
+function sums(o,n){const w=(o.b-o.a)/n;let u=0,s=0;for(let i=0;i<n;i++){u+=o.f(o.a+i*w);s+=o.f(o.a+(i+1)*w);}return[u*w,s*w];}
+function chips1(){const box=$('n1c');box.innerHTML='';F1[f1.value].chips.forEach(v=>{const b=document.createElement('button');b.type='button';b.textContent='n = '+v;b.setAttribute('aria-pressed',+n1.value===v);b.onclick=()=>{n1.value=v;draw1();};box.appendChild(b);});}
+function draw1(){
+  const o=F1[f1.value],n=+n1.value;$('n1v').textContent=n;
+  const{g,w,h}=setup($('c1'));const box={l:44,t:12,w:w-60,h:h-40};
+  const xr=[-.3,o.xm],yr=[0,o.ym];const{sx,sy}=frame(g,box,xr,yr,{ty:o.ym>10?5:(o.ym>6?2:1)});
+  const wd=(o.b-o.a)/n,thin=n<=80,su=$('showU').checked,so=$('showO').checked;g.lineWidth=1;
+  for(let i=0;i<n;i++){const x0=o.a+i*wd,x1=x0+wd;
+    if(so){const y=o.f(x1);g.fillStyle=css('--over');g.globalAlpha=.32;g.fillRect(sx(x0),sy(y),sx(x1)-sx(x0)+.6,sy(0)-sy(y));g.globalAlpha=1;if(thin){g.strokeStyle=css('--over');g.strokeRect(sx(x0),sy(y),sx(x1)-sx(x0),sy(0)-sy(y));}}
+    if(su){const y=o.f(x0);g.fillStyle=css('--under');g.globalAlpha=.42;g.fillRect(sx(x0),sy(y),sx(x1)-sx(x0)+.6,sy(0)-sy(y));g.globalAlpha=1;if(thin){g.strokeStyle=css('--under');g.strokeRect(sx(x0),sy(y),sx(x1)-sx(x0),sy(0)-sy(y));}}}
+  curve(g,sx,sy,o.f,o.a,o.b,css('--navy'),2.6,xr,yr);
+  g.fillStyle=css('--muted');g.font='13px '+FONT;g.textAlign='left';g.fillText('x',box.l+box.w-10,sy(0)-8);
+  const[U,O]=sums(o,n),E=o.F(o.b)-o.F(o.a),showE=$('showE').checked;
+  $('rU').textContent=de(U);$('rO').textContent=de(O);$('rD').textContent=de(O-U);
+  $('rE').textContent=showE?de(E,4):'verborgen';$('ex').hidden=!showE;
+  const lo=E*.6,hi=E*1.4,p=v=>Math.max(0,Math.min(100,(v-lo)/(hi-lo)*100));
+  $('band').style.left=p(U)+'%';$('band').style.width=Math.max(.4,p(O)-p(U))+'%';
+  $('ex').style.left='calc('+p(E)+'% - 1px)';$('tlo').textContent=de(lo,1);$('thi').textContent=de(hi,1);
+  chips1();}
+f1.onchange=()=>{n1.value=F1[f1.value].chips[0];draw1();};n1.oninput=draw1;
+['showU','showO','showE'].forEach(i=>$(i).onchange=draw1);
+
+/* ---------- Werkzeug 2: Richtungsfeld ---------- */
+const F2=[
+ {t:'f(x) = 2x − 2',f:x=>2*x-2,F:x=>x*x-2*x,ft:'F(x) = x² − 2x + c',xr:[-3,5],yr:[-4,6]},
+ {t:'f(x) = 2',f:x=>2,F:x=>2*x,ft:'F(x) = 2x + c',xr:[-3,5],yr:[-5,7]},
+ {t:'f(x) = 0,3·x²',f:x=>.3*x*x,F:x=>.1*x**3,ft:'F(x) = 0,1·x³ + c',xr:[-4,4],yr:[-5,5]},
+ {t:'f(x) = sin(x)',f:x=>Math.sin(x),F:x=>-Math.cos(x),ft:'F(x) = −cos(x) + c',xr:[-6.4,6.4],yr:[-4.5,4.5]},
+ {t:'f(x) = 1/x  (x > 0)',f:x=>1/x,F:x=>Math.log(x),ft:'F(x) = ln(x) + c',xr:[-.4,6],yr:[-3.2,3.2],pos:true}];
+const f2=$('f2'),c2=$('c2');F2.forEach((o,i)=>f2.add(new Option(o.t,i)));f2.value=0;
+function draw2(){
+  const o=F2[f2.value],c=+c2.value;$('c2v').textContent=de(c,1);
+  const{g,w,h}=setup($('cvs2'));const box={l:40,t:10,w:w-52,h:h-34};
+  const{sx,sy}=frame(g,box,o.xr,o.yr,{tx:1,ty:1});
+  const dx=(o.xr[1]-o.xr[0])/(box.w/34),dy=(o.yr[1]-o.yr[0])/(box.h/34),L=13;
+  g.strokeStyle=css('--muted');g.lineWidth=1.4;g.globalAlpha=.75;g.beginPath();
+  for(let x=o.xr[0]+dx/2;x<o.xr[1];x+=dx){if(o.pos&&x<=0.05)continue;
+    for(let y=o.yr[0]+dy/2;y<o.yr[1];y+=dy){const m=o.f(x);
+      const kx=(sx(1)-sx(0)),ky=(sy(0)-sy(1));let vx=kx,vy=-m*ky;const l=Math.hypot(vx,vy);vx=vx/l*L;vy=vy/l*L;
+      g.moveTo(sx(x)-vx/2,sy(y)-vy/2);g.lineTo(sx(x)+vx/2,sy(y)+vy/2);}}
+  g.stroke();g.globalAlpha=1;
+  if($('all2').checked){for(let k=-3;k<=3;k+=.5){if(k===c)continue;curve(g,sx,sy,x=>o.F(x)+k,o.pos?0.02:o.xr[0],o.xr[1],css('--under'),1.2,o.xr,o.yr);}}
+  curve(g,sx,sy,x=>o.F(x)+c,o.pos?0.02:o.xr[0],o.xr[1],css('--over'),3,o.xr,o.yr);
+  $('n2').innerHTML='<b>'+o.ft.replace('+ c','+ '+(c<0?'('+de(c,1)+')':de(c,1)))+'</b>. Die Ableitung ist <b>'+o.t.replace(/^f\(x\) = /,'')+'</b> für jede Wahl von c. Die Konstante verschiebt die Kurve nach oben oder unten und ändert keine Steigung.';}
+f2.onchange=draw2;c2.oninput=draw2;$('all2').onchange=draw2;
+
+/* ---------- Werkzeug 3: Flächeninhaltsfunktion ---------- */
+const F3=[
+ {t:'f(x) = x + 2,  linke Grenze 0',f:x=>x+2,a:0,b:5,F:x=>x*x/2+2*x,ym:8,Am:25},
+ {t:'f(x) = 0,1·x²,  linke Grenze −3',f:x=>.1*x*x,a:-3,b:4,F:x=>x**3/30,ym:2,Am:4},
+ {t:'f(x) = 0,2·x² + 1,  linke Grenze 0',f:x=>.2*x*x+1,a:0,b:6,F:x=>x**3/15+x,ym:9,Am:24}];
+const f3=$('f3'),x3=$('x3');F3.forEach((o,i)=>f3.add(new Option(o.t,i)));f3.value=0;
+function area(o,x){const n=800,w=(x-o.a)/n;let s=0;for(let i=0;i<n;i++){s+=(o.f(o.a+i*w)+o.f(o.a+(i+1)*w))/2;}return s*w;}
+function draw3(){
+  const o=F3[f3.value],x=o.a+(o.b-o.a)*(+x3.value);$('x3v').textContent=de(x,2);
+  const{g,w,h}=setup($('c3'));const gap=34,hh=(h-gap-34)/2;
+  const bx1={l:44,t:10,w:w-60,h:hh},bx2={l:44,t:10+hh+gap,w:w-60,h:hh};
+  const xr=[o.a-(o.b-o.a)*.06,o.b+(o.b-o.a)*.04];
+  const t1=frame(g,bx1,xr,[0,o.ym],{tx:1,ty:o.ym>8?2:1}),t2=frame(g,bx2,xr,[0,o.Am],{tx:1,ty:o.Am>10?5:1});
+  g.beginPath();g.moveTo(t1.sx(o.a),t1.sy(0));const N=240;for(let i=0;i<=N;i++){const xx=o.a+(x-o.a)*i/N;g.lineTo(t1.sx(xx),t1.sy(o.f(xx)));}g.lineTo(t1.sx(x),t1.sy(0));g.closePath();
+  g.fillStyle=css('--under');g.globalAlpha=.35;g.fill();g.globalAlpha=1;
+  curve(g,t1.sx,t1.sy,o.f,o.a,o.b,css('--navy'),2.6,xr,[0,o.ym]);
+  g.strokeStyle=css('--over');g.lineWidth=1.5;g.setLineDash([5,4]);g.beginPath();g.moveTo(t1.sx(x),t1.sy(0));g.lineTo(t1.sx(x),t1.sy(o.f(x)));g.stroke();g.setLineDash([]);
+  g.fillStyle=css('--navy');g.font='600 13px '+FONT;g.textAlign='left';g.fillText('f(x)',bx1.l+8,bx1.t+16);g.fillText('A(x)',bx2.l+8,bx2.t+16);
+  curve(g,t2.sx,t2.sy,xx=>area(o,xx),o.a,x,css('--over'),3,xr,[0,o.Am]);
+  const A=area(o,x);g.fillStyle=css('--over');g.beginPath();g.arc(t2.sx(x),t2.sy(A),6,0,7);g.fill();
+  const h2=.01,xa=Math.max(x-h2,o.a),xb=Math.min(x+h2,o.b),S=(area(o,xb)-area(o,xa))/(xb-xa);
+  const ts=(o.b-o.a)*.12;g.strokeStyle=css('--navy');g.lineWidth=2;g.beginPath();g.moveTo(t2.sx(x-ts),t2.sy(A-S*ts));g.lineTo(t2.sx(x+ts),t2.sy(A+S*ts));g.stroke();
+  $('rA').textContent=de(A,3);$('rf').textContent=de(o.f(x),3);$('rS').textContent=de(S,3);
+  const n=$('n3');n.hidden=!$('haupt').checked;
+  if(!n.hidden){const Fx=o.F(x),Fa=o.F(o.a);n.innerHTML='<b>Hauptsatz:</b> F(x) − F(a) = '+de(Fx,3)+' − ('+de(Fa,3)+') = <span class="ok">'+de(Fx-Fa,3)+'</span>, gemessen: A(x) = '+de(A,3)+'. Die Steigung der unteren Kurve stimmt mit f(x) überein, also ist A eine Stammfunktion von f.';}}
+f3.onchange=draw3;x3.oninput=draw3;$('haupt').onchange=draw3;
+
+function redraw(){draw1();draw2();draw3();}
+let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(redraw,80)});
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change',redraw);
+new MutationObserver(redraw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+document.fonts&&document.fonts.ready.then(redraw);
+redraw();
+/* Navigation: aktuellen Abschnitt hervorheben */
+const links=[...document.querySelectorAll('nav.nav a[href^="#"]')];
+const secs=['einstieg','phase1','phase2','phase3','abschluss'].map($);
+if('IntersectionObserver' in window){const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){links.forEach(l=>l.classList.toggle('cur',l.getAttribute('href')==='#'+e.target.id));}});},{rootMargin:'-20% 0px -70% 0px'});secs.forEach(s=>io.observe(s));}
+})();
+</script>
+</body>
+</html>
