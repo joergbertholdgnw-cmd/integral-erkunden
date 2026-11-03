@@ -50,10 +50,12 @@ canvas{display:block;width:100%;height:auto}
 .track{position:relative;height:30px;background:var(--panel);margin:6px 0 2px;border:1px solid var(--line)}
 .track .band{position:absolute;top:0;bottom:0;background:linear-gradient(90deg,color-mix(in srgb,var(--under) 45%,transparent),color-mix(in srgb,var(--over) 45%,transparent))}
 .track .ex{position:absolute;top:-4px;bottom:-4px;width:3px;background:var(--ok)}
-.tl{display:flex;justify-content:space-between;font:.8rem var(--sans);color:var(--muted)}
+.tl{display:flex;flex-wrap:wrap;gap:4px 12px;justify-content:space-between;font:.8rem var(--sans);color:var(--muted)}
 .note{margin:12px 0 0;padding:10px 14px;background:var(--panel);border-left:4px solid var(--navy);max-width:70ch}
 .note b{color:var(--navy)}
 .ok{color:var(--ok);font-weight:700}
+.chips button:disabled{opacity:.45;cursor:default}
+h2 sub,.note sub{font-size:.75em}
 [hidden]{display:none!important}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -64,8 +66,9 @@ canvas{display:block;width:100%;height:auto}
 <p class="sub">Zum Arbeitsblatt „Integralrechnung – Einstieg“, Jahrgang 12</p>
 <div class="tabs" role="tablist">
   <button role="tab" id="t1" aria-selected="true" aria-controls="p1">Phase 1 · Rechtecksummen</button>
-  <button role="tab" id="t2" aria-selected="false" aria-controls="p2">Phase 2 · Stammfunktion</button>
-  <button role="tab" id="t3" aria-selected="false" aria-controls="p3">Phase 3 · Flächenfunktion</button>
+  <button role="tab" id="t2" aria-selected="false" aria-controls="p2">Phase 1b · Grenzwertprozess</button>
+  <button role="tab" id="t3" aria-selected="false" aria-controls="p3">Phase 2 · Stammfunktion</button>
+  <button role="tab" id="t4" aria-selected="false" aria-controls="p4">Phase 3 · Flächenfunktion</button>
 </div>
 
 <section id="p1" role="tabpanel" aria-labelledby="t1">
@@ -91,6 +94,34 @@ canvas{display:block;width:100%;height:auto}
 </section>
 
 <section id="p2" role="tabpanel" aria-labelledby="t2" hidden>
+  <p class="lead">Warum haben Unter- und Obersumme denselben Grenzwert? Die roten Stücke zeigen, um wie viel die Obersumme größer ist als die Untersumme. Schiebe sie nach rechts und beobachte, was mit diesem Unterschied passiert, wenn n wächst.</p>
+  <div class="controls">
+    <div><label for="fg">Funktion</label><select id="fg"></select></div>
+    <div><label for="ng">Anzahl der Streifen n = <span class="val" id="ngv">4</span></label><input type="range" id="ng" min="1" max="200" value="4">
+      <div class="chips"><button id="gm" type="button">n − 1</button><button id="gp" type="button">n + 1</button><button id="g2" type="button">n · 2</button><button id="gplay" type="button" aria-pressed="false">▶ n wachsen lassen</button></div></div>
+  </div>
+  <div class="controls">
+    <label class="check"><input type="checkbox" id="gstack"> Rote Stücke nach rechts schieben</label>
+    <div><label for="geps">Toleranz ε</label><select id="geps"><option value="1">ε = 1</option><option value="0.5">ε = 0,5</option><option value="0.1" selected>ε = 0,1</option><option value="0.01">ε = 0,01</option></select></div>
+  </div>
+  <div class="stage"><canvas id="cg1" width="1600" height="720" role="img" aria-label="Graph mit Untersumme in Blau und den Unterschieden zur Obersumme in Rot"></canvas></div>
+  <div class="read">
+    <div><small>Streifenbreite Δx</small><b id="gdx">–</b></div>
+    <div class="u"><small>Untersumme U<sub>n</sub></small><b id="gU">–</b></div>
+    <div class="o"><small>Obersumme O<sub>n</sub></small><b id="gO">–</b></div>
+    <div><small>O<sub>n</sub> − U<sub>n</sub></small><b id="gD">–</b></div>
+  </div>
+  <p class="note" id="gwhy"></p>
+  <h2 style="font-size:1.15rem;color:var(--navy);margin:22px 0 6px">Die Folgen U<sub>n</sub> und O<sub>n</sub></h2>
+  <p class="lead" style="margin-bottom:8px">Jeder Punkt ist ein Wert für ein n. Der grüne Streifen reicht von I − ε bis I + ε, dabei ist I der Grenzwert. Ab welchem n bleiben alle Punkte darin?</p>
+  <label class="check" style="margin-bottom:8px"><input type="checkbox" id="gzoom"> Ausschnitt um den Grenzwert vergrößern</label>
+  <div class="stage"><canvas id="cg2" width="1600" height="680" role="img" aria-label="Folgendiagramm der Unter- und Obersummen mit Toleranzstreifen"></canvas></div>
+  <div class="tl" style="margin-top:4px"><span>n (Achse logarithmisch)</span><span><span style="color:var(--under)">●</span> U<sub>n</sub> &nbsp; <span style="color:var(--over)">●</span> O<sub>n</sub> &nbsp; <span style="color:var(--ok)">━</span> Grenzwert I</span></div>
+  <p class="note" id="geps-note"></p>
+  <p class="note" id="gterm" hidden></p>
+</section>
+
+<section id="p3" role="tabpanel" aria-labelledby="t3" hidden>
   <p class="lead">Jeder Strich zeigt die Steigung f(x) an seiner Stelle. Eine Funktion F, deren Graph den Strichen folgt, ist eine Stammfunktion von f. Verschiebe die Kurve mit c.</p>
   <div class="controls">
     <div><label for="f2">Steigungsfunktion f</label><select id="f2"></select></div>
@@ -101,7 +132,7 @@ canvas{display:block;width:100%;height:auto}
   <p class="note" id="n2"></p>
 </section>
 
-<section id="p3" role="tabpanel" aria-labelledby="t3" hidden>
+<section id="p4" role="tabpanel" aria-labelledby="t4" hidden>
   <p class="lead">Die linke Grenze bleibt fest, die rechte Grenze x wandert. A(x) ist der Flächeninhalt bis zu dieser Stelle. Unten entsteht die Spur von A. Vergleiche die Steigung von A mit dem Funktionswert f(x).</p>
   <div class="controls">
     <div><label for="f3">Funktion</label><select id="f3"></select></div>
@@ -180,6 +211,95 @@ function draw1(){
 f1.onchange=()=>{n1.value=F1[f1.value].chips[0];draw1();};n1.oninput=draw1;
 ['showU','showO'].forEach(i=>document.getElementById(i).onchange=draw1);
 
+
+/* ---------- Phase 1b: Grenzwertprozess ---------- */
+// alle Funktionen steigend: dann ist O_n − U_n = (f(b) − f(a))·Δx genau
+const FG=[
+ {t:'f(x) = x²  auf [0; 2]',f:x=>x*x,a:0,b:2,I:8/3,ym:4.6,ty:1,term:true},
+ {t:'f(x) = 0,5·x + 2  auf [0; 4]',f:x=>.5*x+2,a:0,b:4,I:12,ym:4.6,ty:1},
+ {t:'f(x) = 0,2·x² + 1  auf [0; 6]',f:x=>.2*x*x+1,a:0,b:6,I:20.4,ym:9,ty:2}];
+const fg=document.getElementById('fg'),ng=document.getElementById('ng'),geps=document.getElementById('geps'),gstack=document.getElementById('gstack');
+FG.forEach((o,i)=>fg.add(new Option(o.t,i)));
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let slide=0,slideTarget=0,slideRaf=0,playT=0;
+function sumsG(o,n){const w=(o.b-o.a)/n;let u=0,s=0;for(let i=0;i<n;i++){u+=o.f(o.a+i*w);s+=o.f(o.a+(i+1)*w);}return[u*w,s*w];}
+function arrow(g,x0,y0,x1,y1){g.beginPath();g.moveTo(x0,y0);g.lineTo(x1,y1);g.stroke();const a=Math.atan2(y1-y0,x1-x0),k=7;
+  [[x1,y1,a],[x0,y0,a+Math.PI]].forEach(([x,y,b])=>{g.beginPath();g.moveTo(x,y);g.lineTo(x-k*Math.cos(b-.4),y-k*Math.sin(b-.4));g.moveTo(x,y);g.lineTo(x-k*Math.cos(b+.4),y-k*Math.sin(b+.4));g.stroke();});}
+function drawG(){
+  const o=FG[fg.value],n=+ng.value,eps=+geps.value,L=o.b-o.a,dx=L/n;
+  document.getElementById('ngv').textContent=n;
+  document.getElementById('gm').disabled=n<=1;document.getElementById('gp').disabled=n>=200;document.getElementById('g2').disabled=n>100;
+  // ---- obere Grafik ----
+  const cv=document.getElementById('cg1');const narrow=cv.getBoundingClientRect().width<600;cv.dataset.ratio=narrow?.8:.45;
+  const{g,w,h}=setup(cv);const box={l:44,t:30,w:w-60,h:h-58};
+  const extra=Math.max(dx,L*.12);
+  const xr=[o.a-L*.06,o.b+(slideTarget?extra+L*(narrow?.1:.32):L*.08)],yr=[0,o.ym];
+  const{sx,sy}=frame(g,box,xr,yr,{tx:L>4?1:.5,ty:o.ty});
+  const thin=n<=60,fa=o.f(o.a),fb=o.f(o.b);
+  for(let i=0;i<n;i++){const x0=o.a+i*dx,x1=x0+dx,y0=o.f(x0),y1=o.f(x1);
+    g.fillStyle=css('--under');g.globalAlpha=.42;g.fillRect(sx(x0),sy(y0),sx(x1)-sx(x0)+.6,sy(0)-sy(y0));g.globalAlpha=1;
+    if(thin){g.strokeStyle=css('--under');g.lineWidth=1;g.strokeRect(sx(x0),sy(y0),sx(x1)-sx(x0),sy(0)-sy(y0));}
+    const sh=(o.b-x0)*slide;
+    g.fillStyle=css('--over');g.globalAlpha=.55;g.fillRect(sx(x0+sh),sy(y1),sx(x1+sh)-sx(x0+sh)+.6,sy(y0)-sy(y1));g.globalAlpha=1;
+    if(thin){g.strokeStyle=css('--over');g.lineWidth=1;g.strokeRect(sx(x0+sh),sy(y1),sx(x1+sh)-sx(x0+sh),sy(y0)-sy(y1));}}
+  curve(g,sx,sy,o.f,o.a,o.b,css('--navy'),2.6,xr,yr);
+  if(slide>.98){ // Säule beschriften
+    g.strokeStyle=css('--ink');g.lineWidth=1.6;g.strokeRect(sx(o.b),sy(fb),sx(o.b+dx)-sx(o.b),sy(fa)-sy(fb));
+    g.strokeStyle=css('--muted');g.lineWidth=1.2;const xa=sx(o.b+dx)+10;arrow(g,xa,sy(fb),xa,sy(fa));
+    g.fillStyle=css('--ink');g.font='600 13px '+FONT;g.textAlign='left';g.textBaseline='middle';
+    const lab=(narrow?'':'Höhe ')+'f(b) − f(a) = '+de(fb-fa,2),tw=g.measureText(lab).width,ym=(sy(fb)+sy(fa))/2;
+    if(xa+8+tw<=box.l+box.w)g.fillText(lab,xa+8,ym);else{const lx0=sx(o.b)-10-tw;g.fillStyle=css('--card');g.globalAlpha=.85;g.fillRect(lx0-4,ym-10,tw+8,20);g.globalAlpha=1;g.fillStyle=css('--ink');g.fillText(lab,lx0,ym);}
+    const yb=sy(fb)-12;arrow(g,sx(o.b),yb,sx(o.b+dx),yb);g.textAlign='left';g.textBaseline='bottom';g.fillText('Breite Δx',Math.min(sx(o.b),box.l+box.w-80),yb-6);}
+  g.fillStyle=css('--muted');g.font='13px '+FONT;g.textAlign='left';g.textBaseline='alphabetic';g.fillText('x',box.l+box.w-10,sy(0)-8);
+  // ---- Werte ----
+  const[U,O]=sumsG(o,n);
+  document.getElementById('gdx').textContent=de(dx,4);document.getElementById('gU').textContent=de(U,4);
+  document.getElementById('gO').textContent=de(O,4);document.getElementById('gD').textContent=de(O-U,4);
+  document.getElementById('gwhy').innerHTML=slide>.98
+    ?'<b>Die roten Stücke passen genau in eine Säule.</b> Ihre Höhe ist immer f(b) − f(a) = '+de(fb-fa,2)+', ihre Breite Δx = '+de(L,2)+'/n. Also gilt O<sub>n</sub> − U<sub>n</sub> = '+de(fb-fa,2)+' · '+de(L,2)+'/n = '+de((fb-fa)*L,2)+'/n = '+de(O-U,4)+'. Die Höhe bleibt gleich, die Breite wird für n → ∞ beliebig klein. Damit geht der Unterschied gegen 0.'
+    :'<b>Rot ist der Unterschied O<sub>n</sub> − U<sub>n</sub>.</b> Schiebe die roten Stücke nach rechts: Sie stapeln sich zu einer einzigen Säule. Wie hoch ist sie, und wie breit?';
+  // ---- Folgendiagramm ----
+  const cv2=document.getElementById('cg2');cv2.dataset.ratio=narrow?.75:.42;const r2=setup(cv2),g2=r2.g;const b2={l:52,t:12,w:r2.w-68,h:r2.h-40};
+  const NM=200,lx=v=>b2.l+Math.log(v)/Math.log(NM)*b2.w;
+  const[U1,O1]=sumsG(o,1),zoom=document.getElementById('gzoom').checked;
+  const y0=zoom?o.I-4*eps:Math.min(U1,o.I-eps)-.05*(O1-U1),y1=zoom?o.I+4*eps:Math.max(O1,o.I+eps)+.05*(O1-U1);
+  const sy2=v=>b2.t+b2.h-(v-y0)/(y1-y0)*b2.h;
+  g2.save();g2.font='12px '+FONT;g2.strokeStyle=css('--grid');g2.fillStyle=css('--muted');g2.lineWidth=1;
+  [1,2,5,10,20,50,100,200].forEach(v=>{g2.beginPath();g2.moveTo(lx(v),b2.t);g2.lineTo(lx(v),b2.t+b2.h);g2.stroke();g2.textAlign='center';g2.textBaseline='top';g2.fillText(v,lx(v),b2.t+b2.h+5);});
+  const st=niceStep((y1-y0)/6);g2.textAlign='right';g2.textBaseline='middle';
+  for(let v=Math.ceil(y0/st)*st;v<=y1;v+=st){g2.beginPath();g2.moveTo(b2.l,sy2(v));g2.lineTo(b2.l+b2.w,sy2(v));g2.stroke();g2.fillText(de(+v.toFixed(6),4),b2.l-6,sy2(v));}
+  g2.beginPath();g2.rect(b2.l,b2.t,b2.w,b2.h);g2.clip();
+  g2.fillStyle=css('--ok');g2.globalAlpha=.16;g2.fillRect(b2.l,sy2(o.I+eps),b2.w,sy2(o.I-eps)-sy2(o.I+eps));g2.globalAlpha=1;
+  g2.strokeStyle=css('--ok');g2.lineWidth=2;g2.beginPath();g2.moveTo(b2.l,sy2(o.I));g2.lineTo(b2.l+b2.w,sy2(o.I));g2.stroke();
+  const n0=Math.floor((fb-fa)*L/eps+1e-9)+1; // ab hier O_n − U_n < ε
+  if(n0<=NM){g2.strokeStyle=css('--ink');g2.setLineDash([5,4]);g2.lineWidth=1.3;g2.beginPath();g2.moveTo(lx(n0),b2.t);g2.lineTo(lx(n0),b2.t+b2.h);g2.stroke();g2.setLineDash([]);
+    g2.fillStyle=css('--ink');g2.font='600 12px '+FONT;g2.textAlign=lx(n0)>b2.l+b2.w-90?'right':'left';g2.textBaseline='top';g2.fillText(' n₀ = '+n0+' ',lx(n0),b2.t+4);}
+  for(let k=1;k<=n;k++){const[u,s]=sumsG(o,k),x=lx(k),r=k===n?5.5:3;
+    g2.fillStyle=css('--under');g2.beginPath();g2.arc(x,sy2(u),r,0,7);g2.fill();g2.fillStyle=css('--over');g2.beginPath();g2.arc(x,sy2(s),r,0,7);g2.fill();}
+  g2.strokeStyle=css('--navy');g2.lineWidth=1;g2.beginPath();g2.moveTo(lx(n),b2.t);g2.lineTo(lx(n),b2.t+b2.h);g2.stroke();
+  g2.restore();
+  const inside=O-U<eps;
+  document.getElementById('geps-note').innerHTML='<b>Grenzwert I = '+de(o.I,4)+'.</b> Weil U<sub>n</sub> ≤ I ≤ O<sub>n</sub> gilt, liegen beide Werte im ε-Streifen, sobald O<sub>n</sub> − U<sub>n</sub> < ε ist. Aus '+de((fb-fa)*L,2)+'/n < '+de(eps,2)+' folgt n > '+de((fb-fa)*L/eps,2)+', also spätestens ab <b>n₀ = '+n0+'</b>. '
+    +(inside?'<span class="ok">Für n = '+n+' ist das erfüllt.</span>':'Für n = '+n+' noch nicht.')+' Zu jedem noch so kleinen ε gibt es so ein n₀. Genau das bedeutet: U<sub>n</sub> und O<sub>n</sub> haben beide den Grenzwert I.';
+  const tm=document.getElementById('gterm');tm.hidden=!o.term;
+  if(o.term){const q=1/n;tm.innerHTML='<b>Nachrechnen für f(x) = x² auf [0; 2]:</b> Mit der Summenformel 1² + 2² + … + k² = k(k+1)(2k+1)/6 ergibt sich<br>'
+    +'U<sub>n</sub> = 8/6 · (1 − 1/n) · (2 − 1/n) = 8/6 · '+de(1-q,4)+' · '+de(2-q,4)+' = '+de(U,4)+'<br>'
+    +'O<sub>n</sub> = 8/6 · (1 + 1/n) · (2 + 1/n) = 8/6 · '+de(1+q,4)+' · '+de(2+q,4)+' = '+de(O,4)+'<br>'
+    +'Für n → ∞ geht 1/n → 0. Beide Terme streben gegen 8/6 · 1 · 2 = 8/3 ≈ 2,6667.';}
+}
+function niceStep(r){const p=Math.pow(10,Math.floor(Math.log10(r))),m=r/p;return (m<1.5?1:m<3.5?2:m<7.5?5:10)*p;}
+function animSlide(){cancelAnimationFrame(slideRaf);if(reduce){slide=slideTarget;drawG();return;}
+  const s0=slide,t0=performance.now(),D=900;const step=t=>{const k=Math.min(1,(t-t0)/D),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;slide=s0+(slideTarget-s0)*e;drawG();if(k<1)slideRaf=requestAnimationFrame(step);};slideRaf=requestAnimationFrame(step);}
+function setN(v){ng.value=Math.max(1,Math.min(200,v));drawG();}
+function stopPlay(){clearInterval(playT);playT=0;const b=document.getElementById('gplay');b.textContent='▶ n wachsen lassen';b.setAttribute('aria-pressed','false');}
+document.getElementById('gplay').onclick=function(){if(playT){stopPlay();return;}
+  if(+ng.value>=200)ng.value=1;this.textContent='■ anhalten';this.setAttribute('aria-pressed','true');
+  playT=setInterval(()=>{const n=+ng.value;if(n>=200){stopPlay();return;}setN(n+Math.max(1,Math.round(n*.12)));},reduce?600:260);};
+document.getElementById('gm').onclick=()=>{stopPlay();setN(+ng.value-1)};document.getElementById('gp').onclick=()=>{stopPlay();setN(+ng.value+1)};
+document.getElementById('g2').onclick=()=>{stopPlay();setN(+ng.value*2)};
+ng.oninput=()=>{stopPlay();drawG()};fg.onchange=()=>{stopPlay();ng.value=4;drawG()};geps.onchange=drawG;document.getElementById('gzoom').onchange=drawG;
+gstack.onchange=()=>{slideTarget=gstack.checked?1:0;animSlide();};
+
 /* ---------- Phase 2 ---------- */
 const F2=[
  {t:'f(x) = 2x − 2',f:x=>2*x-2,F:x=>x*x-2*x,ft:'F(x) = x² − 2x + c',xr:[-3,5],yr:[-4,6]},
@@ -235,13 +355,13 @@ function draw3(){
   if(!n.hidden){const Fx=o.F(x),Fa=o.F(o.a);n.innerHTML='<b>Hauptsatz:</b> F(x) − F(a) = '+de(Fx,3)+' − ('+de(Fa,3)+') = <span class="ok">'+de(Fx-Fa,3)+'</span>, gemessen: A(x) = '+de(A,3)+'. Die Steigung der unteren Kurve stimmt mit f(x) überein, also ist A eine Stammfunktion von f.';}}
 f3.onchange=draw3;x3.oninput=draw3;document.getElementById('haupt').onchange=draw3;
 
-function redraw(){const i=tabs.findIndex(b=>b.getAttribute('aria-selected')==='true');[draw1,draw2,draw3][i]();}
+function redraw(){const i=tabs.findIndex(b=>b.getAttribute('aria-selected')==='true');[draw1,drawG,draw2,draw3][i]();}
 let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(redraw,80)});
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change',redraw);
 new MutationObserver(redraw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
 let t0=0;try{t0=+localStorage.getItem('integral-tab')||0}catch(e){}
 document.fonts&&document.fonts.ready.then(redraw);
-f2.value=0;x3.value=.5;f3.value=0;show(t0);
+f2.value=0;x3.value=.5;f3.value=0;fg.value=0;show(Math.min(t0,3));
 })();
 </script>
 
