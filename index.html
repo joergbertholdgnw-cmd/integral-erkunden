@@ -58,6 +58,12 @@ canvas{display:block;width:100%;height:auto}
 h2 sub,.note sub{font-size:.75em}
 @media (max-width:700px){.tabs .lg{display:none}.tabs button{flex:1 1 0;min-width:0;white-space:normal;line-height:1.2;font-size:.8rem;padding:7px 3px;overflow-wrap:anywhere;hyphens:auto}}
 .steps{margin:6px 0 0;padding-left:1.3em}.steps li{margin:6px 0}
+.sumbar{position:relative;height:34px;margin:14px 0 2px;background:var(--panel);border:1px solid var(--line)}
+.sumbar>div{position:absolute;top:0;bottom:0;transition:left .25s,width .25s}
+.sb-u{left:0;background:color-mix(in srgb,var(--under) 55%,transparent)}
+.sb-r{background:color-mix(in srgb,var(--over) 60%,transparent)}
+.sb-i{top:-6px!important;bottom:-6px!important;width:3px;background:var(--ok)}
+.sb-lab{display:flex;flex-wrap:wrap;gap:4px 12px;justify-content:space-between;font:.8rem var(--sans);color:var(--muted);margin-bottom:6px}
 [hidden]{display:none!important}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -113,6 +119,10 @@ h2 sub,.note sub{font-size:.75em}
     <div class="o"><small>Obersumme O<sub>n</sub></small><b id="gO">–</b></div>
     <div><small>O<sub>n</sub> − U<sub>n</sub></small><b id="gD">–</b></div>
   </div>
+  <div class="sb-lab" style="margin:14px 0 0;font-weight:600;color:var(--ink)">Summenbalken: O<sub>n</sub> = U<sub>n</sub> + Rot</div>
+  <div style="margin-top:4px" class="sumbar" aria-hidden="true"><div class="sb-u" id="sbu"></div><div class="sb-r" id="sbr"></div><div class="sb-i" id="sbi"></div></div>
+  <div class="sb-lab"><span id="sbl0">0</span><span><span style="color:var(--under)">■</span> Blau = U<sub>n</sub> &nbsp; <span style="color:var(--over)">■</span> Rot = O<sub>n</sub> − U<sub>n</sub> &nbsp; <span style="color:var(--ok)">▮</span> Fläche I</span><span id="sbl1"></span></div>
+  <p class="note"><b>Warum reicht es, nur Rot anzuschauen?</b> Blau zusammen ist die Untersumme U<sub>n</sub>. Die Obersumme besteht aus denselben blauen Rechtecken und den roten Stücken obendrauf: O<sub>n</sub> = U<sub>n</sub> + Rot. Die Fläche I liegt immer zwischen U<sub>n</sub> und O<sub>n</sub>, im Balken also immer im roten Abschnitt. Ob U<sub>n</sub> und O<sub>n</sub> denselben Grenzwert haben, hängt deshalb nur davon ab, ob Rot gegen 0 geht. Wie groß Blau genau ist, müssen wir dafür nicht wissen. Das ist der Vorteil: Blau ist schwer zu berechnen, Rot passt in eine Säule und ist einfach Höhe mal Breite.</p>
   <p class="note" id="gwhy"></p>
   <h2 style="font-size:1.15rem;color:var(--navy);margin:22px 0 6px">Die Folgen U<sub>n</sub> und O<sub>n</sub></h2>
   <p class="lead" style="margin-bottom:8px">Jeder Punkt ist ein Wert für ein n. Der grüne Streifen reicht von I − ε bis I + ε, dabei ist I der Grenzwert. Ab welchem n bleiben alle Punkte darin?</p>
@@ -255,6 +265,9 @@ function drawG(){
   g.fillStyle=css('--muted');g.font='13px '+FONT;g.textAlign='left';g.textBaseline='alphabetic';g.fillText('x',box.l+box.w-10,sy(0)-8);
   // ---- Werte ----
   const[U,O]=sumsG(o,n);
+  {const [,Omax]=sumsG(o,1),pc=v=>(v/Omax*100)+'%';
+   document.getElementById('sbu').style.width=pc(U);const r=document.getElementById('sbr');r.style.left=pc(U);r.style.width='max(2px,'+pc(O-U)+')';
+   document.getElementById('sbi').style.left='calc('+pc(o.I)+' - 1px)';document.getElementById('sbl1').textContent=de(Omax,2);}
   document.getElementById('gdx').textContent=de(dx,4);document.getElementById('gU').textContent=de(U,4);
   document.getElementById('gO').textContent=de(O,4);document.getElementById('gD').textContent=de(O-U,4);
   document.getElementById('gwhy').innerHTML=slide>.98
