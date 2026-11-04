@@ -125,7 +125,7 @@ details.more{margin:10px 0 0}details.more>summary{cursor:pointer;font:600 .95rem
 .chips button{min-height:40px;padding:8px 14px}.hs-next{min-height:44px}
 input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px;height:28px}input[type=range]::-moz-range-thumb{width:28px;height:28px}
 .sl-pm{display:flex;gap:8px;margin-top:4px}.sl-pm button{font:600 1rem var(--sans);min-width:44px;min-height:40px;border:1px solid var(--line);background:var(--card);color:var(--navy);border-radius:999px;cursor:pointer}
-</style>
+.defbox{margin:12px 0;padding:10px 14px;border:2px solid var(--navy);background:var(--card)}</style>
 </head>
 <body>
 <div class="wrap">
@@ -239,6 +239,7 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
   <div class="t">Merke 1 · Das bestimmte Integral</div>
   <p>Ist f stetig auf [a; b] und f(x) ≥ 0, dann streben Untersumme U<sub>n</sub> und Obersumme O<sub>n</sub> für n → ∞ gegen <input class="blank" data-save="m1a" data-ans="denselben|gemeinsamen|den gleichen|selben" aria-label="Lücke 1"> Grenzwert. Diesen Grenzwert nennt man das <input class="blank" data-save="m1b" data-ans="bestimmte|bestimmtes" aria-label="Lücke 2"> Integral von f in den Grenzen a und b:</p>
   <div class="eq">∫<sub>a</sub><sup>b</sup> f(x) dx = lim<sub>n→∞</sub> U<sub>n</sub> = lim<sub>n→∞</sub> O<sub>n</sub></div>
+  <p>Beispiel: Für f(x) = 2 ist ∫<sub>0</sub><sup>4</sup> 2 dx = 8, denn die Fläche ist ein Rechteck mit Breite 4 und Höhe 2.</p>
   <p>Für f(x) ≥ 0 gibt er den <input class="blank" data-save="m1c" data-ans="flächeninhalt|inhalt|flaecheninhalt" aria-label="Lücke 3"> der Fläche zwischen dem Graphen von f und der x-Achse an. Dabei sind a und b die Integrationsgrenzen und f ist der Integrand (die Funktion, die integriert wird).</p>
   <p><b>Zum Zeichen (Merkhilfe, keine Definition):</b> ∫ erinnert an „Summe“, f(x)·dx an „Höhe mal sehr schmale Breite“. Gemeint ist der Grenzwert der Rechtecksummen.</p>
   <p><b>Im Sachzusammenhang:</b> Ist f eine Änderungsrate (z. B. Zufluss in m³/min), dann gibt das Integral die <b>Gesamtänderung des Bestands</b> an (z. B. die zugeflossene Wassermenge).</p>
@@ -362,7 +363,7 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
 </div>
 <div class="merke" data-merke>
   <div class="t">Merke 2 · Stammfunktion</div>
-  <p>Eine Funktion F mit F′(x) = f(x) heißt <input class="blank" data-save="m2a" data-ans="stammfunktion" aria-label="Lücke 1"> von f. Mit F ist auch F(x) + c (c ∈ ℝ) eine Stammfunktion von f. Die Menge aller Stammfunktionen von f ist {F(x) + c | c ∈ ℝ}. Man schreibt dafür ∫ f(x) dx und nennt es das <input class="blank" data-save="m2b" data-ans="unbestimmte|unbestimmtes" aria-label="Lücke 2"> Integral von f (eine Menge von Funktionen, nicht eine Zahl).</p>
+  <p>Eine Funktion F mit F′(x) = f(x) für alle x heißt <input class="blank" data-save="m2a" data-ans="stammfunktion" aria-label="Lücke 1"> von f. Beispiel: x² ist eine Stammfunktion von 2x, denn (x²)′ = 2x. Mit F ist auch F(x) + c (c ∈ ℝ) eine Stammfunktion von f. Die Menge aller Stammfunktionen von f ist {F(x) + c | c ∈ ℝ}. Man schreibt dafür ∫ f(x) dx und nennt es das <input class="blank" data-save="m2b" data-ans="unbestimmte|unbestimmtes" aria-label="Lücke 2"> Integral von f (eine Menge von Funktionen, nicht eine Zahl).</p>
   <p class="wortspeicher"><b>Wortspeicher:</b> Stammfunktion · unbestimmte</p>
   <button class="btn" data-check>Prüfen</button>
   <details class="more"><summary>Selbsttest</summary><p>Ist F(x) = x² + 5 auch eine Stammfunktion von f(x) = 2x? <i>Antwort: Ja, F′(x) = 2x. Die 5 ist eine Konstante c.</i></p></details>
@@ -632,7 +633,7 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
   </div>
   <form id="gate" autocomplete="off"><label class="f" for="code">Code</label><input type="text" id="code" autocomplete="off"><button class="btn" type="submit">Öffnen</button></form>
   <p style="max-width:calc(70ch + 76px)">Hinweis: Die Lehrkraft-Ansicht ist nur durch einen Code verdeckt. Wer den Quelltext der Seite liest, kann die Lösungen trotzdem finden.</p>
-  <p class="stand" style="margin:18px 0 0;font:.8rem var(--sans);color:var(--muted)">Version: 4.11.2026, 13:20 Uhr</p>
+  <p class="stand" style="margin:18px 0 0;font:.8rem var(--sans);color:var(--muted)">Version: 4.11.2026, 14:59 Uhr</p>
 </footer>
 </div>
 
@@ -756,7 +757,7 @@ function draw2(){
   curve(g,sx,sy,x=>o.F(x)+c,o.pos?0.02:o.xr[0],o.xr[1],css('--over'),build?2:3,o.xr,o.yr);
   if(build){g.restore();buildPanels(g,o,c,box,sx,sy,w,h,topH);}
   else document.getElementById('n2b').hidden=true;
-  document.getElementById('n2').innerHTML='<b>'+o.ft.replace('+ c','+ '+(c<0?'('+de(c,1)+')':de(c,1)))+'</b>. Die Ableitung ist <b>'+o.t.replace(/^f\(x\) = /,'')+'</b> für jede Wahl von c. Die Konstante verschiebt die Kurve nach oben oder unten und ändert keine Steigung.';}
+  document.getElementById('n2').innerHTML='<b>'+o.ft.replace('+ c','+ '+(c<0?'('+de(c,1)+')':de(c,1)))+'</b>. Die Ableitungsfunktion von F ist f mit <b>'+o.t+'</b> für jede Wahl von c. Die Konstante verschiebt die Kurve nach oben oder unten und ändert keine Steigung.';}
 /* Aufbau von F aus f: Streckenzug mit Steigung f(x_i) auf jedem Schritt der Breite h */
 function buildPanels(g,o,c,box,sx,sy,w,h,topH){
   const hh=+bh.value,x0=o.x0,N=Math.floor((o.xr[1]-x0)/hh+1e-9);bk=Math.max(0,Math.min(bk,N));

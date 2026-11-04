@@ -73,6 +73,7 @@ h2 sub,.note sub{font-size:.75em}
 .hs-box>b{display:block;color:var(--navy);margin-bottom:6px;font-size:1.05rem}.hs-box p{margin:0 0 8px}.hs-sm{color:var(--muted);font-size:.92rem}
 .cr{color:var(--over);font-weight:700}.hs{scroll-margin-top:10px}
 .hs-key{margin:0 0 12px;font:.9rem var(--sans);max-width:calc(70ch + 76px)}.k-a{color:var(--under);font-weight:700}.k-f{color:var(--ok);font-weight:700}.k-d{color:var(--over);font-weight:700}
+.defbox{margin:12px 0;padding:10px 14px;border:2px solid var(--navy);background:var(--card);max-width:calc(70ch + 76px)}
 .purpose{margin:0 0 14px;max-width:calc(70ch + 76px);font:.92rem var(--sans);color:var(--muted)}
 details.more{margin:10px 0 0;max-width:calc(70ch + 76px)}details.more>summary{cursor:pointer;font:600 .95rem var(--sans);color:var(--navy);padding:8px 0;min-height:44px;display:flex;align-items:center}details.more[open]>summary{margin-bottom:2px}details.more>summary::before{content:'▸';margin-right:8px;font-size:.9em}details.more[open]>summary::before{content:'▾'}
 .hs-big{font-size:1.15rem;margin:6px 0 10px!important;color:var(--ink)}.selftest{margin:8px 0}
@@ -116,7 +117,7 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
   </div>
   <div class="track" aria-hidden="true"><div class="band" id="band"></div><div class="ex" id="ex"></div></div>
   <div class="tl"><span id="tlo"></span><span>grün: Grenzwert, farbiges Band: Bereich zwischen U<sub>n</sub> und O<sub>n</sub></span><span id="thi"></span></div>
-  <p class="note" id="n1o" hidden><b>Beobachtung:</b> Das Band zwischen Unter- und Obersumme wird schmaler und schließt den grünen Wert immer enger ein. Dieser gemeinsame Grenzwert heißt das <b>bestimmte Integral</b> und wird ∫<sub>a</sub><sup>b</sup> f(x) dx geschrieben (∫ ist ein gestrecktes S für „Summe“).</p>
+  <div class="defbox" id="n1o" hidden><b>Definition (bestimmtes Integral):</b> Ist f auf [a; b] stetig mit f(x) ≥ 0 und streben die Untersumme U<sub>n</sub> und die Obersumme O<sub>n</sub> für n → ∞ gegen dieselbe Zahl, dann heißt diese Zahl das <b>bestimmte Integral</b> von f von a bis b: ∫<sub>a</sub><sup>b</sup> f(x) dx = lim<sub>n→∞</sub> U<sub>n</sub> = lim<sub>n→∞</sub> O<sub>n</sub>. Sie gibt den Flächeninhalt zwischen dem Graphen von f und der x-Achse an. (∫ ist ein gestrecktes S für „Summe“; a und b sind die Integrationsgrenzen.) <b>Beobachtung:</b> Das Band zwischen Unter- und Obersumme wird schmaler und schließt den grünen Wert immer enger ein; der grüne Wert ist hier das bestimmte Integral. <i>Beispiel:</i> Für f(x) = 2 ist ∫<sub>0</sub><sup>4</sup> 2 dx = 8, denn die Fläche ist ein Rechteck mit Breite 4 und Höhe 2.</div>
 </section>
 
 <section id="p2" role="tabpanel" aria-labelledby="t2" hidden>
@@ -160,6 +161,7 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
 
 <section id="p3" role="tabpanel" aria-labelledby="t3" hidden>
   <p class="lead">Jeder Strich zeigt die Steigung f(x) an seiner Stelle. Alle Striche zusammen heißen Richtungsfeld. Eine Funktion F, deren Graph den Strichen folgt, ist eine Stammfunktion von f. Verschiebe die Kurve mit c. Unten kannst du Schritt für Schritt verfolgen, wie der Graph von F aus f entsteht.</p>
+  <div class="defbox"><b>Definition (Stammfunktion):</b> Eine Funktion F heißt <b>Stammfunktion</b> von f, wenn ihre Ableitung die Funktion f ist: F′(x) = f(x) für alle x. <i>Beispiel:</i> F(x) = x² ist eine Stammfunktion von f(x) = 2x, denn (x²)′ = 2x. Mit F ist auch F(x) + c für jede Konstante c eine Stammfunktion, denn eine Konstante hat die Ableitung 0.</div>
   <div class="controls">
     <div><label for="f2">Steigungsfunktion f</label><select id="f2"></select></div>
     <div><label for="c2">Konstante c = <span class="val" id="c2v">0</span></label><input type="range" id="c2" min="-3" max="3" step="0.5" value="0">
@@ -290,7 +292,7 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
     <p><button type="button" class="hs-next" data-to="2">◀ Zurück zu Schritt 3</button></p>
   </div>
 </section>
-<p class="stand" style="margin:18px 0 0;font:.8rem var(--sans);color:var(--muted)">Version: 4.11.2026, 13:20 Uhr</p>
+<p class="stand" style="margin:18px 0 0;font:.8rem var(--sans);color:var(--muted)">Version: 4.11.2026, 14:59 Uhr</p>
 </div>
 
 <script>
@@ -432,12 +434,13 @@ function drawG(){
   g2.restore();
   const inside=O-U<eps;
   const K=de((fb-fa)*L,2),E=de(eps,2);
-  document.getElementById('geps-note').innerHTML='<b>Warum haben U<sub>n</sub> und O<sub>n</sub> den Grenzwert I'+eq(o.I,4)+de(o.I,4)+'?</b><ol class="steps">'
-    +'<li><b>Eingeklemmt.</b> Die Untersumme ist immer zu klein, die Obersumme immer zu groß. Der Flächeninhalt I liegt dazwischen: U<sub>n</sub> ≤ I ≤ O<sub>n</sub>.</li>'
-    +'<li><b>Abstand zu I.</b> Keiner der beiden Werte ist weiter von I entfernt als O<sub>n</sub> von U<sub>n</sub>. Ist also O<sub>n</sub> − U<sub>n</sub> kleiner als ε = '+E+', dann liegen U<sub>n</sub> und O<sub>n</sub> beide im grünen Streifen.</li>'
-    +'<li><b>Ab welchem n?</b> Die rote Säule hat die Höhe f(b) − f(a) = '+de(fb-fa,2)+' und die Breite Δx = (b − a)/n = '+de(L,2)+'/n. Also ist O<sub>n</sub> − U<sub>n</sub> = '+de(fb-fa,2)+' · '+de(L,2)+'/n = '+K+'/n. Die Bedingung '+K+'/n &lt; '+E+' gilt für n &gt; '+K+' : '+E+eq((fb-fa)*L/eps,2)+de((fb-fa)*L/eps,2)+'. Spätestens ab <b>n₀ = '+n0+'</b> liegen beide Werte im Streifen. '
-      +'Für n = '+n+' ist O<sub>n</sub> − U<sub>n</sub>'+eq(O-U,4)+de(O-U,4)+(inside?', <span class="ok">das ist kleiner als ε.</span>':', das ist noch zu groß.')+'</li>'
-    +'<li><b>Was „Grenzwert“ heißt.</b> Wir lassen n immer größer werden (n → ∞) und fragen, ob sich die Werte einer festen Zahl beliebig genau nähern. Geprüft wird so: Jemand legt eine Toleranz ε fest, so klein er will. Wir müssen dann ein n₀ nennen können, ab dem <i>alle</i> weiteren Werte (n₀, n₀ + 1, n₀ + 2, …) im Streifen I ± ε liegen. Für ε = '+E+' ist das n₀ = '+n0+'. Für ein zehnmal kleineres ε = '+de(eps/10,4)+' brauchen wir n₀ = '+(Math.floor((fb-fa)*L/(eps/10)+1e-9)+1)+'. Ein solches n₀ gibt es immer: die erste ganze Zahl über '+K+' : ε. Weil O<sub>n</sub> − U<sub>n</sub> = '+K+'/n mit wachsendem n nur kleiner wird, springt kein späterer Wert wieder aus dem Streifen heraus. Das heißt: U<sub>n</sub> und O<sub>n</sub> haben den Grenzwert I'+eq(o.I,4)+de(o.I,4)+'. Schreibweise: lim<sub>n→∞</sub> U<sub>n</sub> = lim<sub>n→∞</sub> O<sub>n</sub> = I.</li></ol>';
+  const Un='U<sub>'+n+'</sub>',On='O<sub>'+n+'</sub>',Dn=On+' − '+Un;
+  document.getElementById('geps-note').innerHTML='<b>Warum haben U<sub>n</sub> und O<sub>n</sub> denselben Grenzwert I'+eq(o.I,4)+de(o.I,4)+'?</b> Die Zahlen unten gelten für dein eingestelltes n = '+n+' und ändern sich mit dem Regler.<ol class="steps">'
+    +'<li><b>Eingeklemmt.</b> Die Untersumme ist immer zu klein, die Obersumme immer zu groß. Der Flächeninhalt I liegt dazwischen: U<sub>n</sub> ≤ I ≤ O<sub>n</sub>. Für n = '+n+': '+Un+eq(U,4)+de(U,4)+' ≤ I'+eq(o.I,4)+de(o.I,4)+' ≤ '+On+eq(O,4)+de(O,4)+'.</li>'
+    +'<li><b>Abstand zu I.</b> Keiner der beiden Werte ist weiter von I entfernt als O<sub>n</sub> von U<sub>n</sub>. Ist also O<sub>n</sub> − U<sub>n</sub> kleiner als ε = '+E+', dann liegen U<sub>n</sub> und O<sub>n</sub> beide im grünen Streifen. Für n = '+n+': '+Dn+eq(O-U,4)+de(O-U,4)+(inside?', das ist kleiner als ε = '+E+'.':', das ist nicht kleiner als ε = '+E+'.')+'</li>'
+    +'<li><b>Ab welchem n?</b> Die rote Säule hat die Höhe f(b) − f(a) = '+de(fb-fa,2)+' und die Breite Δx = (b − a)/n = '+de(L,2)+'/n. Also ist für jedes n: O<sub>n</sub> − U<sub>n</sub> = '+de(fb-fa,2)+' · '+de(L,2)+'/n = '+K+'/n. Für n = '+n+': '+Dn+' = '+de(fb-fa,2)+' · '+de(L,2)+'/'+n+' = '+K+'/'+n+eq(O-U,4)+de(O-U,4)+'. '
+      +'Die Bedingung '+K+'/n &lt; '+E+' gilt für n &gt; '+K+'/'+E+eq((fb-fa)*L/eps,2)+de((fb-fa)*L/eps,2)+', also ab <b>n₀ = '+n0+'</b>. '+(inside?'<span class="ok">Dein n = '+n+' ist mindestens n₀: Beide Werte liegen im Streifen.</span>':'Dein n = '+n+' ist kleiner als n₀ = '+n0+': Beide Werte müssen noch nicht im Streifen liegen.')+'</li>'
+    +'<li><b>Was „Grenzwert“ heißt.</b> Wir lassen n immer größer werden (n → ∞) und fragen, ob sich die Werte einer festen Zahl beliebig genau nähern. Geprüft wird so: Jemand legt eine Toleranz ε fest, so klein er will. Wir müssen dann ein n₀ nennen können, ab dem <i>alle</i> weiteren Werte (n₀, n₀ + 1, n₀ + 2, …) im Streifen I ± ε liegen. Für ε = '+E+' ist das n₀ = '+n0+'. Für ein zehnmal kleineres ε = '+de(eps/10,4)+' brauchen wir n₀ = '+(Math.floor((fb-fa)*L/(eps/10)+1e-9)+1)+'. Ein solches n₀ gibt es immer: die erste ganze Zahl über '+K+'/ε. Weil O<sub>n</sub> − U<sub>n</sub> = '+K+'/n mit wachsendem n nur kleiner wird, springt kein späterer Wert wieder aus dem Streifen heraus. Das heißt: U<sub>n</sub> und O<sub>n</sub> haben den Grenzwert I'+eq(o.I,4)+de(o.I,4)+'. Schreibweise: lim<sub>n→∞</sub> U<sub>n</sub> = lim<sub>n→∞</sub> O<sub>n</sub> = I.</li></ol>';
   const tm=document.getElementById('gterm');tm.parentElement.hidden=!o.term;
   if(o.term){const q=1/n,tab=[4,10,100,1000,1000000].map(m=>'<tr><td>'+de(m,0)+'</td><td>'+de(8/6*(1-1/m)*(2-1/m),6)+'</td><td>'+de(8/6*(1+1/m)*(2+1/m),6)+'</td><td>'+de(8/m,6)+'</td></tr>').join('');
     tm.innerHTML='<b>Nachrechnen für f(x) = x² auf [0; 2]</b>'
@@ -504,7 +507,7 @@ function draw2(){
   curve(g,sx,sy,x=>o.F(x)+c,o.pos?0.02:o.xr[0],o.xr[1],css('--over'),build?2:3,o.xr,o.yr);
   if(build){g.restore();buildPanels(g,o,c,box,sx,sy,w,h,topH);}
   else document.getElementById('n2b').hidden=true;
-  document.getElementById('n2').innerHTML='<b>'+o.ft.replace('+ c','+ '+(c<0?'('+de(c,1)+')':de(c,1)))+'</b>. Die Ableitung ist <b>'+o.t.replace(/^f\(x\) = /,'')+'</b> für jede Wahl von c. Die Konstante verschiebt die Kurve nach oben oder unten und ändert keine Steigung.';}
+  document.getElementById('n2').innerHTML='<b>'+o.ft.replace('+ c','+ '+(c<0?'('+de(c,1)+')':de(c,1)))+'</b>. Die Ableitungsfunktion von F ist f mit <b>'+o.t+'</b> für jede Wahl von c. Die Konstante verschiebt die Kurve nach oben oder unten und ändert keine Steigung.';}
 /* Aufbau von F aus f: Streckenzug mit Steigung f(x_i) auf jedem Schritt der Breite h */
 function buildPanels(g,o,c,box,sx,sy,w,h,topH){
   const hh=+bh.value,x0=o.x0,N=Math.floor((o.xr[1]-x0)/hh+1e-9);bk=Math.max(0,Math.min(bk,N));
