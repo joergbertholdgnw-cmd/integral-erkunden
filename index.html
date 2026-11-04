@@ -73,6 +73,13 @@ h2 sub,.note sub{font-size:.75em}
 .hs-box>b{display:block;color:var(--navy);margin-bottom:6px;font-size:1.05rem}.hs-box p{margin:0 0 8px}.hs-sm{color:var(--muted);font-size:.92rem}
 .cr{color:var(--over);font-weight:700}.hs{scroll-margin-top:10px}
 .hs-key{margin:0 0 12px;font:.9rem var(--sans);max-width:calc(70ch + 76px)}.k-a{color:var(--under);font-weight:700}.k-f{color:var(--ok);font-weight:700}.k-d{color:var(--over);font-weight:700}
+.purpose{margin:0 0 14px;max-width:calc(70ch + 76px);font:.92rem var(--sans);color:var(--muted)}
+details.more{margin:10px 0 0;max-width:calc(70ch + 76px)}details.more>summary{cursor:pointer;font:600 .95rem var(--sans);color:var(--navy);padding:8px 0;min-height:44px;display:flex;align-items:center}details.more[open]>summary{margin-bottom:2px}details.more>summary::before{content:'▸';margin-right:8px;font-size:.9em}details.more[open]>summary::before{content:'▾'}
+.hs-big{font-size:1.15rem;margin:6px 0 10px!important;color:var(--ink)}.selftest{margin:8px 0}
+.check{min-height:44px}.check input[type=checkbox]{width:22px;height:22px;flex:0 0 auto}
+.chips button{min-height:40px;padding:8px 14px}.hs-next{min-height:44px}
+input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px;height:28px}input[type=range]::-moz-range-thumb{width:28px;height:28px}
+.sl-pm{display:flex;gap:8px;margin-top:4px}.sl-pm button{font:600 1rem var(--sans);min-width:44px;min-height:40px;border:1px solid var(--line);background:var(--card);color:var(--navy);border-radius:999px;cursor:pointer}
 [hidden]{display:none!important}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -81,6 +88,7 @@ h2 sub,.note sub{font-size:.75em}
 <div class="wrap">
 <h1>Von der Summe zum Integral</h1>
 <p class="sub">Zum Arbeitsblatt „Integralrechnung – Einstieg“, Jahrgang 12</p>
+<p class="purpose">Diese Seite ist zum Ausprobieren und Nachbereiten, mit ausführlichen Begründungen. Die Aufgaben und Eingabefelder stehen im Arbeitsblatt. Phase 1 und 1b gehören zu den Aufgaben 2 und 3, Phase 2 zu den Aufgaben 4 und 5, Phase 3 zu den Aufgaben 6 und 7.</p>
 <div class="tabs" role="tablist">
   <button role="tab" id="t1" aria-selected="true" aria-controls="p1"><span class="lg">Phase </span>1 · Rechtecksummen</button>
   <button role="tab" id="t2" aria-selected="false" aria-controls="p2"><span class="lg">Phase </span>1b · Grenzwert<span class="lg">prozess</span></button>
@@ -89,7 +97,7 @@ h2 sub,.note sub{font-size:.75em}
 </div>
 
 <section id="p1" role="tabpanel" aria-labelledby="t1">
-  <p class="lead">Die Fläche unter dem Graphen wird durch n Rechtecke angenähert. Die Untersumme nimmt je Streifen den kleinsten, die Obersumme den größten Funktionswert. Erhöhe n und beobachte, wohin beide Werte laufen.</p>
+  <p class="lead">Die Fläche unter dem Graphen wird durch n Rechtecke angenähert. Die Untersumme nimmt je Streifen den kleinsten, die Obersumme den größten Funktionswert. Auftrag: Stelle n = 6, 60 und 600 ein (Knöpfe unter dem Regler), notiere Untersumme, Obersumme und Differenz und schätze den Grenzwert. Blende ihn erst danach ein.</p>
   <div class="controls">
     <div><label for="f1">Funktion</label><select id="f1"></select></div>
     <div><label for="n1">Anzahl der Streifen n = <span class="val" id="n1v">4</span></label><input type="range" id="n1" min="1" max="1000" value="4"><div class="chips" id="n1c"></div></div>
@@ -97,6 +105,7 @@ h2 sub,.note sub{font-size:.75em}
   <div class="controls">
     <label class="check"><input type="checkbox" id="showU" checked> Untersumme zeigen</label>
     <label class="check"><input type="checkbox" id="showO" checked> Obersumme zeigen</label>
+    <label class="check"><input type="checkbox" id="showE"> Grenzwert anzeigen (erst nach deiner Schätzung)</label>
   </div>
   <div class="stage"><canvas id="c1" width="1600" height="760" role="img" aria-label="Graph mit Rechtecken für Unter- und Obersumme"></canvas></div>
   <div class="read">
@@ -107,7 +116,7 @@ h2 sub,.note sub{font-size:.75em}
   </div>
   <div class="track" aria-hidden="true"><div class="band" id="band"></div><div class="ex" id="ex"></div></div>
   <div class="tl"><span id="tlo"></span><span>grün: Grenzwert, farbiges Band: Bereich zwischen U<sub>n</sub> und O<sub>n</sub></span><span id="thi"></span></div>
-  <p class="note"><b>Beobachtung:</b> Das Band zwischen Unter- und Obersumme wird schmaler und schließt den grünen Wert immer enger ein. Dieser gemeinsame Grenzwert ist das bestimmte Integral.</p>
+  <p class="note" id="n1o" hidden><b>Beobachtung:</b> Das Band zwischen Unter- und Obersumme wird schmaler und schließt den grünen Wert immer enger ein. Dieser gemeinsame Grenzwert heißt das <b>bestimmte Integral</b> und wird ∫<sub>a</sub><sup>b</sup> f(x) dx geschrieben (∫ ist ein gestrecktes S für „Summe“).</p>
 </section>
 
 <section id="p2" role="tabpanel" aria-labelledby="t2" hidden>
@@ -137,19 +146,20 @@ h2 sub,.note sub{font-size:.75em}
     <li><span style="color:var(--over)">■</span> <b>Rot</b>: Unterschied O<sub>n</sub> − U<sub>n</sub> <span id="sbe2">=</span> <b id="sbk2">–</b>; das Ende des roten Stücks ist die Obersumme O<sub>n</sub> <span id="sbe3">=</span> <b id="sbk3">–</b></li>
     <li><span style="color:var(--ok)">▮</span> <b>Grüne Marke</b>: Flächeninhalt I <span id="sbe4">=</span> <b id="sbk4">–</b>, liegt immer im roten Abschnitt</li>
   </ul>
-  <p class="note"><b>Warum reicht es, nur Rot anzuschauen?</b> Blau zusammen ist die Untersumme U<sub>n</sub>. Die Obersumme besteht aus denselben blauen Rechtecken und den roten Stücken obendrauf: O<sub>n</sub> = U<sub>n</sub> + Rot. Die Fläche I liegt immer zwischen U<sub>n</sub> und O<sub>n</sub>, im Balken also immer im roten Abschnitt. Ob U<sub>n</sub> und O<sub>n</sub> denselben Grenzwert haben, hängt deshalb nur davon ab, ob Rot gegen 0 geht. Wie groß Blau genau ist, müssen wir dafür nicht wissen. Das ist der Vorteil: Blau ist schwer zu berechnen, Rot passt in eine Säule und ist einfach Höhe mal Breite.</p>
+  <details class="more"><summary>Warum reicht es, nur Rot anzuschauen? (zum Aufklappen)</summary><p class="note"><b>Warum reicht es, nur Rot anzuschauen?</b> Blau zusammen ist die Untersumme U<sub>n</sub>. Die Obersumme besteht aus denselben blauen Rechtecken und den roten Stücken obendrauf: O<sub>n</sub> = U<sub>n</sub> + Rot. Die Fläche I liegt immer zwischen U<sub>n</sub> und O<sub>n</sub>, im Balken also immer im roten Abschnitt. Ob U<sub>n</sub> und O<sub>n</sub> denselben Grenzwert haben, hängt deshalb nur davon ab, ob Rot gegen 0 geht. Wie groß Blau genau ist, müssen wir dafür nicht wissen. Das ist der Vorteil: Blau ist schwer zu berechnen, Rot passt in eine Säule und ist einfach Höhe mal Breite.</p></details>
+  <p class="note"><b>Zwischenfrage:</b> Du verdoppelst n. Was passiert mit O<sub>n</sub> − U<sub>n</sub>? <details class="more"><summary>Antwort</summary><p>Der Unterschied halbiert sich: Die rote Säule hat dieselbe Höhe, aber nur die halbe Breite. Es gilt O<sub>n</sub> − U<sub>n</sub> = (f(b) − f(a)) · (b − a)/n.</p></details></p>
   <p class="note" id="gwhy"></p>
   <h2 style="font-size:1.15rem;color:var(--navy);margin:22px 0 6px">Die Folgen U<sub>n</sub> und O<sub>n</sub></h2>
   <p class="lead" style="margin-bottom:8px">Jeder Punkt ist ein Wert für ein n. Der grüne Streifen reicht von I − ε bis I + ε, dabei ist I der Grenzwert. Ab welchem n bleiben alle Punkte darin?</p>
   <label class="check" style="margin-bottom:8px"><input type="checkbox" id="gzoom"> Ausschnitt um den Grenzwert vergrößern</label>
   <div class="stage"><canvas id="cg2" width="1600" height="680" role="img" aria-label="Folgendiagramm der Unter- und Obersummen mit Toleranzstreifen"></canvas></div>
-  <div class="tl" style="margin-top:4px"><span>n (Achse logarithmisch)</span><span><span style="color:var(--under)">●</span> U<sub>n</sub> &nbsp; <span style="color:var(--over)">●</span> O<sub>n</sub> &nbsp; <span style="color:var(--ok)">━</span> Grenzwert I</span></div>
-  <p class="note" id="geps-note"></p>
-  <p class="note" id="gterm" hidden></p>
+  <div class="tl" style="margin-top:4px"><span>n (die Achse ist gestaucht, damit auch große n auf den Bildschirm passen)</span><span><span style="color:var(--under)">●</span> U<sub>n</sub> &nbsp; <span style="color:var(--over)">●</span> O<sub>n</sub> &nbsp; <span style="color:var(--ok)">━</span> Grenzwert I</span></div>
+  <details class="more"><summary>Warum haben U<sub>n</sub> und O<sub>n</sub> denselben Grenzwert? Die Begründung in vier Schritten (zum Aufklappen)</summary><p class="note" id="geps-note"></p></details>
+  <details class="more" hidden><summary>Zusatz für Schnelle: Nachrechnen für f(x) = x² auf [0; 2]</summary><p class="note" id="gterm"></p></details>
 </section>
 
 <section id="p3" role="tabpanel" aria-labelledby="t3" hidden>
-  <p class="lead">Jeder Strich zeigt die Steigung f(x) an seiner Stelle. Eine Funktion F, deren Graph den Strichen folgt, ist eine Stammfunktion von f. Verschiebe die Kurve mit c. Unten kannst du Schritt für Schritt verfolgen, wie der Graph von F aus f entsteht.</p>
+  <p class="lead">Jeder Strich zeigt die Steigung f(x) an seiner Stelle. Alle Striche zusammen heißen Richtungsfeld. Eine Funktion F, deren Graph den Strichen folgt, ist eine Stammfunktion von f. Verschiebe die Kurve mit c. Unten kannst du Schritt für Schritt verfolgen, wie der Graph von F aus f entsteht.</p>
   <div class="controls">
     <div><label for="f2">Steigungsfunktion f</label><select id="f2"></select></div>
     <div><label for="c2">Konstante c = <span class="val" id="c2v">0</span></label><input type="range" id="c2" min="-3" max="3" step="0.5" value="0">
@@ -160,9 +170,9 @@ h2 sub,.note sub{font-size:.75em}
     <div id="bldc" hidden><label for="bh">Schrittweite h</label><select id="bh"><option value="1">h = 1</option><option value="0.5" selected>h = 0,5</option><option value="0.25">h = 0,25</option><option value="0.1">h = 0,1</option><option value="0.01">h = 0,01</option></select>
       <div class="chips"><button id="bb" type="button">◀ zurück</button><button id="bf" type="button">Schritt ▶</button><button id="bf10" type="button">+10 Schritte</button><button id="bf100" type="button">+100 Schritte</button><button id="be" type="button">bis zum Ende</button></div></div>
   </div>
+  <p class="note" id="n2b" hidden></p>
   <div class="stage"><canvas id="cvs2" width="1000" height="760" role="img" aria-label="Richtungsfeld mit Stammfunktion; auf Wunsch darunter der Graph von f und der schrittweise Aufbau von F"></canvas></div>
   <p class="note" id="n2"></p>
-  <p class="note" id="n2b" hidden></p>
 </section>
 
 <section id="p4" role="tabpanel" aria-labelledby="t4" hidden>
@@ -181,7 +191,7 @@ h2 sub,.note sub{font-size:.75em}
   <!-- Schritt 1 -->
   <div id="st1" class="hs">
     <h3 class="hs-h">Schritt 1 von 4: Die Fläche bis zur Stelle x sammeln</h3>
-    <p class="lead">Die linke Grenze a bleibt fest, die rechte Grenze x wandert. <b>A(x)</b> ist der Flächeninhalt zwischen dem Graphen von f und der x-Achse von a bis x, kurz A(x) = ∫<sub>a</sub><sup>x</sup> f(t) dt. Wie in Phase 1b ist das der Grenzwert von Rechtecksummen; hier wird er mit sehr feinen Streifen berechnet. Schiebe x nach rechts: Unten entsteht die Spur von A.</p>
+    <p class="lead">Die linke Grenze a bleibt fest, die rechte Grenze x wandert. <b>A(x)</b> ist der Flächeninhalt zwischen dem Graphen von f und der x-Achse von a bis x, kurz A(x) = ∫<sub>a</sub><sup>x</sup> f(t) dt (das t ist nur ein Platzhalter, weil x schon als Obergrenze vergeben ist). Wie in Phase 1b ist das der Grenzwert von Rechtecksummen; hier wird er mit sehr feinen Streifen berechnet. Schiebe x nach rechts: Unten entsteht die <b>Spur</b> von A, das ist die Kurve, die der Punkt (x | A(x)) beim Schieben zeichnet.</p>
     <div class="controls">
       <div><label for="x3">Obere Grenze x = <span class="val" id="x3v"></span></label><input type="range" id="x3" min="0" max="1" step="0.001" value="0.5"></div>
     </div>
@@ -189,7 +199,7 @@ h2 sub,.note sub{font-size:.75em}
     <div class="read">
       <div class="u"><small>Fläche A(x)</small><b id="rA">–</b></div>
       <div><small>Funktionswert f(x)</small><b id="rf">–</b></div>
-      <div class="o"><small>Steigung der Spur von A bei x (numerisch bestimmt)</small><b id="rS">–</b></div>
+      <div class="o"><small>Steigung der Spur von A bei x (aus Zahlen berechnet)</small><b id="rS">–</b></div>
     </div>
     <p class="note"><b>Beobachte:</b> A(a) = 0, und A wächst weiter, solange f(x) &gt; 0. Wo f groß ist, steigt die Spur von A steil, wo f klein ist, flach. Vergleiche die Kästen „Steigung der Spur von A bei x“ und „Funktionswert f(x)“. <b>Vermutung: Die Steigung von A an der Stelle x ist f(x).</b> Das prüfen wir im nächsten Schritt.</p>
     <p><button type="button" class="hs-next" data-to="1">Weiter zu Schritt 2 ▶</button></p>
@@ -212,18 +222,19 @@ h2 sub,.note sub{font-size:.75em}
     </div>
     <p class="note" id="n4a"></p>
     <table class="gtab" id="tb4"></table>
-    <p class="note"><b>Der Gedanke dahinter</b> (die Beweisidee):
+    <p class="note"><b>Beobachtung:</b> Je kleiner h, desto näher liegt ΔA / h bei f(x). Das gestrichelte Rechteck mit Breite h und Höhe f(x) ist fast so groß wie der rote Streifen: ΔA ≈ f(x) · h, also ΔA / h ≈ f(x). ΔA / h ist die Steigung der Sekante durch die beiden Punkte auf der Kurve von A. Für h → 0 wird daraus die Tangentensteigung: <b>A′(x) = f(x)</b>. A ist also eine <b>Stammfunktion von f</b>, und zwar die mit A(a) = 0.</p>
+    <details class="more"><summary>Warum klappt das immer? Die Beweisidee (zum Aufklappen)</summary><p class="note">
       <span class="hs-li">① Auf dem schmalen Streifen liegt f zwischen seinem kleinsten Wert m und seinem größten Wert M. Der Streifen passt also zwischen zwei Rechtecke: m · h ≤ ΔA ≤ M · h, nach Teilen durch h also <b>m ≤ ΔA / h ≤ M</b>. (Das ist dieselbe Unter-/Obersummen-Idee wie in Phase 1.)</span>
-      <span class="hs-li">② ΔA / h ist die Steigung der Sekante durch die beiden Punkte auf der Kurve von A (Differenzenquotient). Das gestrichelte Rechteck mit der Höhe f(x) liegt zwischen m und M; deshalb ist ΔA ≈ f(x) · h.</span>
-      <span class="hs-li">③ Wird h kleiner, rücken m und M beide an f(x) heran, weil f stetig ist. Der Quotient ΔA / h steckt in dieser Zange fest. Für h → 0 wird aus der Sekantensteigung die Tangentensteigung: <b>A′(x) = f(x)</b>. (Wir schauen nur nach rechts; nach links, mit A(x) − A(x − h), geht es genauso.)</span>
-      <span class="hs-li">Das ist die Beweisidee; ein vollständiger Beweis macht die „Zange“ mit ε und δ genau. Folgerung: A ist eine <b>Stammfunktion von f</b>, und zwar die mit A(a) = 0.</span></p>
+      <span class="hs-li">② Wird h kleiner, rücken m und M beide an f(x) heran, weil der Graph von f keine Sprünge hat (f ist stetig). ΔA / h ist zwischen m und M eingeklemmt und rückt deshalb ebenfalls an f(x) heran.</span>
+      <span class="hs-li">③ Wir schauen nur nach rechts; nach links, mit A(x) − A(x − h), geht es genauso. Ein vollständiger Beweis macht das „Heranrücken“ mit ε und δ genau.</span></p></details>
+    <p class="note"><b>Selbsttest:</b> Bei f(x) = x + 2 ist f(3) = 5. Um etwa wie viel wächst A, wenn du x von 3 auf 3,01 schiebst? <details class="more"><summary>Antwort</summary><p>ΔA ≈ f(3) · 0,01 = 5 · 0,01 = 0,05. Probiere es mit x = 3 und h = 0,01 aus (Vergrößerung an).</p></details></p>
     <p><button type="button" class="hs-next" data-to="2">Weiter zu Schritt 3 ▶</button></p>
   </div>
 
   <!-- Schritt 3 -->
   <div id="st3" class="hs" hidden>
     <h3 class="hs-h">Schritt 3 von 4: A und die Stammfunktion F</h3>
-    <p class="lead">Jetzt kommt eine zweite Stammfunktion F von f ins Spiel, die uns jemand gibt (F ist hier eine Formel; A dagegen wird aus der Fläche gewonnen). Beide haben an jeder Stelle die Steigung f(x). Ihre Differenz D = A − F hat dann die Ableitung D′ = f − f = 0. Eine Funktion mit überall der Steigung 0 auf einem Intervall ist konstant: Ihr Graph kann nirgends steigen oder fallen. Also unterscheiden sich A und F nur um eine Konstante. <b>Auftrag:</b> Schiebe x und achte auf den senkrechten Abstand der beiden Kurven. Schalte dann ein, dass A um F(a) nach oben geschoben wird.</p>
+    <p class="lead">Jetzt kommt eine zweite Stammfunktion F von f ins Spiel. F ist eine gegebene Formel, A ist die Fläche, die du gesammelt hast. <b>Auftrag:</b> Schiebe x und beobachte den senkrechten Abstand der beiden Kurven. Was fällt dir auf? Schalte danach ein, dass A um F(a) nach oben geschoben wird.</p>
     <div class="controls">
       <div><label for="x5">Obere Grenze x = <span class="val" id="x5v"></span></label><input type="range" id="x5" min="0" max="1" step="0.001" value="0.6"></div>
     </div>
@@ -237,11 +248,11 @@ h2 sub,.note sub{font-size:.75em}
       <div class="o"><small>F(x) − F(a)</small><b id="r5d">–</b></div>
     </div>
     <p class="note" id="n5"></p>
-    <p class="note"><b>Der Gedanke dahinter</b>
-      <span class="hs-li">① A und F sind Stammfunktionen von f, haben also an jeder Stelle dieselbe Steigung f(x).</span>
-      <span class="hs-li">② Dann ist ihre Differenz konstant (siehe oben): A(x) = F(x) + c. Die Kurven liegen in überall gleichem senkrechten Abstand. (Streng beweist man das mit dem Mittelwertsatz; auf einem Intervall.)</span>
-      <span class="hs-li">③ An der linken Grenze ist noch keine Fläche gesammelt: A(a) = 0. Daraus folgt 0 = F(a) + c, also c = −F(a). Damit gilt <b>A(x) = F(x) − F(a)</b>.</span>
-      <span class="hs-li"><b>Wichtig:</b> A ist nicht „die“ Stammfunktion, sondern die eine Stammfunktion mit A(a) = 0. Zu f gibt es unendlich viele Stammfunktionen (Phase 2), aber zu festem a nur eine Flächenfunktion.</span></p>
+    <details class="more"><summary>Warum bleibt der Abstand gleich? Die Begründung (zum Aufklappen)</summary><p class="note">
+      <span class="hs-li">① A und F sind Stammfunktionen von f, haben also an jeder Stelle dieselbe Steigung f(x). Ihre Differenz D = A − F hat dann die Ableitung D′ = f − f = 0.</span>
+      <span class="hs-li">② Eine Funktion, deren Steigung überall 0 ist, ist auf einem Intervall konstant: Ihr Graph kann nirgends steigen oder fallen. (Streng beweist man das mit dem Mittelwertsatz.) Also gilt A(x) = F(x) + c.</span>
+      <span class="hs-li">③ An der linken Grenze ist noch keine Fläche gesammelt: A(a) = 0. Daraus folgt 0 = F(a) + c, also c = −F(a). Damit ist <b>A(x) = F(x) − F(a)</b>.</span>
+      <span class="hs-li"><b>Wichtig:</b> A ist nicht „die“ Stammfunktion, sondern die eine Stammfunktion mit A(a) = 0. Zu f gibt es unendlich viele Stammfunktionen (Phase 2), aber zu festem a nur eine Flächenfunktion.</span></p></details>
     <p><button type="button" class="hs-next" data-to="3">Weiter zu Schritt 4 ▶</button></p>
   </div>
 
@@ -263,20 +274,23 @@ h2 sub,.note sub{font-size:.75em}
       <div class="o"><small>(F(b) + c) − (F(a) + c)</small><b id="r6d">–</b></div>
     </div>
     <p class="note" id="n6"></p>
+    <details class="more"><summary>Antwort zum Auftrag mit c (zum Aufklappen)</summary><p class="note">Die ganze grüne Kurve wandert nach oben oder unten, der rote Höhenunterschied und die Fläche I bleiben gleich. Der Grund: c steckt in F(b) + c und in F(a) + c und fällt bei der Differenz weg.</p></details>
     <div class="hs-box">
       <b>Hauptsatz der Differential- und Integralrechnung</b>
-      <p>Ist f auf [a; b] stetig, dann gilt:</p>
-      <p><b>(1)</b> <i>(Schritt 2)</i> Die Flächenfunktion A(x) = ∫<sub>a</sub><sup>x</sup> f(t) dt ist eine Stammfunktion von f: <b>A′(x) = f(x)</b>. Jede stetige Funktion hat also eine Stammfunktion, auch wenn man keine Formel dafür findet.</p>
-      <p><b>(2)</b> <i>(Schritte 3 und 4)</i> Ist F irgendeine Stammfunktion von f, dann ist <b>∫<sub>a</sub><sup>b</sup> f(x) dx = F(b) − F(a)</b>. Man schreibt dafür auch [F(x)]<sub>a</sub><sup>b</sup>.</p>
-      <p><b>Aus (1) folgt (2):</b> A und F unterscheiden sich nur um eine Konstante, und A(a) = 0.</p>
-      <p><b>Rechenbeispiel:</b> ∫<sub>0</sub><sup>3</sup> (x + 2) dx = [x²/2 + 2x]<sub>0</sub><sup>3</sup> = (4,5 + 6) − 0 = 10,5. Beim Rechnen nimmt man die einfachste Stammfunktion (c = 0), weil c bei der Differenz herausfällt.</p>
-      <p class="hs-sm"><b>Deutung als Bestand:</b> Ist f eine Änderungsrate (z. B. Zufluss in Litern pro Stunde), dann ist A(x) der Bestand, der seit dem Start dazugekommen ist. Teil (2) sagt: Die Änderung des Bestands ist das Integral der Änderungsrate.</p>
-      <p class="hs-sm"><b>Zwei Hinweise:</b> Ein bestimmtes Integral ist eine <i>Zahl</i>, eine Stammfunktion ist eine <i>Funktion</i>. Und: In diesen Beispielen verläuft der Graph von f nicht unterhalb der x-Achse. Der Satz gilt auch sonst; dann zählen Flächenstücke unterhalb der x-Achse negativ, das Integral ist eine Flächenbilanz.</p>
+      <p class="hs-big">Ist f auf [a; b] stetig und F irgendeine Stammfunktion von f, dann gilt: ∫<sub>a</sub><sup>b</sup> f(x) dx = F(b) − F(a)</p>
+      <p><b>Rechenbeispiel:</b> ∫<sub>0</sub><sup>3</sup> (x + 2) dx = [x²/2 + 2x]<sub>0</sub><sup>3</sup> = (4,5 + 6) − 0 = 10,5. Beim Rechnen nimmt man die einfachste Stammfunktion (c = 0), weil c bei der Differenz herausfällt. [F(x)]<sub>a</sub><sup>b</sup> ist die Kurzschreibweise für F(b) − F(a).</p>
+      <p class="selftest"><b>Selbsttest:</b> Berechne ∫<sub>0</sub><sup>2</sup> 3x² dx. <details class="more"><summary>Antwort</summary><p>F(x) = x³, also ∫<sub>0</sub><sup>2</sup> 3x² dx = 2³ − 0³ = 8.</p></details></p>
+      <details class="more"><summary>Mehr dazu: zwei Teile, Bestand, Hinweise (zum Aufklappen)</summary>
+        <p><b>(1)</b> <i>(Schritt 2)</i> Die Flächenfunktion A(x) = ∫<sub>a</sub><sup>x</sup> f(t) dt ist eine Stammfunktion von f: <b>A′(x) = f(x)</b>. Jede stetige Funktion hat also eine Stammfunktion, auch wenn man keine Formel dafür findet.</p>
+        <p><b>(2)</b> <i>(Schritte 3 und 4)</i> Ist F irgendeine Stammfunktion von f, dann ist ∫<sub>a</sub><sup>b</sup> f(x) dx = F(b) − F(a). <b>Aus (1) folgt (2):</b> A und F unterscheiden sich nur um eine Konstante, und A(a) = 0.</p>
+        <p class="hs-sm"><b>Deutung als Bestand:</b> Ist f eine Änderungsrate (z. B. Zufluss in Litern pro Stunde), dann ist A(x) der Bestand, der seit dem Start dazugekommen ist. Teil (2) sagt: Die Änderung des Bestands ist das Integral der Änderungsrate.</p>
+        <p class="hs-sm"><b>Zwei Hinweise:</b> Ein bestimmtes Integral ist eine <i>Zahl</i>, eine Stammfunktion ist eine <i>Funktion</i>. Und: In diesen Beispielen verläuft der Graph von f nicht unterhalb der x-Achse. Der Satz gilt auch sonst; dann zählen Flächenstücke unterhalb der x-Achse negativ, das Integral ist eine Flächenbilanz.</p>
+      </details>
     </div>
     <p><button type="button" class="hs-next" data-to="2">◀ Zurück zu Schritt 3</button></p>
   </div>
 </section>
-<p class="stand" style="margin:18px 0 0;font:.8rem var(--sans);color:var(--muted)">Version: 4.11.2026, 12:20 Uhr</p>
+<p class="stand" style="margin:18px 0 0;font:.8rem var(--sans);color:var(--muted)">Version: 4.11.2026, 13:20 Uhr</p>
 </div>
 
 <script>
@@ -331,19 +345,19 @@ function draw1(){
   const su=document.getElementById('showU').checked,so=document.getElementById('showO').checked;
   g.lineWidth=1;
   for(let i=0;i<n;i++){const x0=o.a+i*wd,x1=x0+wd;
-    if(so){const y=o.f(x1);g.fillStyle=css('--over');g.globalAlpha=.32;g.fillRect(sx(x0),sy(y),sx(x1)-sx(x0)+.6,sy(0)-sy(y));g.globalAlpha=1;if(thin){g.strokeStyle=css('--over');g.strokeRect(sx(x0),sy(y),sx(x1)-sx(x0),sy(0)-sy(y));}}
+    if(so){const y=o.f(x1);g.fillStyle=css('--over');g.globalAlpha=.32;g.fillRect(sx(x0),sy(y),sx(x1)-sx(x0)+.6,sy(0)-sy(y));g.globalAlpha=1;if(thin){g.strokeStyle=css('--over');g.setLineDash([5,3]);g.strokeRect(sx(x0),sy(y),sx(x1)-sx(x0),sy(0)-sy(y));g.setLineDash([]);}}
     if(su){const y=o.f(x0);g.fillStyle=css('--under');g.globalAlpha=.42;g.fillRect(sx(x0),sy(y),sx(x1)-sx(x0)+.6,sy(0)-sy(y));g.globalAlpha=1;if(thin){g.strokeStyle=css('--under');g.strokeRect(sx(x0),sy(y),sx(x1)-sx(x0),sy(0)-sy(y));}}}
   curve(g,sx,sy,o.f,o.a,o.b,css('--navy'),2.6,xr,yr);
   g.fillStyle=css('--muted');g.font='13px '+FONT;g.textAlign='left';g.fillText('x',box.l+box.w-10,sy(0)-8);
   const[U,O]=sums(o,n),E=o.F(o.b)-o.F(o.a);
   document.getElementById('rU').textContent=de(U);document.getElementById('rO').textContent=de(O);
-  document.getElementById('rD').textContent=de(O-U);document.getElementById('rE').textContent=de(E,4);
+  document.getElementById('rD').textContent=de(O-U);const showE=document.getElementById('showE').checked;document.getElementById('rE').textContent=showE?de(E,4):'verborgen';document.getElementById('ex').style.display=showE?'':'none';document.getElementById('n1o').hidden=!showE;
   const lo=E*.6,hi=E*1.4,p=v=>Math.max(0,Math.min(100,(v-lo)/(hi-lo)*100));
   const band=document.getElementById('band');band.style.left=p(U)+'%';band.style.width=Math.max(.4,p(O)-p(U))+'%';
   document.getElementById('ex').style.left='calc('+p(E)+'% - 1px)';document.getElementById('tlo').textContent=de(lo,1);document.getElementById('thi').textContent=de(hi,1);
   chips1();}
 f1.onchange=()=>{n1.value=F1[f1.value].chips[0];draw1();};n1.oninput=draw1;
-['showU','showO'].forEach(i=>document.getElementById(i).onchange=draw1);
+['showU','showO','showE'].forEach(i=>document.getElementById(i).onchange=draw1);
 
 
 /* ---------- Phase 1b: Grenzwertprozess ---------- */
@@ -424,7 +438,7 @@ function drawG(){
     +'<li><b>Ab welchem n?</b> Die rote Säule hat die Höhe f(b) − f(a) = '+de(fb-fa,2)+' und die Breite Δx = (b − a)/n = '+de(L,2)+'/n. Also ist O<sub>n</sub> − U<sub>n</sub> = '+de(fb-fa,2)+' · '+de(L,2)+'/n = '+K+'/n. Die Bedingung '+K+'/n &lt; '+E+' gilt für n &gt; '+K+' : '+E+eq((fb-fa)*L/eps,2)+de((fb-fa)*L/eps,2)+'. Spätestens ab <b>n₀ = '+n0+'</b> liegen beide Werte im Streifen. '
       +'Für n = '+n+' ist O<sub>n</sub> − U<sub>n</sub>'+eq(O-U,4)+de(O-U,4)+(inside?', <span class="ok">das ist kleiner als ε.</span>':', das ist noch zu groß.')+'</li>'
     +'<li><b>Was „Grenzwert“ heißt.</b> Wir lassen n immer größer werden (n → ∞) und fragen, ob sich die Werte einer festen Zahl beliebig genau nähern. Geprüft wird so: Jemand legt eine Toleranz ε fest, so klein er will. Wir müssen dann ein n₀ nennen können, ab dem <i>alle</i> weiteren Werte (n₀, n₀ + 1, n₀ + 2, …) im Streifen I ± ε liegen. Für ε = '+E+' ist das n₀ = '+n0+'. Für ein zehnmal kleineres ε = '+de(eps/10,4)+' brauchen wir n₀ = '+(Math.floor((fb-fa)*L/(eps/10)+1e-9)+1)+'. Ein solches n₀ gibt es immer: die erste ganze Zahl über '+K+' : ε. Weil O<sub>n</sub> − U<sub>n</sub> = '+K+'/n mit wachsendem n nur kleiner wird, springt kein späterer Wert wieder aus dem Streifen heraus. Das heißt: U<sub>n</sub> und O<sub>n</sub> haben den Grenzwert I'+eq(o.I,4)+de(o.I,4)+'. Schreibweise: lim<sub>n→∞</sub> U<sub>n</sub> = lim<sub>n→∞</sub> O<sub>n</sub> = I.</li></ol>';
-  const tm=document.getElementById('gterm');tm.hidden=!o.term;
+  const tm=document.getElementById('gterm');tm.parentElement.hidden=!o.term;
   if(o.term){const q=1/n,tab=[4,10,100,1000,1000000].map(m=>'<tr><td>'+de(m,0)+'</td><td>'+de(8/6*(1-1/m)*(2-1/m),6)+'</td><td>'+de(8/6*(1+1/m)*(2+1/m),6)+'</td><td>'+de(8/m,6)+'</td></tr>').join('');
     tm.innerHTML='<b>Nachrechnen für f(x) = x² auf [0; 2]</b>'
     +'<h4>Teil 1: konkret für n = 4</h4>'
@@ -521,7 +535,7 @@ function buildPanels(g,o,c,box,sx,sy,w,h,topH){
   const n=document.getElementById('n2b');n.hidden=false;
   const P=(i)=>(ex(xs[i],2)&&ex(ys[i],3)?'':'≈ ')+'('+de(xs[i],2)+' | '+de(ys[i],3)+')';
   document.getElementById('bf').disabled=bk>=N;document.getElementById('bf10').disabled=bk>=N;document.getElementById('bf100').disabled=bk>=N;document.getElementById('be').disabled=bk>=N;document.getElementById('bb').disabled=bk<=0;
-  if(bk===0){n.innerHTML='<b>So entsteht F aus f.</b> Wir starten im Punkt '+P(0)+' auf der Kurve von F + c. An jeder Stelle x sagt f(x), wie steil F dort steigt. Wir gehen also von x = '+de(x0,2)+' um h = '+de(hh,2)+' nach rechts und steigen dabei mit der Steigung f('+de(x0,2)+')'+eq(o.f(x0),3)+de(o.f(x0),3)+'. Klicke auf „Schritt ▶“.';}
+  if(bk===0){n.innerHTML='<b>So entsteht F aus f.</b> Wir starten im Punkt '+P(0)+' auf der Kurve von F + c. An jeder Stelle x sagt f(x), wie steil F dort steigt. Wir gehen also von x = '+de(x0,2)+' um h = '+de(hh,2)+' nach rechts und steigen dabei mit der Steigung f('+de(x0,2)+')'+eq(o.f(x0),3)+de(o.f(x0),3)+'. Unten liest du die Steigung ab, die du für den nächsten Schritt brauchst. Klicke auf „Schritt ▶“.';}
   else{const i=bk-1,m=o.f(xs[i]);
     const dd=hh>=.5?3:hh>=.1?4:5,sg1=eq(m,3),sg2=(ex(m,3)&&ex(hh*m,dd))?' = ':' ≈ ';
     n.innerHTML='<b>Schritt '+bk+' von '+N+'.</b> Bei x = '+de(xs[i],2)+' ist die Steigung f('+de(xs[i],2)+')'+sg1+de(m,3)+'. Auf der Breite h = '+de(hh,2)+' wächst der Graph von F deshalb um <b>Δy = h · f(x)'+sg1+de(hh,2)+' · '+(m<0?'('+de(m,3)+')':de(m,3))+sg2+de(hh*m,dd)+'</b>. Das ist genau die Fläche des roten Rechtecks zwischen dem Graphen von f und der x-Achse (Breite h, Höhe f(x)); liegt das Rechteck unter der x-Achse, zählt die Fläche negativ und F fällt. Neuer Punkt: '+P(bk)+'.'
@@ -543,7 +557,7 @@ const E3=id=>document.getElementById(id);
 function simp(f,u,v){if(v<=u)return 0;const n=200,w=(v-u)/n;let s=f(u)+f(v);for(let i=1;i<n;i++)s+=f(u+i*w)*(i%2?4:2);return s*w/3;}
 const Aof=(o,t)=>simp(o.f,o.a,t);
 function shade(g,sx,sy,f,u,v,col,al){const N=160;g.beginPath();g.moveTo(sx(u),sy(0));for(let i=0;i<=N;i++){const x=u+(v-u)*i/N;g.lineTo(sx(x),sy(f(x)));}g.lineTo(sx(v),sy(0));g.closePath();g.fillStyle=col;g.globalAlpha=al;g.fill();g.globalAlpha=1;}
-function tag(g,txt,x,y,col,al,bl,font){g.save();g.fillStyle=col;g.font=font||('600 13px '+FONT);g.textAlign=al||'left';g.textBaseline=bl||'alphabetic';g.fillText(txt,x,y);g.restore();}
+function tag(g,txt,x,y,col,al,bl,font){g.save();g.font=font||('600 13px '+FONT);g.textAlign=al||'left';g.textBaseline=bl||'alphabetic';g.lineJoin='round';g.lineWidth=4;g.strokeStyle=css('--card');g.strokeText(txt,x,y);g.fillStyle=col;g.fillText(txt,x,y);g.restore();}
 function vline(g,x,y0,y1,col,dash,lw){g.save();g.strokeStyle=col;g.lineWidth=lw||1.2;g.setLineDash(dash||[]);g.beginPath();g.moveTo(x,y0);g.lineTo(x,y1);g.stroke();g.restore();}
 function hline(g,y,x0,x1,col,dash,lw){g.save();g.strokeStyle=col;g.lineWidth=lw||1.2;g.setLineDash(dash||[]);g.beginPath();g.moveTo(x0,y);g.lineTo(x1,y);g.stroke();g.restore();}
 function dot(g,x,y,r,col){g.fillStyle=col;g.beginPath();g.arc(x,y,r,0,7);g.fill();}
@@ -662,7 +676,7 @@ function d34(){
   tag(g,'F(b) − F(a)',t2.sx(b)+(v<.8?10:-10),(t2.sy(Fa)+t2.sy(Fb))/2+4,css('--over'),v<.8?'left':'right');
   E3('r6a').textContent=de(I,5);E3('r6b').textContent=de(Fa,5);E3('r6c').textContent=de(Fb,5);E3('r6d').textContent=de(Fb-Fa,5);
   E3('n6').innerHTML='<b>Stammfunktion: F(x) = '+o.Ft+', dazu die Konstante c.</b> <b>Ergebnis für a = '+de(a,2)+' und b = '+de(b,2)+':</b> Die Fläche ist I'+eq(I,5)+de(I,5)+'. Mit der Stammfunktion F + c rechnet man (F(b) + c) − (F(a) + c) = '+de(Fb,5)+' − '+(Fa<0?'('+de(Fa,5)+')':de(Fa,5))+((ex(Fb,5)&&ex(Fa,5)&&ex(Fb-Fa,5))?' = ':' ≈ ')+de(Fb-Fa,5)+'. '
-    +'Beide Wege stimmen '+(Math.abs(I-(Fb-Fa))<1e-6?'<span class="ok">überein</span>':'fast überein')+'. Verändere c: Die ganze grüne Kurve wandert nach oben oder unten, der rote Höhenunterschied bleibt gleich, weil c in F(b) + c und in F(a) + c steckt und bei der Differenz wegfällt.';}
+    +'Beide Wege stimmen '+(Math.abs(I-(Fb-Fa))<1e-6?'<span class="ok">überein</span>':'fast überein')+'.';}
 
 function draw3(){[d31,d32,d33,d34][hs]();}
 f3.onchange=draw3;['x3','x4','x5','a6','b6','k6'].forEach(i=>E3(i).oninput=draw3);E3('h4').onchange=draw3;E3('zm4').onchange=draw3;E3('sh5').onchange=draw3;
@@ -674,6 +688,13 @@ new MutationObserver(redraw).observe(document.documentElement,{attributes:true,a
 let t0=0;try{t0=+localStorage.getItem('integral-tab')||0}catch(e){}
 document.fonts&&document.fonts.ready.then(redraw);
 f2.value=0;x3.value=.5;f3.value=0;fg.value=0;show(Math.min(t0,3));
+/* Plus-/Minus-Knöpfe an den Reglern (Touch) und Ansage geänderter Messwerte */
+[['n1',0],['ng',1],['x3',.025],['x4',.025],['x5',.025],['a6',.025],['b6',.025],['k6',.5],['c2',.5]].forEach(([id,step])=>{const el=document.getElementById(id);if(!el)return;
+  const w=document.createElement('div');w.className='sl-pm';
+  [['−',-1],['+',1]].forEach(([t,d])=>{const b=document.createElement('button');b.type='button';b.textContent=t;b.setAttribute('aria-label',(d<0?'Wert verkleinern: ':'Wert vergrößern: ')+id);
+    b.onclick=()=>{el.value=Math.min(+el.max,Math.max(+el.min,+el.value+d*step));el.dispatchEvent(new Event('input'));};w.appendChild(b);});
+  el.insertAdjacentElement('afterend',w);});
+document.querySelectorAll('.read').forEach(e=>e.setAttribute('aria-live','polite'));
 })();
 </script>
 
