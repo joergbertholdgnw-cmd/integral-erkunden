@@ -310,16 +310,24 @@ function drawG(){
       +'Für n = '+n+' ist O<sub>n</sub> − U<sub>n</sub> = '+de(O-U,4)+(inside?', <span class="ok">das ist kleiner als ε.</span>':', das ist noch zu groß.')+'</li>'
     +'<li><b>Was „Grenzwert“ heißt.</b> Wir lassen n immer größer werden (n → ∞) und fragen, ob sich die Werte einer festen Zahl beliebig genau nähern. Geprüft wird so: Jemand legt eine Toleranz ε fest, so klein er will. Wir müssen dann ein n₀ nennen können, ab dem <i>alle</i> weiteren Werte (n₀, n₀ + 1, n₀ + 2, …) im Streifen I ± ε liegen. Für ε = '+E+' ist das n₀ = '+n0+'. Für ein zehnmal kleineres ε = '+de(eps/10,4)+' brauchen wir n₀ = '+(Math.floor((fb-fa)*L/(eps/10)+1e-9)+1)+'. Ein solches n₀ gibt es immer: die erste ganze Zahl über '+K+' : ε. Weil O<sub>n</sub> − U<sub>n</sub> = '+K+'/n mit wachsendem n nur kleiner wird, springt kein späterer Wert wieder aus dem Streifen heraus. Das heißt: U<sub>n</sub> und O<sub>n</sub> haben den Grenzwert I = '+de(o.I,4)+'. Schreibweise: lim<sub>n→∞</sub> U<sub>n</sub> = lim<sub>n→∞</sub> O<sub>n</sub> = I.</li></ol>';
   const tm=document.getElementById('gterm');tm.hidden=!o.term;
-  if(o.term){const q=1/n,tab=[10,100,1000,1000000].map(m=>'<tr><td>'+de(m,0)+'</td><td>'+de(8/6*(1-1/m)*(2-1/m),6)+'</td><td>'+de(8/6*(1+1/m)*(2+1/m),6)+'</td><td>'+de(8/m,6)+'</td></tr>').join('');
-    tm.innerHTML='<b>Nachrechnen für f(x) = x² auf [0; 2], hier für n = '+n+' Streifen.</b> Die Rechnung gilt für jedes n; die Zahlen setzen das eingestellte n = '+n+' ein.<ol class="steps">'
-    +'<li><b>Streifenbreite:</b> Δx = (2 − 0)/n = 2/'+n+' = '+de(dx,4)+'. Die Teilungsstellen sind x<sub>k</sub> = k · Δx = 2k/n.</li>'
-    +'<li><b>Untersumme</b> (x² steigt, also ist der linke Randwert der kleinste): U<sub>n</sub> = Δx · [f(x<sub>0</sub>) + … + f(x<sub>n−1</sub>)] = (2/n) · (2/n)² · [0² + 1² + … + (n−1)²].</li>'
-    +'<li><b>Obersumme</b> (rechter Randwert ist der größte): O<sub>n</sub> = (2/n) · (2/n)² · [1² + 2² + … + n²].</li>'
-    +'<li><b>Summenformel</b> 1² + 2² + … + m² = m(m+1)(2m+1)/6, für U<sub>n</sub> mit m = n − 1, für O<sub>n</sub> mit m = n. Das ergibt<br>'
-    +'U<sub>n</sub> = 8/6 · (1 − 1/n) · (2 − 1/n) = 8/6 · '+de(1-q,4)+' · '+de(2-q,4)+' = '+de(U,4)+'<br>'
-    +'O<sub>n</sub> = 8/6 · (1 + 1/n) · (2 + 1/n) = 8/6 · '+de(1+q,4)+' · '+de(2+q,4)+' = '+de(O,4)+'</li>'
+  if(o.term){const q=1/n,tab=[4,10,100,1000,1000000].map(m=>'<tr><td>'+de(m,0)+'</td><td>'+de(8/6*(1-1/m)*(2-1/m),6)+'</td><td>'+de(8/6*(1+1/m)*(2+1/m),6)+'</td><td>'+de(8/m,6)+'</td></tr>').join('');
+    tm.innerHTML='<b>Nachrechnen für f(x) = x² auf [0; 2]</b>'
+    +'<h4>Teil 1: konkret für n = 4</h4>'
+    +'<p>Δx = (2 − 0)/4 = 0,5. Die Teilungsstellen sind 0; 0,5; 1; 1,5; 2.<br>'
+    +'U<sub>4</sub> = 0,5 · [f(0) + f(0,5) + f(1) + f(1,5)] = 0,5 · [0 + 0,25 + 1 + 2,25] = 0,5 · 3,5 = <b>1,75</b><br>'
+    +'O<sub>4</sub> = 0,5 · [f(0,5) + f(1) + f(1,5) + f(2)] = 0,5 · [0,25 + 1 + 2,25 + 4] = 0,5 · 7,5 = <b>3,75</b><br>'
+    +'Differenz: O<sub>4</sub> − U<sub>4</sub> = 3,75 − 1,75 = 2 = 0,5 · (4 − 0), also Δx · (f(b) − f(a)).</p>'
+    +'<h4>Teil 2: Übergang zu beliebigem n</h4>'
+    +'<p>Was bei n = 4 mit konkreten Zahlen geschah, schreiben wir jetzt mit n:</p><ol class="steps">'
+    +'<li><b>Breite und Stellen:</b> Δx = 2/n, die Stellen sind x<sub>k</sub> = k · 2/n. (Für n = 4: Δx = 0,5 und x<sub>k</sub> = 0,5 · k.)</li>'
+    +'<li><b>Untersumme:</b> U<sub>n</sub> = (2/n) · [f(x<sub>0</sub>) + … + f(x<sub>n−1</sub>)] = (2/n) · (2/n)² · [0² + 1² + … + (n−1)²]. (Für n = 4: 0,5 · 0,5² · [0² + 1² + 2² + 3²] = 0,5 · 0,25 · 14 = 1,75.)</li>'
+    +'<li><b>Obersumme:</b> O<sub>n</sub> = (2/n) · (2/n)² · [1² + 2² + … + n²]. (Für n = 4: 0,125 · 30 = 3,75.)</li>'
+    +'<li><b>Summenformel</b> 1² + 2² + … + m² = m(m+1)(2m+1)/6, für U<sub>n</sub> mit m = n − 1, für O<sub>n</sub> mit m = n:<br>'
+    +'U<sub>n</sub> = 8/6 · (1 − 1/n) · (2 − 1/n)<br>O<sub>n</sub> = 8/6 · (1 + 1/n) · (2 + 1/n)<br>'
+    +'Probe für n = 4: U<sub>4</sub> = 8/6 · 0,75 · 1,75 = 1,75 und O<sub>4</sub> = 8/6 · 1,25 · 2,25 = 3,75. Das stimmt mit Teil 1 überein.</li>'
+    +'<li><b>Dein eingestelltes n = '+n+':</b> U<sub>'+n+'</sub> = 8/6 · '+de(1-q,4)+' · '+de(2-q,4)+' = '+de(U,4)+' und O<sub>'+n+'</sub> = 8/6 · '+de(1+q,4)+' · '+de(2+q,4)+' = '+de(O,4)+'.</li>'
     +'<li><b>Grenzübergang n → ∞:</b> 1/n wird beliebig klein und geht gegen 0. Dann gehen (1 − 1/n) und (1 + 1/n) gegen 1, (2 − 1/n) und (2 + 1/n) gegen 2. Beide Summen streben gegen 8/6 · 1 · 2 = 8/3 ≈ 2,6667, das ist der Wert I aus dem grünen Streifen.</li></ol>'
-    +'<table class="gtab"><caption>Dieselben Formeln für feste größere n (unabhängig vom Regler):</caption><thead><tr><th>n</th><th>U<sub>n</sub></th><th>O<sub>n</sub></th><th>O<sub>n</sub> − U<sub>n</sub> = 8/n</th></tr></thead><tbody>'+tab+'</tbody></table>';}
+    +'<table class="gtab"><caption>Dieselben Formeln für feste n (unabhängig vom Regler):</caption><thead><tr><th>n</th><th>U<sub>n</sub></th><th>O<sub>n</sub></th><th>O<sub>n</sub> − U<sub>n</sub> = 8/n</th></tr></thead><tbody>'+tab+'</tbody></table>';}
 }
 function niceStep(r){const p=Math.pow(10,Math.floor(Math.log10(r))),m=r/p;return (m<1.5?1:m<3.5?2:m<7.5?5:10)*p;}
 function animSlide(){cancelAnimationFrame(slideRaf);if(reduce){slide=slideTarget;drawG();return;}
