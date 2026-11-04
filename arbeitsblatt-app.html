@@ -64,7 +64,7 @@ details.tip summary{cursor:pointer;color:var(--under);font-weight:600}
 details.tip p{margin:6px 0 0;font-family:var(--serif)}
 /* Applet */
 .applet{background:var(--card);border:1px solid var(--line);padding:14px;margin:14px 0 18px}
-.applet .ttl{font:700 .85rem var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--navy);margin-bottom:8px}
+.applet .ttl{font:700 .85rem var(--sans);letter-spacing:.02em;color:var(--navy);margin-bottom:8px}
 .controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px 18px;margin-bottom:8px;font-family:var(--sans)}
 .controls label.l{display:block;font-weight:600;font-size:.88rem;margin-bottom:4px}
 input[type=range]{width:100%;accent-color:var(--navy)}
@@ -77,7 +77,7 @@ canvas{display:block;width:100%;height:auto;background:var(--card)}
 .read{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:8px;margin:10px 0;font-family:var(--sans)}
 .read div{background:var(--panel);padding:7px 10px;border-left:4px solid var(--navy)}
 .read .u{border-left-color:var(--under)} .read .o{border-left-color:var(--over)} .read .e{border-left-color:var(--ok)}
-.read small{display:block;color:var(--muted);font-size:.75rem;letter-spacing:.04em;text-transform:uppercase}
+.read small{display:block;color:var(--muted);font-size:.75rem;letter-spacing:.04em}
 .read b{font-size:1.15rem;font-variant-numeric:tabular-nums}
 .track{position:relative;height:26px;background:var(--panel);margin:6px 0 2px;border:1px solid var(--line)}
 .track .band{position:absolute;top:0;bottom:0;background:linear-gradient(90deg,color-mix(in srgb,var(--under) 45%,transparent),color-mix(in srgb,var(--over) 45%,transparent))}
@@ -111,6 +111,13 @@ ul.l li{margin-bottom:4px}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 @media print{nav.nav,footer,.applet,#gate{display:none}textarea{border:1px solid #999}}
 [hidden]{display:none!important}
+.hs-key{margin:0 0 10px}.k-a{color:var(--under);font-weight:700}.k-f{color:var(--ok);font-weight:700}.k-d{color:var(--over);font-weight:700}.cr{color:var(--over);font-weight:700}
+.hs-steps{margin:2px 0 12px}.hs-steps button{font-size:.9rem}.hs{scroll-margin-top:70px}
+.gtab{border-collapse:collapse;margin:10px 0 0;font:.88rem var(--sans);font-variant-numeric:tabular-nums}.gtab caption{text-align:left;color:var(--muted);padding-bottom:4px}.gtab th,.gtab td{border:1px solid var(--line);padding:3px 10px;text-align:right}.gtab th{background:var(--panel)}
+.sumbar{position:relative;height:34px;margin:10px 0 2px;background:var(--panel);border:1px solid var(--line)}.sumbar>div{position:absolute;top:0;bottom:0;transition:left .25s,width .25s}
+.sb-u{left:0;background:color-mix(in srgb,var(--under) 55%,transparent)}.sb-r{background:color-mix(in srgb,var(--over) 60%,transparent)}.sb-i{top:-6px!important;bottom:-6px!important;width:3px;background:var(--ok)}
+.sb-lab{display:flex;flex-wrap:wrap;gap:4px 12px;justify-content:space-between;font:.8rem var(--sans);color:var(--muted)}
+.chips button:disabled,.hs-steps button:disabled,.hs-next:disabled{opacity:.45;cursor:default}
 </style>
 </head>
 <body>
@@ -248,6 +255,44 @@ ul.l li{margin-bottom:4px}
   <div class="sol teacher"><b class="l">Lösung</b>n = 4: 30 | 54 | 24; n = 10: 36,64 | 46,24 | 9,6; n = 100: 40,854 | 41,814 | 0,96; n = 1000: 41,285 | 41,381 | 0,096. Grenzwert ≈ 41,3 (exakt 124/3 ≈ 41,33).</div>
 </div>
 
+<h3>Aufgabe 3 (Zusatz, Fortsetzung) · Vom konkreten n zum allgemeinen n</h3>
+<p>Für f(x) = x² auf [0; 2] kannst du U<sub>n</sub> und O<sub>n</sub> exakt ausrechnen. Rechne zuerst für ein festes n, dann allgemein, und prüfe mit dem Werkzeug.</p>
+<div class="applet" id="apN">
+  <div class="ttl">Werkzeug · Nachrechnen für f(x) = x² auf [0; 2]</div>
+  <div class="controls">
+    <div><label class="l" for="nN">Anzahl der Streifen n = <span class="val" id="nNv">4</span></label><input type="range" id="nN" min="1" max="200" value="4"><div class="chips" id="nNc"></div></div>
+    <div><label class="l" for="eN">Toleranz ε</label><select id="eN"><option value="1">ε = 1</option><option value="0.1">ε = 0,1</option><option value="0.01" selected>ε = 0,01</option><option value="0.001">ε = 0,001</option></select></div>
+  </div>
+  <div class="read">
+    <div class="u"><small>Untersumme U<sub>n</sub></small><b id="rUN">–</b></div>
+    <div class="o"><small>Obersumme O<sub>n</sub></small><b id="rON">–</b></div>
+    <div><small>Differenz O<sub>n</sub> − U<sub>n</sub> = 8/n</small><b id="rDN">–</b></div>
+    <div class="e"><small>Flächeninhalt I = 8/3</small><b>≈ 2,6667</b></div>
+  </div>
+  <div class="sb-lab" style="margin:12px 0 0;font-weight:600;color:var(--ink)">Summenbalken: Obersumme = Untersumme + roter Unterschied</div>
+  <p style="margin:2px 0 4px;font-size:.9rem;color:var(--muted)">Der Balken ist eine Zahlengerade von 0 bis O<sub>1</sub> = 8 (Obersumme mit nur einem Streifen). Er zeigt für das eingestellte n, wie sich die Obersumme in U<sub>n</sub> und den roten Unterschied aufteilt.</p>
+  <div class="sumbar" aria-hidden="true"><div class="sb-u" id="sbuN"></div><div class="sb-r" id="sbrN"></div><div class="sb-i" id="sbiN"></div></div>
+  <ul style="list-style:none;margin:6px 0;padding:0;font:.9rem var(--sans)">
+    <li><span style="color:var(--under)">■</span> <b>Blau</b>: Untersumme U<sub>n</sub> <span id="sbe1">=</span> <b id="sbk1">–</b></li>
+    <li><span style="color:var(--over)">■</span> <b>Rot</b>: Unterschied O<sub>n</sub> − U<sub>n</sub> <span id="sbe2">=</span> <b id="sbk2">–</b>; das Ende des roten Stücks ist die Obersumme O<sub>n</sub> <span id="sbe3">=</span> <b id="sbk3">–</b></li>
+    <li><span style="color:var(--ok)">▮</span> <b>Grüne Marke</b>: Flächeninhalt I ≈ 2,6667, liegt immer im roten Abschnitt</li>
+  </ul>
+  <p class="note" id="pN"></p>
+</div>
+<div class="task">
+  <div class="q"><b>a)</b><span>Berechne U<sub>4</sub> und O<sub>4</sub> für f(x) = x² auf [0; 2] von Hand (Streifenbreite 0,5). Gib auch O<sub>4</sub> − U<sub>4</sub> an und erkläre, woher diese Differenz kommt.</span></div>
+  <textarea data-save="a3c" aria-label="Antwort Aufgabe 3 c"></textarea>
+  <div class="sol teacher"><b class="l">Lösung</b>U<sub>4</sub> = 0,5 · (0 + 0,25 + 1 + 2,25) = 0,5 · 3,5 = 1,75; O<sub>4</sub> = 0,5 · (0,25 + 1 + 2,25 + 4) = 0,5 · 7,5 = 3,75. Differenz 2 = 0,5 · (f(2) − f(0)) = 0,5 · 4: Es bleibt ein einziges Rechteck der Breite 0,5 und der Höhe f(2) − f(0).</div>
+  <div class="q"><b>b)</b><span>Verallgemeinere auf n Streifen. Mit der Summenformel 1² + 2² + … + m² = m(m+1)(2m+1)/6 gilt U<sub>n</sub> = (2/n)·(2/n)²·[0² + 1² + … + (n−1)²] und O<sub>n</sub> = (2/n)·(2/n)²·[1² + 2² + … + n²]. Zeige U<sub>n</sub> = 8/6 · (1 − 1/n)(2 − 1/n) und O<sub>n</sub> = 8/6 · (1 + 1/n)(2 + 1/n). Prüfe für n = 4.</span></div>
+  <textarea data-save="a3d" aria-label="Antwort Aufgabe 3 d"></textarea>
+  <details class="tip"><summary>Tipp</summary><p>Es ist (2/n)·(2/n)² = 8/n³. Für U<sub>n</sub> setzt du m = n − 1, für O<sub>n</sub> m = n ein und kürzt durch n³.</p></details>
+  <div class="sol teacher"><b class="l">Lösung</b>U<sub>n</sub> = 8/n³ · (n−1)·n·(2n−1)/6 = 8/6 · (n−1)/n · (2n−1)/n = 8/6 · (1 − 1/n)(2 − 1/n); O<sub>n</sub> = 8/n³ · n(n+1)(2n+1)/6 = 8/6 · (1 + 1/n)(2 + 1/n). Probe n = 4: U<sub>4</sub> = 8/6 · 0,75 · 1,75 = 1,75 und O<sub>4</sub> = 8/6 · 1,25 · 2,25 = 3,75.</div>
+  <div class="q"><b>c)</b><span><b>Grenzübergang:</b> Wohin streben U<sub>n</sub> und O<sub>n</sub> für n → ∞? Wie groß muss n mindestens sein, damit beide Summen höchstens ε = 0,01 vom Grenzwert entfernt sind? Nutze O<sub>n</sub> − U<sub>n</sub> = 8/n und prüfe im Werkzeug.</span></div>
+  <textarea data-save="a3e" aria-label="Antwort Aufgabe 3 e"></textarea>
+  <details class="tip"><summary>Tipp</summary><p>Der Flächeninhalt I liegt zwischen U<sub>n</sub> und O<sub>n</sub>. Keiner der beiden Werte ist weiter von I entfernt als O<sub>n</sub> von U<sub>n</sub>. Es genügt also 8/n &lt; ε.</p></details>
+  <div class="sol teacher"><b class="l">Lösung</b>1/n → 0, also (1 ∓ 1/n) → 1 und (2 ∓ 1/n) → 2: beide Summen streben gegen 8/6 · 1 · 2 = 8/3 ≈ 2,6667. Aus 8/n &lt; 0,01 folgt n &gt; 800, also n₀ = 801. „Grenzwert“ heißt: Zu jeder noch so kleinen Toleranz ε gibt es ein n₀, ab dem alle weiteren U<sub>n</sub> und O<sub>n</sub> im Streifen I ± ε liegen; wegen O<sub>n</sub> − U<sub>n</sub> = 8/n bleiben sie dort.</div>
+</div>
+
 </section>
 
 <!-- ============ PHASE 2 ============ -->
@@ -264,8 +309,14 @@ ul.l li{margin-bottom:4px}
     <div><label class="l" for="c2">Konstante c = <span class="val" id="c2v">0</span></label><input type="range" id="c2" min="-3" max="3" step="0.5" value="0">
       <label class="check" style="margin-top:8px"><input type="checkbox" id="all2"> Alle Kurven zeigen</label></div>
   </div>
-  <canvas id="cvs2" width="1000" height="760" role="img" aria-label="Richtungsfeld mit Stammfunktion"></canvas>
+  <div class="controls">
+    <label class="check"><input type="checkbox" id="bld"> Zeigen, wie F aus f entsteht (Schritt für Schritt)</label>
+    <div id="bldc" hidden><label class="l" for="bh">Schrittweite h</label><select id="bh"><option value="1">h = 1</option><option value="0.5" selected>h = 0,5</option><option value="0.25">h = 0,25</option><option value="0.1">h = 0,1</option><option value="0.01">h = 0,01</option></select>
+      <div class="chips"><button id="bb" type="button">◀ zurück</button><button id="bf" type="button">Schritt ▶</button><button id="bf10" type="button">+10 Schritte</button><button id="bf100" type="button">+100 Schritte</button><button id="be" type="button">bis zum Ende</button></div></div>
+  </div>
+  <canvas id="cvs2" width="1000" height="760" role="img" aria-label="Richtungsfeld mit Stammfunktion; auf Wunsch darunter der Graph von f und der schrittweise Aufbau von F"></canvas>
   <p class="note" id="n2"></p>
+  <p class="note" id="n2b" hidden></p>
 </div>
 
 <h3>Aufgabe 4 · Mit dem Richtungsfeld zur Funktion</h3>
@@ -278,6 +329,9 @@ ul.l li{margin-bottom:4px}
   <div class="q"><b>b)</b><span>Was fällt dir an den Kurven auf? Gib eine Gleichung für F an und prüfe sie durch Ableiten. Warum legt die Steigung allein die Funktion F nicht eindeutig fest?</span></div>
   <textarea data-save="a4b" aria-label="Antwort Aufgabe 4 b"></textarea>
   <div class="sol teacher"><b class="l">Lösung</b>F(x) = x² − 2x + c, F′(x) = 2x − 2 = f(x). Eine Verschiebung in y-Richtung ändert keine Steigung, deshalb ist F nur bis auf die Konstante c bestimmt; ein Startpunkt legt c fest.</div>
+  <div class="q"><b>c)</b><span>Schalte im Werkzeug „Zeigen, wie F aus f entsteht“ ein und baue F für f(x) = 2x − 2 Schritt für Schritt auf: erst mit h = 0,5 bis zum Ende, dann mit h = 0,1 und h = 0,01 (Knopf „+100 Schritte“). Beschreibe, was in jedem Schritt passiert und was sich ändert, wenn h kleiner wird. Warum ist der Zuwachs von F in einem Schritt die Fläche eines Rechtecks unter dem Graphen von f?</span></div>
+  <textarea data-save="a4c" aria-label="Antwort Aufgabe 4 c"></textarea>
+  <div class="sol teacher"><b class="l">Lösung</b>Von einem Startpunkt aus geht man um h nach rechts und steigt mit der Steigung f(x) der aktuellen Stelle: Δy = h · f(x). Das ist die Fläche des Rechtecks mit Breite h und Höhe f(x) unter f (liegt es unter der x-Achse, zählt sie negativ). Der Streckenzug folgt F; bei h = 0,5 endet er bei 12 statt 15, bei h = 0,01 bei 14,94. Je kleiner h, desto besser. Die Summe aller Rechtecke ist die Änderung von F: Hier zeigt sich schon der Zusammenhang von Fläche und Stammfunktion.</div>
 </div>
 
 <h3>Aufgabe 5 · Vermuten und überprüfen</h3>
@@ -305,19 +359,86 @@ ul.l li{margin-bottom:4px}
 <p>Du kennst jetzt zwei Wege: den Flächeninhalt als Grenzwert von Rechtecksummen und die Stammfunktion als Umkehrung des Ableitens. Hängt beides zusammen? Dazu lässt du die rechte Grenze wandern: A(x) ist der Flächeninhalt von der festen linken Grenze bis zur Stelle x. Ist f eine Änderungsrate, dann ist A(x) der <b>Bestand</b>, der seit dem Start hinzugekommen ist, im Auto-Beispiel der bis zum Zeitpunkt x zurückgelegte Weg.</p>
 
 <div class="applet" id="ap3">
-  <div class="ttl">Werkzeug · Flächeninhaltsfunktion</div>
+  <div class="ttl">Werkzeug · Flächeninhaltsfunktion und Hauptsatz in vier Schritten</div>
+  <p class="hs-key" style="font-size:.92rem"><b>Farben in allen vier Schritten:</b> <span class="k-a">■ blau</span> = Flächenfunktion A (Fläche und ihre Kurve), <span class="k-f">■ grün</span> = Stammfunktion F, <span class="k-d">■ rot</span> = Zuwachs oder Höhenunterschied.</p>
   <div class="controls">
-    <div><label class="l" for="f3">Funktion</label><select id="f3"></select></div>
-    <div><label class="l" for="x3">Obere Grenze x = <span class="val" id="x3v"></span></label><input type="range" id="x3" min="0" max="1" step="0.001" value="0.5"></div>
+    <div><label class="l" for="f3">Funktion f (der Graph liegt nicht unterhalb der x-Achse)</label><select id="f3"></select></div>
+    <div><label class="check"><input type="checkbox" id="unl"> Schritte 3 und 4 freischalten (erst nach Aufgabe 7)</label></div>
   </div>
-  <canvas id="c3" width="1600" height="1000" role="img" aria-label="Funktion mit Fläche und darunter die Flächeninhaltsfunktion"></canvas>
-  <div class="read">
-    <div class="u"><small>Fläche A(x)</small><b id="rA">–</b></div>
-    <div><small>Funktionswert f(x)</small><b id="rf">–</b></div>
-    <div class="o"><small>Steigung von A bei x</small><b id="rS">–</b></div>
+  <div class="chips hs-steps" role="group" aria-label="Schritte zum Hauptsatz">
+    <button type="button" id="hs1" aria-pressed="true">1 · Flächenfunktion A</button>
+    <button type="button" id="hs2" aria-pressed="false">2 · Wie schnell wächst A?</button>
+    <button type="button" id="hs3" aria-pressed="false" disabled>3 · A und F</button>
+    <button type="button" id="hs4" aria-pressed="false" disabled>4 · Fläche berechnen</button>
   </div>
-  <label class="check"><input type="checkbox" id="haupt"> Stammfunktion F einblenden und Hauptsatz prüfen (erst nach Aufgabe 7)</label>
-  <p class="note" id="n3" hidden></p>
+
+  <div id="st1" class="hs">
+    <p style="font-size:.95rem"><b>Schritt 1 von 4: Die Fläche bis zur Stelle x sammeln.</b> Die linke Grenze a bleibt fest, die rechte Grenze x wandert. A(x) ist der Flächeninhalt von a bis x, kurz A(x) = ∫<sub>a</sub><sup>x</sup> f(t) dt. Unten entsteht die Spur von A.</p>
+    <div class="controls"><div><label class="l" for="x3">Obere Grenze x = <span class="val" id="x3v"></span></label><input type="range" id="x3" min="0" max="1" step="0.001" value="0.5"></div></div>
+    <canvas id="c3" width="1600" height="1000" role="img" aria-label="Oben die Funktion f mit der Fläche von a bis x, unten die Flächeninhaltsfunktion A als Spur"></canvas>
+    <div class="read">
+      <div class="u"><small>Fläche A(x)</small><b id="rA">–</b></div>
+      <div><small>Funktionswert f(x)</small><b id="rf">–</b></div>
+      <div class="o"><small>Steigung der Spur von A bei x (numerisch bestimmt)</small><b id="rS">–</b></div>
+    </div>
+    <p class="note"><b>Beobachte:</b> A(a) = 0, und A wächst, solange f(x) &gt; 0. Vergleiche „Steigung der Spur von A bei x“ mit „Funktionswert f(x)“. Vermutung: Die Steigung von A an der Stelle x ist f(x).</p>
+    <p><button type="button" class="btn hs-next" data-to="1">Weiter zu Schritt 2 ▶</button></p>
+  </div>
+
+  <div id="st2" class="hs" hidden>
+    <p style="font-size:.95rem"><b>Schritt 2 von 4: Wie schnell wächst A? (A′ = f)</b> Schiebe x um ein kleines Stück h weiter. Dann kommt zur blauen Fläche ein schmaler <span class="cr">roter Streifen</span> dazu. <b>Auftrag:</b> Stelle h auf 1; 0,1; 0,01 und beobachte ΔA / h. Schalte bei kleinem h die Vergrößerung ein.</p>
+    <div class="controls">
+      <div><label class="l" for="x4">Stelle x = <span class="val" id="x4v"></span></label><input type="range" id="x4" min="0" max="1" step="0.001" value="0.45"></div>
+      <div><label class="l" for="h4">Schrittweite h</label><select id="h4"><option value="1">h = 1</option><option value="0.5" selected>h = 0,5</option><option value="0.25">h = 0,25</option><option value="0.1">h = 0,1</option><option value="0.01">h = 0,01</option><option value="0.001">h = 0,001</option></select></div>
+    </div>
+    <label class="check"><input type="checkbox" id="zm4"> Ausschnitt um x stark vergrößern</label>
+    <canvas id="c4" width="1600" height="1000" role="img" aria-label="Oben f mit blauer Fläche, rotem Streifen und Rechteck der Breite h, unten die Kurve von A mit Sekante"></canvas>
+    <div class="tl" style="margin-top:4px"><span><span style="color:var(--under)">■</span> blau: Fläche A(x) und ihre Kurve</span><span><span style="color:var(--over)">■</span> rot: Streifen ΔA</span><span>oben gestrichelt: Rechteck f(x) · h; unten durchgezogen: Sekante, gepunktet: Gerade mit Steigung f(x)</span></div>
+    <div class="read">
+      <div class="u"><small>Differenzenquotient ΔA / h</small><b id="r4c">–</b></div>
+      <div class="e"><small>Funktionswert f(x)</small><b id="r4d">–</b></div>
+    </div>
+    <p class="note" id="n4a"></p>
+    <table class="gtab" id="tb4"></table>
+    <p class="note"><b>Der Gedanke dahinter</b> (die Beweisidee): Auf dem schmalen Streifen liegt f zwischen seinem kleinsten Wert m und seinem größten Wert M. Also gilt m · h ≤ ΔA ≤ M · h und damit <b>m ≤ ΔA / h ≤ M</b> (dieselbe Unter-/Obersummen-Idee wie in Phase 1). Wird h kleiner, rücken m und M an f(x) heran, weil f stetig ist. ΔA / h ist die Sekantensteigung von A; für h → 0 wird daraus die Tangentensteigung: <b>A′(x) = f(x)</b>. Ein vollständiger Beweis macht diese „Zange“ mit ε und δ genau.</p>
+    <p><button type="button" class="btn hs-next" data-to="2" id="nx2">Weiter zu Schritt 3 ▶</button></p>
+  </div>
+
+  <div id="st3" class="hs" hidden>
+    <p style="font-size:.95rem"><b>Schritt 3 von 4: A und die Stammfunktion F.</b> Eine zweite Stammfunktion F von f ist als Formel gegeben. Beide haben an jeder Stelle die Steigung f(x). Ihre Differenz D = A − F hat dann D′ = f − f = 0 und ist auf einem Intervall konstant. Also unterscheiden sich A und F nur um eine Konstante. <b>Auftrag:</b> Schiebe x und achte auf den senkrechten Abstand der Kurven. Schiebe dann A um F(a) nach oben.</p>
+    <div class="controls"><div><label class="l" for="x5">Obere Grenze x = <span class="val" id="x5v"></span></label><input type="range" id="x5" min="0" max="1" step="0.001" value="0.6"></div></div>
+    <label class="check"><input type="checkbox" id="sh5"> A um F(a) nach oben schieben</label>
+    <canvas id="c5" width="1600" height="1000" role="img" aria-label="Oben f mit Fläche von a bis x, unten eine Stammfunktion F und die um F(a) tiefer liegende Flächenfunktion A"></canvas>
+    <div class="tl" style="margin-top:4px"><span><span style="color:var(--ok)">━</span> grün: F</span><span><span style="color:var(--under)">━</span> blau: A</span><span>schwarze Klammer: senkrechter Abstand F(a)</span></div>
+    <div class="read">
+      <div class="u"><small>Fläche A(x)</small><b id="r5a">–</b></div>
+      <div class="e"><small>F(x)</small><b id="r5b">–</b></div>
+      <div><small>F(a)</small><b id="r5c">–</b></div>
+      <div class="o"><small>F(x) − F(a)</small><b id="r5d">–</b></div>
+    </div>
+    <p class="note" id="n5"></p>
+    <p class="note"><b>Der Gedanke dahinter:</b> A(x) = F(x) + c (Differenz konstant). Weil noch keine Fläche gesammelt ist, gilt A(a) = 0, also 0 = F(a) + c und c = −F(a). Damit ist <b>A(x) = F(x) − F(a)</b>. A ist nicht „die“ Stammfunktion, sondern die eine Stammfunktion mit A(a) = 0.</p>
+    <p><button type="button" class="btn hs-next" data-to="3">Weiter zu Schritt 4 ▶</button></p>
+  </div>
+
+  <div id="st4" class="hs" hidden>
+    <p style="font-size:.95rem"><b>Schritt 4 von 4: Eine Fläche mit F berechnen.</b> Aus A(x) = F(x) − F(a) folgt für jede Stelle b: A(b) = F(b) − F(a). <b>Auftrag:</b> Stelle c auf −3, 0 und 4. Was ändert sich, was bleibt gleich?</p>
+    <div class="controls">
+      <div><label class="l" for="a6">Untere Grenze a = <span class="val" id="a6v"></span></label><input type="range" id="a6" min="0" max="1" step="0.001" value="0.15"></div>
+      <div><label class="l" for="b6">Obere Grenze b = <span class="val" id="b6v"></span></label><input type="range" id="b6" min="0" max="1" step="0.001" value="0.75"></div>
+      <div><label class="l" for="k6">Konstante c in F + c = <span class="val" id="k6v">2</span></label><input type="range" id="k6" min="-4" max="4" step="0.5" value="2"></div>
+    </div>
+    <canvas id="c6" width="1600" height="1000" role="img" aria-label="Oben f mit Fläche zwischen a und b, unten die Stammfunktion F + c mit dem Höhenunterschied zwischen a und b"></canvas>
+    <div class="tl" style="margin-top:4px"><span><span style="color:var(--under)">■</span> blau: Fläche I</span><span><span style="color:var(--ok)">━</span> grün: F + c</span><span><span style="color:var(--over)">┃</span> rot: Höhenunterschied von F zwischen a und b</span></div>
+    <div class="read">
+      <div class="u"><small>Fläche I (numerisch berechnet)</small><b id="r6a">–</b></div>
+      <div class="e"><small>F(a) + c</small><b id="r6b">–</b></div>
+      <div class="e"><small>F(b) + c</small><b id="r6c">–</b></div>
+      <div class="o"><small>(F(b) + c) − (F(a) + c)</small><b id="r6d">–</b></div>
+    </div>
+    <p class="note" id="n6"></p>
+    <p><button type="button" class="btn hs-next" data-to="2">◀ Zurück zu Schritt 3</button></p>
+  </div>
 </div>
 
 <h3>Aufgabe 6 · Flächeninhaltsfunktion einer linearen Funktion</h3>
@@ -372,6 +493,9 @@ ul.l li{margin-bottom:4px}
   <textarea data-save="a7d" aria-label="Antwort Aufgabe 7 d"></textarea>
   <details class="tip"><summary>Tipp</summary><p>Wenn h sehr klein ist, ändert sich der Zufluss in dieser Zeit kaum. Das Wasser, das in der Zeit h zufließt, ist dann fast ein Rechteck mit Höhe z(x) und Breite h.</p></details>
   <div class="sol teacher"><b class="l">Lösung</b>Bei schmalem Streifen ist der Zufluss fast konstant z(x): ΔA ≈ z(x)·h. Teilt man durch h, folgt ΔA/h ≈ z(x). Für h → 0 wird aus dem Differenzenquotienten die Ableitung: A′(x) = z(x). Damit ist A eine Stammfunktion von z, nicht nur bei diesem Beispiel, sondern für jede stetige Zuflussfunktion. Hier schließt sich der Kreis zur Rechteckidee aus Phase 1.</div>
+  <div class="q"><b>e)</b><span>Schalte im Werkzeug „Flächeninhaltsfunktion und Hauptsatz in vier Schritten“ die Schritte 3 und 4 frei (Funktion: Zufluss z(t) = 0,1·t²). Beschreibe, wie sich die Kurve von A und die gegebene Stammfunktion F unterscheiden. Berechne dann mit Schritt 4 die Wassermenge zwischen zwei selbst gewählten Zeitpunkten und prüfe sie mit F(b) − F(a). Wie ändert sich das Ergebnis, wenn du c veränderst?</span></div>
+  <textarea data-save="a7f" aria-label="Antwort Aufgabe 7 e"></textarea>
+  <div class="sol teacher"><b class="l">Lösung</b>A und F unterscheiden sich um die Konstante F(a): A(x) = F(x) − F(a). Die Wassermenge zwischen a und b ist F(b) − F(a), unabhängig davon, welche Stammfunktion (also welches c) man nimmt, weil c bei der Differenz herausfällt. Die Kurve F + c wandert, der Höhenunterschied bleibt gleich.</div>
 </div>
 
 <h3>Dein Satz zum Hauptsatz</h3>
@@ -478,7 +602,7 @@ ul.l li{margin-bottom:4px}
   </div>
   <form id="gate" autocomplete="off"><label class="f" for="code">Code</label><input type="text" id="code" autocomplete="off"><button class="btn" type="submit">Öffnen</button></form>
   <p style="max-width:calc(70ch + 76px)">Hinweis: Die Lehrkraft-Ansicht ist nur durch einen Code verdeckt. Wer den Quelltext der Seite liest, kann die Lösungen trotzdem finden.</p>
-  <p class="stand" style="margin:18px 0 0;font:.8rem var(--sans);color:var(--muted)">Version: 4.11.2026, 12:20 Uhr</p>
+  <p class="stand" style="margin:18px 0 0;font:.8rem var(--sans);color:var(--muted)">Version: 4.11.2026, 13:04 Uhr</p>
 </footer>
 </div>
 
@@ -487,7 +611,12 @@ ul.l li{margin-bottom:4px}
 /* ---------- Lehrkraft-Code: SHA-256 des Codes. Neuen Code setzen: Hash von neuem Text hier eintragen. ---------- */
 const TEACH_HASH='71a8a2d12dc6aa9106818fefeba52f73f736aac601e89f2c8c9343921d622ce8';
 const $=id=>document.getElementById(id);
-const de=(v,d=3)=>v.toLocaleString('de-DE',{minimumFractionDigits:0,maximumFractionDigits:d});
+const de=(v,d=3)=>{const t=v.toLocaleString('de-DE',{minimumFractionDigits:0,maximumFractionDigits:d});return t==='-0'?'0':t.replace(/^-/,'−');};
+/* ex: ist v auf d Nachkommastellen exakt? eq: Gleichheitszeichen oder ≈; ap: Zahl mit ≈ davor, wenn gerundet */
+const ex=(v,d)=>Math.abs(v-Math.round(v*10**d)/10**d)<1e-9*Math.max(1,Math.abs(v));
+const eq=(v,d)=>ex(v,d)?' = ':' ≈ ';
+const ap=(v,d)=>(ex(v,d)?'':'≈ ')+de(v,d);
+function niceStep(r){const p=Math.pow(10,Math.floor(Math.log10(r))),m=r/p;return (m<1.5?1:m<3.5?2:m<7.5?5:10)*p;}
 const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 const FONT='"Source Sans 3",system-ui,sans-serif';
 const store={get(k){try{return localStorage.getItem('ia12:'+k)}catch(e){return null}},set(k,v){try{localStorage.setItem('ia12:'+k,v)}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
@@ -523,16 +652,16 @@ function setup(cv){const r=cv.getBoundingClientRect();const k=Math.max(1,window.
 function frame(g,box,xr,yr,o={}){
   const sx=x=>box.l+(x-xr[0])/(xr[1]-xr[0])*(box.w), sy=y=>box.t+box.h-(y-yr[0])/(yr[1]-yr[0])*box.h;
   g.save();g.font='12px '+FONT;g.fillStyle=css('--muted');g.strokeStyle=css('--grid');g.lineWidth=1;
-  const tx=o.tx||1,ty=o.ty||1;
+  const tx=o.tx||1,ty=o.ty||1,dc=o.dec||2;
   g.beginPath();for(let x=Math.ceil(xr[0]/tx)*tx;x<=xr[1]+1e-9;x+=tx){g.moveTo(sx(x),box.t);g.lineTo(sx(x),box.t+box.h);}
   for(let y=Math.ceil(yr[0]/ty)*ty;y<=yr[1]+1e-9;y+=ty){g.moveTo(box.l,sy(y));g.lineTo(box.l+box.w,sy(y));}g.stroke();
   g.strokeStyle=css('--muted');g.lineWidth=1.3;g.beginPath();
   if(yr[0]<=0&&yr[1]>=0){g.moveTo(box.l,sy(0));g.lineTo(box.l+box.w,sy(0));}
   if(xr[0]<=0&&xr[1]>=0){g.moveTo(sx(0),box.t);g.lineTo(sx(0),box.t+box.h);}g.stroke();
   g.textAlign='center';g.textBaseline='top';const ay=Math.min(Math.max(sy(0),box.t),box.t+box.h);
-  for(let x=Math.ceil(xr[0]/tx)*tx;x<=xr[1]+1e-9;x+=tx){if(Math.abs(x)<1e-9&&xr[0]<0)continue;g.fillText(de(Math.round(x*100)/100,2),sx(x),Math.min(ay+4,box.t+box.h+4));}
+  for(let x=Math.ceil(xr[0]/tx)*tx;x<=xr[1]+1e-9;x+=tx){if(Math.abs(x)<1e-9&&xr[0]<0)continue;g.fillText(de(Math.round(x*10**dc)/10**dc,dc),sx(x),Math.min(ay+4,box.t+box.h+4));}
   g.textAlign='right';g.textBaseline='middle';
-  for(let y=Math.ceil(yr[0]/ty)*ty;y<=yr[1]+1e-9;y+=ty){if(Math.abs(y)<1e-9&&yr[0]<0)continue;g.fillText(de(Math.round(y*100)/100,2),box.l-6,sy(y));}
+  for(let y=Math.ceil(yr[0]/ty)*ty;y<=yr[1]+1e-9;y+=ty){if(Math.abs(y)<1e-9&&yr[0]<0)continue;g.fillText(de(Math.round(y*10**dc)/10**dc,dc),box.l-6,sy(y));}
   g.restore();return{sx,sy};}
 function curve(g,sx,sy,f,a,b,col,lw,xr,yr){g.save();g.beginPath();g.rect(sx(xr[0]),sy(yr[1]),sx(xr[1])-sx(xr[0]),sy(yr[0])-sy(yr[1]));g.clip();
   g.strokeStyle=col;g.lineWidth=lw;g.beginPath();let first=true;const N=400;
@@ -568,54 +697,214 @@ f1.onchange=()=>{n1.value=F1[f1.value].chips[0];draw1();};n1.oninput=draw1;
 
 /* ---------- Werkzeug 2: Richtungsfeld ---------- */
 const F2=[
- {t:'f(x) = 2x − 2',f:x=>2*x-2,F:x=>x*x-2*x,ft:'F(x) = x² − 2x + c',xr:[-3,5],yr:[-4,6]},
- {t:'f(x) = 2',f:x=>2,F:x=>2*x,ft:'F(x) = 2x + c',xr:[-3,5],yr:[-5,7]},
- {t:'f(x) = 0,3·x²',f:x=>.3*x*x,F:x=>.1*x**3,ft:'F(x) = 0,1·x³ + c',xr:[-4,4],yr:[-5,5]},
- {t:'f(x) = sin(x)',f:x=>Math.sin(x),F:x=>-Math.cos(x),ft:'F(x) = −cos(x) + c',xr:[-6.4,6.4],yr:[-4.5,4.5]},
- {t:'f(x) = 1/x  (x > 0)',f:x=>1/x,F:x=>Math.log(x),ft:'F(x) = ln(x) + c',xr:[-.4,6],yr:[-3.2,3.2],pos:true}];
+ {t:'f(x) = 2x − 2',f:x=>2*x-2,F:x=>x*x-2*x,ft:'F(x) = x² − 2x + c',xr:[-3,5],yr:[-4,6],x0:-1},
+ {t:'f(x) = 2',f:x=>2,F:x=>2*x,ft:'F(x) = 2x + c',xr:[-3,5],yr:[-5,7],x0:-2},
+ {t:'f(x) = 0,3·x²',f:x=>.3*x*x,F:x=>.1*x**3,ft:'F(x) = 0,1·x³ + c',xr:[-4,4],yr:[-5,5],x0:-3},
+ {t:'f(x) = sin(x)',f:x=>Math.sin(x),F:x=>-Math.cos(x),ft:'F(x) = −cos(x) + c',xr:[-6.4,6.4],yr:[-4.5,4.5],x0:-6},
+ {t:'f(x) = 1/x  (x > 0)',f:x=>1/x,F:x=>Math.log(x),ft:'F(x) = ln(x) + c',xr:[-.4,6],yr:[-3.2,3.2],pos:true,x0:.5}];
 const f2=$('f2'),c2=$('c2');F2.forEach((o,i)=>f2.add(new Option(o.t,i)));f2.value=0;
+let bk=0;
+const bld=document.getElementById('bld'),bh=document.getElementById('bh');
 function draw2(){
-  const o=F2[f2.value],c=+c2.value;$('c2v').textContent=de(c,1);
-  const{g,w,h}=setup($('cvs2'));const box={l:40,t:10,w:w-52,h:h-34};
+  const o=F2[f2.value],c=+c2.value;document.getElementById('c2v').textContent=de(c,1);
+  const build=bld.checked;document.getElementById('bldc').hidden=!build;
+  const cv=document.getElementById('cvs2');cv.dataset.ratio=build?(cv.getBoundingClientRect().width<600?1.3:Math.min(1.02,Math.max(.62,window.innerHeight*.8/cv.getBoundingClientRect().width))):.76;
+  const {g,w,h}=setup(cv);
+  const tot=h-34,topH=build?Math.round((tot-34-18)*.58):tot;
+  const box={l:40,t:10,w:w-52,h:topH};
   const{sx,sy}=frame(g,box,o.xr,o.yr,{tx:1,ty:1});
-  const dx=(o.xr[1]-o.xr[0])/(box.w/34),dy=(o.yr[1]-o.yr[0])/(box.h/34),L=13;
-  g.strokeStyle=css('--muted');g.lineWidth=1.4;g.globalAlpha=.75;g.beginPath();
-  for(let x=o.xr[0]+dx/2;x<o.xr[1];x+=dx){if(o.pos&&x<=0.05)continue;
+  const dx=(o.xr[1]-o.xr[0])/ (box.w/34), dy=(o.yr[1]-o.yr[0])/(box.h/34);
+  g.strokeStyle=css('--muted');g.lineWidth=1.4;g.globalAlpha=build?.4:.75;g.beginPath();
+  const L=13;
+  for(let x=o.xr[0]+dx/2;x<o.xr[1];x+=dx){ if(o.pos&&x<=0.05)continue;
     for(let y=o.yr[0]+dy/2;y<o.yr[1];y+=dy){const m=o.f(x);
       const kx=(sx(1)-sx(0)),ky=(sy(0)-sy(1));let vx=kx,vy=-m*ky;const l=Math.hypot(vx,vy);vx=vx/l*L;vy=vy/l*L;
       g.moveTo(sx(x)-vx/2,sy(y)-vy/2);g.lineTo(sx(x)+vx/2,sy(y)+vy/2);}}
   g.stroke();g.globalAlpha=1;
-  if($('all2').checked){for(let k=-3;k<=3;k+=.5){if(k===c)continue;curve(g,sx,sy,x=>o.F(x)+k,o.pos?0.02:o.xr[0],o.xr[1],css('--under'),1.2,o.xr,o.yr);}}
-  curve(g,sx,sy,x=>o.F(x)+c,o.pos?0.02:o.xr[0],o.xr[1],css('--over'),3,o.xr,o.yr);
-  $('n2').innerHTML='<b>'+o.ft.replace('+ c','+ '+(c<0?'('+de(c,1)+')':de(c,1)))+'</b>. Die Ableitung ist <b>'+o.t.replace(/^f\(x\) = /,'')+'</b> für jede Wahl von c. Die Konstante verschiebt die Kurve nach oben oder unten und ändert keine Steigung.';}
-f2.onchange=draw2;c2.oninput=draw2;$('all2').onchange=draw2;
+  if(document.getElementById('all2').checked&&!build){for(let k=-3;k<=3;k+=.5){if(k===c)continue;curve(g,sx,sy,x=>o.F(x)+k,o.pos?0.02:o.xr[0],o.xr[1],css('--under'),1.2,o.xr,o.yr);}}
+  if(build){g.save();g.globalAlpha=.7;g.setLineDash([6,4]);}
+  curve(g,sx,sy,x=>o.F(x)+c,o.pos?0.02:o.xr[0],o.xr[1],css('--over'),build?2:3,o.xr,o.yr);
+  if(build){g.restore();buildPanels(g,o,c,box,sx,sy,w,h,topH);}
+  else document.getElementById('n2b').hidden=true;
+  document.getElementById('n2').innerHTML='<b>'+o.ft.replace('+ c','+ '+(c<0?'('+de(c,1)+')':de(c,1)))+'</b>. Die Ableitung ist <b>'+o.t.replace(/^f\(x\) = /,'')+'</b> für jede Wahl von c. Die Konstante verschiebt die Kurve nach oben oder unten und ändert keine Steigung.';}
+/* Aufbau von F aus f: Streckenzug mit Steigung f(x_i) auf jedem Schritt der Breite h */
+function buildPanels(g,o,c,box,sx,sy,w,h,topH){
+  const hh=+bh.value,x0=o.x0,N=Math.floor((o.xr[1]-x0)/hh+1e-9);bk=Math.max(0,Math.min(bk,N));
+  const xs=[],ys=[o.F(x0)+c];for(let i=0;i<=N;i++)xs.push(x0+i*hh);
+  for(let i=0;i<N;i++)ys.push(ys[i]+hh*o.f(xs[i]));
+  // unteres Feld: f
+  const bt=box.t+topH+34,box2={l:40,t:bt,w:box.w,h:h-bt-24};
+  let lo=0,hi=0;for(let i=0;i<=200;i++){const x=o.xr[0]+(o.xr[1]-o.xr[0])*i/200;if(o.pos&&x<.05)continue;const v=o.f(x);if(isFinite(v)){lo=Math.min(lo,v);hi=Math.max(hi,v);}}
+  lo=Math.max(lo,o.yr[0]);hi=Math.min(hi,o.yr[1]);const pad=(hi-lo)*.12||1;const yrf=[Math.min(lo-pad,-.0),hi+pad];if(yrf[0]>0)yrf[0]=0;
+  const ty=niceStep((yrf[1]-yrf[0])/4),t2=frame(g,box2,o.xr,yrf,{tx:1,ty});
+  g.fillStyle=css('--navy');g.font='600 13px '+FONT;g.textAlign='left';g.textBaseline='alphabetic';
+  g.fillText('F(x) + c: Streckenzug',box.l+8,box.t+16);g.fillText('f(x): Steigung für den nächsten Schritt',box2.l+8,box2.t+16);
+  // Rechtecke unter f (= Zuwachs von F)
+  for(let i=0;i<bk;i++){const last=i===bk-1,top=o.f(xs[i]);
+    g.fillStyle=css(last?'--over':'--under');g.globalAlpha=last?.5:.25;g.fillRect(t2.sx(xs[i]),t2.sy(top),t2.sx(xs[i]+hh)-t2.sx(xs[i]),t2.sy(0)-t2.sy(top));g.globalAlpha=1;
+    if(N<=60){g.strokeStyle=css(last?'--over':'--under');g.lineWidth=1;g.strokeRect(t2.sx(xs[i]),t2.sy(top),t2.sx(xs[i]+hh)-t2.sx(xs[i]),t2.sy(0)-t2.sy(top));}}
+  curve(g,t2.sx,t2.sy,o.f,o.pos?0.02:o.xr[0],o.xr[1],css('--navy'),2.6,o.xr,yrf);
+  // oberes Feld: Streckenzug
+  g.save();g.beginPath();g.rect(box.l,box.t,box.w,box.h);g.clip();
+  g.strokeStyle=css('--navy');g.lineWidth=2.6;g.lineJoin='round';g.beginPath();g.moveTo(sx(xs[0]),sy(ys[0]));for(let i=1;i<=bk;i++)g.lineTo(sx(xs[i]),sy(ys[i]));g.stroke();
+  g.fillStyle=css('--navy');for(let i=0;i<=bk;i++){if(N>60&&i!==bk&&i!==0)continue;g.beginPath();g.arc(sx(xs[i]),sy(ys[i]),i===bk?5.5:3,0,7);g.fill();}
+  if(bk>0){const i=bk-1;g.strokeStyle=css('--ink');g.lineWidth=1.4;g.setLineDash([5,4]);g.beginPath();g.moveTo(sx(xs[i]),sy(ys[i]));g.lineTo(sx(xs[i+1]),sy(ys[i]));g.lineTo(sx(xs[i+1]),sy(ys[i+1]));g.stroke();g.setLineDash([]);}
+  g.restore();
+  // Verbindung: aktuelle Stelle in beiden Feldern
+  if(bk<N){const xv=xs[bk];g.strokeStyle=css('--muted');g.lineWidth=1;g.setLineDash([2,4]);g.beginPath();g.moveTo(sx(xv),box.t);g.lineTo(sx(xv),box2.t+box2.h);g.stroke();g.setLineDash([]);
+    const fv=o.f(xv);g.fillStyle=css('--over');g.beginPath();g.arc(t2.sx(xv),t2.sy(fv),5.5,0,7);g.fill();}
+  // Text
+  const n=document.getElementById('n2b');n.hidden=false;
+  const P=(i)=>(ex(xs[i],2)&&ex(ys[i],3)?'':'≈ ')+'('+de(xs[i],2)+' | '+de(ys[i],3)+')';
+  document.getElementById('bf').disabled=bk>=N;document.getElementById('bf10').disabled=bk>=N;document.getElementById('bf100').disabled=bk>=N;document.getElementById('be').disabled=bk>=N;document.getElementById('bb').disabled=bk<=0;
+  if(bk===0){n.innerHTML='<b>So entsteht F aus f.</b> Wir starten im Punkt '+P(0)+' auf der Kurve von F + c. An jeder Stelle x sagt f(x), wie steil F dort steigt. Wir gehen also von x = '+de(x0,2)+' um h = '+de(hh,2)+' nach rechts und steigen dabei mit der Steigung f('+de(x0,2)+')'+eq(o.f(x0),3)+de(o.f(x0),3)+'. Klicke auf „Schritt ▶“.';}
+  else{const i=bk-1,m=o.f(xs[i]);
+    const dd=hh>=.5?3:hh>=.1?4:5,sg1=eq(m,3),sg2=(ex(m,3)&&ex(hh*m,dd))?' = ':' ≈ ';
+    n.innerHTML='<b>Schritt '+bk+' von '+N+'.</b> Bei x = '+de(xs[i],2)+' ist die Steigung f('+de(xs[i],2)+')'+sg1+de(m,3)+'. Auf der Breite h = '+de(hh,2)+' wächst der Graph von F deshalb um <b>Δy = h · f(x)'+sg1+de(hh,2)+' · '+(m<0?'('+de(m,3)+')':de(m,3))+sg2+de(hh*m,dd)+'</b>. Das ist genau die Fläche des roten Rechtecks zwischen dem Graphen von f und der x-Achse (Breite h, Höhe f(x)); liegt das Rechteck unter der x-Achse, zählt die Fläche negativ und F fällt. Neuer Punkt: '+P(bk)+'.'
+    +'<br>Bisher: F hat sich von '+ap(ys[0],3)+' auf '+ap(ys[bk],3)+' verändert. Die Änderung '+ap(ys[bk]-ys[0],3)+' ist die Summe aller bisherigen Rechtecke.'
+    +(bk===N?'<br><b>Der Streckenzug folgt dem Graphen von F.</b> Am Ende liegt er bei '+ap(ys[N],3)+', der exakte Wert ist F('+de(xs[N],2)+') + c'+eq(o.F(xs[N])+c,3)+de(o.F(xs[N])+c,3)+'. Wähle ein kleineres h: Dann sind die Rechtecke schmaler, der Streckenzug passt besser zur Kurve, und die Summe der Rechtecke nähert sich der Fläche unter f. So hängen F und f zusammen: <b>F wächst an jeder Stelle so schnell, wie f(x) angibt, und der Zuwachs von F ist die Fläche zwischen f und der x-Achse.</b>':'');}
+}
+f2.onchange=()=>{bk=0;draw2()};c2.oninput=draw2;$('all2').onchange=draw2;
+$('bld').onchange=()=>{bk=0;draw2()};$('bh').onchange=()=>{bk=0;draw2()};
+$('bf').onclick=()=>{bk++;draw2()};$('bf10').onclick=()=>{bk+=10;draw2()};$('bf100').onclick=()=>{bk+=100;draw2()};$('bb').onclick=()=>{bk--;draw2()};$('be').onclick=()=>{bk=1e9;draw2()};
 
-/* ---------- Werkzeug 3: Flächeninhaltsfunktion ---------- */
+/* ---------- Werkzeug 3: Flächeninhaltsfunktion und Hauptsatz ---------- */
 const F3=[
- {t:'Auto v(t) = t + 2, Start bei 0',f:x=>x+2,a:0,b:5,F:x=>x*x/2+2*x,ym:8,Am:25},
- {t:'Zufluss z(t) = 0,1·t², Start bei t = −3',f:x=>.1*x*x,a:-3,b:4,F:x=>x**3/30,ym:2,Am:4},
- {t:'Zufluss z(t) = 0,2·t² + 1, Start bei 0',f:x=>.2*x*x+1,a:0,b:6,F:x=>x**3/15+x,ym:9,Am:24}];
-const f3=$('f3'),x3=$('x3');F3.forEach((o,i)=>f3.add(new Option(o.t,i)));f3.value=0;
+ {t:'Auto v(t) = t + 2, Start bei 0',f:x=>x+2,a:0,b:5,F:x=>x*x/2+2*x+3,Ft:'x²/2 + 2x + 3',ym:8,Am:25},
+ {t:'Zufluss z(t) = 0,1·t², Start bei t = −3',f:x=>.1*x*x,a:-3,b:4,F:x=>x**3/30+2,Ft:'x³/30 + 2',ym:2,Am:4},
+ {t:'Zufluss z(t) = 0,2·t² + 1, Start bei 0',f:x=>.2*x*x+1,a:0,b:6,F:x=>x**3/15+x+3,Ft:'x³/15 + x + 3',ym:9,Am:24}];
+const f3=$('f3');F3.forEach((o,i)=>f3.add(new Option(o.t,i)));f3.value=0;
 function area(o,x){const n=800,w=(x-o.a)/n;let s=0;for(let i=0;i<n;i++){s+=(o.f(o.a+i*w)+o.f(o.a+(i+1)*w))/2;}return s*w;}
-function draw3(){
-  const o=F3[f3.value],x=o.a+(o.b-o.a)*(+x3.value);$('x3v').textContent=de(x,2);
-  const{g,w,h}=setup($('c3'));const gap=34,hh=(h-gap-34)/2;
-  const bx1={l:44,t:10,w:w-60,h:hh},bx2={l:44,t:10+hh+gap,w:w-60,h:hh};
-  const xr=[o.a-(o.b-o.a)*.06,o.b+(o.b-o.a)*.04];
-  const t1=frame(g,bx1,xr,[0,o.ym],{tx:1,ty:o.ym>8?2:1}),t2=frame(g,bx2,xr,[0,o.Am],{tx:1,ty:o.Am>10?5:1});
-  g.beginPath();g.moveTo(t1.sx(o.a),t1.sy(0));const N=240;for(let i=0;i<=N;i++){const xx=o.a+(x-o.a)*i/N;g.lineTo(t1.sx(xx),t1.sy(o.f(xx)));}g.lineTo(t1.sx(x),t1.sy(0));g.closePath();
-  g.fillStyle=css('--under');g.globalAlpha=.35;g.fill();g.globalAlpha=1;
+/* Fläche zwischen Graph und x-Achse von u bis v, Simpson-Regel (für Polynome bis Grad 3 exakt) */
+function simp(f,u,v){if(v<=u)return 0;const n=200,w=(v-u)/n;let s=f(u)+f(v);for(let i=1;i<n;i++)s+=f(u+i*w)*(i%2?4:2);return s*w/3;}
+const Aof=(o,t)=>simp(o.f,o.a,t);
+function shade(g,sx,sy,f,u,v,col,al){const N=160;g.beginPath();g.moveTo(sx(u),sy(0));for(let i=0;i<=N;i++){const x=u+(v-u)*i/N;g.lineTo(sx(x),sy(f(x)));}g.lineTo(sx(v),sy(0));g.closePath();g.fillStyle=col;g.globalAlpha=al;g.fill();g.globalAlpha=1;}
+function tag(g,txt,x,y,col,al,bl,font){g.save();g.fillStyle=col;g.font=font||('600 13px '+FONT);g.textAlign=al||'left';g.textBaseline=bl||'alphabetic';g.fillText(txt,x,y);g.restore();}
+function vline(g,x,y0,y1,col,dash,lw){g.save();g.strokeStyle=col;g.lineWidth=lw||1.2;g.setLineDash(dash||[]);g.beginPath();g.moveTo(x,y0);g.lineTo(x,y1);g.stroke();g.restore();}
+function hline(g,y,x0,x1,col,dash,lw){g.save();g.strokeStyle=col;g.lineWidth=lw||1.2;g.setLineDash(dash||[]);g.beginPath();g.moveTo(x0,y);g.lineTo(x1,y);g.stroke();g.restore();}
+function dot(g,x,y,r,col){g.fillStyle=col;g.beginPath();g.arc(x,y,r,0,7);g.fill();}
+/* zwei übereinanderliegende Zeichenfelder */
+function twoPanels(cv,wide,narrowR,frac){const nar=cv.getBoundingClientRect().width<600;cv.dataset.ratio=nar?narrowR:wide;const{g,w,h}=setup(cv);
+  const topH=Math.round((h-10-34-24)*frac);return{g,w,h,nar,b1:{l:46,t:10,w:w-62,h:topH},b2:{l:46,t:10+topH+34,w:w-62,h:h-(10+topH+34)-24}};}
+function rangeOf(fn,a,b){let lo=1e99,hi=-1e99;for(let i=0;i<=200;i++){const v=fn(a+(b-a)*i/200);lo=Math.min(lo,v);hi=Math.max(hi,v);}return[lo,hi];}
+
+
+let hs=0;
+function lock(){const u=$('unl').checked;$('hs3').disabled=!u;$('hs4').disabled=!u;$('nx2').disabled=!u;$('nx2').textContent=u?'Weiter zu Schritt 3 ▶':'Schritt 3 und 4: nach Aufgabe 7 freischalten';if(!u&&hs>1)hs=1;for(let k=0;k<4;k++){$('st'+(k+1)).hidden=k!==hs;$('hs'+(k+1)).setAttribute('aria-pressed',k===hs);}}
+function setStep(i){hs=i;for(let k=0;k<4;k++){$('st'+(k+1)).hidden=k!==i;$('hs'+(k+1)).setAttribute('aria-pressed',k===i);}draw3();}
+for(let k=0;k<4;k++)$('hs'+(k+1)).onclick=()=>setStep(k);
+document.querySelectorAll('.hs-next').forEach(b=>b.onclick=()=>{if(b.disabled)return;setStep(+b.dataset.to);$('st'+(hs+1)).scrollIntoView({block:'start'});});
+$('unl').onchange=()=>{lock();draw3();};
+/* Schritt 1 */
+function d31(){
+  const o=F3[f3.value],x=o.a+(o.b-o.a)*(+$('x3').value);$('x3v').textContent=de(x,2);
+  const{g,w,h,b1,b2}=twoPanels($('c3'),1.0,1.2,.5);
+  const xr=[o.a-(o.b-o.a)*.06,o.b+(o.b-o.a)*.04],tx=niceStep((o.b-o.a)/6);
+  const t1=frame(g,b1,xr,[0,o.ym],{tx,ty:o.ym>8?2:1}),t2=frame(g,b2,xr,[0,o.Am],{tx,ty:o.Am>10?5:1});
+  shade(g,t1.sx,t1.sy,o.f,o.a,x,css('--under'),.35);
   curve(g,t1.sx,t1.sy,o.f,o.a,o.b,css('--navy'),2.6,xr,[0,o.ym]);
-  g.strokeStyle=css('--over');g.lineWidth=1.5;g.setLineDash([5,4]);g.beginPath();g.moveTo(t1.sx(x),t1.sy(0));g.lineTo(t1.sx(x),t1.sy(o.f(x)));g.stroke();g.setLineDash([]);
-  g.fillStyle=css('--navy');g.font='600 13px '+FONT;g.textAlign='left';g.fillText('f(x)',bx1.l+8,bx1.t+16);g.fillText('A(x)',bx2.l+8,bx2.t+16);
-  curve(g,t2.sx,t2.sy,xx=>area(o,xx),o.a,x,css('--over'),3,xr,[0,o.Am]);
-  const A=area(o,x);g.fillStyle=css('--over');g.beginPath();g.arc(t2.sx(x),t2.sy(A),6,0,7);g.fill();
-  const h2=.01,xa=Math.max(x-h2,o.a),xb=Math.min(x+h2,o.b),S=(area(o,xb)-area(o,xa))/(xb-xa);
-  const ts=(o.b-o.a)*.12;g.strokeStyle=css('--navy');g.lineWidth=2;g.beginPath();g.moveTo(t2.sx(x-ts),t2.sy(A-S*ts));g.lineTo(t2.sx(x+ts),t2.sy(A+S*ts));g.stroke();
-  $('rA').textContent=de(A,3);$('rf').textContent=de(o.f(x),3);$('rS').textContent=de(S,3);
-  const n=$('n3');n.hidden=!$('haupt').checked;
-  if(!n.hidden){const Fx=o.F(x),Fa=o.F(o.a);n.innerHTML='<b>Hauptsatz:</b> F(x) − F(a) = '+de(Fx,3)+' − ('+de(Fa,3)+') = <span class="ok">'+de(Fx-Fa,3)+'</span>, gemessen: A(x) = '+de(A,3)+'. Die Steigung der unteren Kurve stimmt mit f(x) überein, also ist A eine Stammfunktion von f.';}}
-f3.onchange=draw3;x3.oninput=draw3;$('haupt').onchange=draw3;
+  vline(g,t1.sx(x),t1.sy(0),t1.sy(o.f(x)),css('--ink'),[5,4],1.4);
+  tag(g,'a',t1.sx(o.a)+4,t1.sy(0)-6,css('--ink'));tag(g,'x',t1.sx(x)+4,t1.sy(0)-6,css('--ink'));
+  tag(g,'f(x)',b1.l+8,b1.t+16,css('--navy'));tag(g,'A(x) = Fläche von a bis x',b2.l+8,b2.t+16,css('--navy'));
+  curve(g,t2.sx,t2.sy,xx=>Aof(o,xx),o.a,x,css('--under'),3.2,xr,[0,o.Am]);
+  const A=Aof(o,x);dot(g,t2.sx(x),t2.sy(A),6,css('--under'));vline(g,t2.sx(x),t2.sy(0),t2.sy(A),css('--ink'),[5,4],1.2);
+  const e=.01,u=Math.max(x-e,o.a),v=Math.min(x+e,o.b),S=(Aof(o,v)-Aof(o,u))/(v-u),ts=(o.b-o.a)*.12;
+  g.save();g.strokeStyle=css('--navy');g.lineWidth=2;g.beginPath();g.moveTo(t2.sx(x-ts),t2.sy(A-S*ts));g.lineTo(t2.sx(x+ts),t2.sy(A+S*ts));g.stroke();g.restore();
+  $('rA').textContent=de(A,3);$('rf').textContent=de(o.f(x),3);$('rS').textContent=de(S,3);}
+
+/* Schritt 2 */
+function d32(){
+  const o=F3[f3.value],hh=+$('h4').value,L=o.b-o.a,x=o.a+(L-hh)*(+$('x4').value),zoom=$('zm4').checked;
+  $('x4v').textContent=de(x,3);
+  const fx=o.f(x),fxh=o.f(x+hh),Ax=Aof(o,x),Axh=Aof(o,x+hh),dA=Axh-Ax,q=dA/hh;
+  const{g,w,h,nar,b1,b2}=twoPanels($('c4'),1.05,1.3,.5);
+  let xr,yr1,yr2;
+  if(zoom){const hw=Math.max(Math.abs(fxh-fx),.3*hh),m=Math.max(Math.abs(dA),.3*hh);xr=[x-1.5*hh,x+2.5*hh];yr1=[fx-2.5*hw,fx+2.5*hw];yr2=[Ax-m,Ax+2.6*m];}
+  else{xr=[o.a-L*.06,o.b+L*.04];yr1=[0,o.ym];yr2=[0,o.Am];}
+  const stepx=niceStep((xr[1]-xr[0])/6),dec=n=>Math.min(6,Math.max(2,Math.ceil(-Math.log10(n))+1));
+  const t1=frame(g,b1,xr,yr1,{tx:stepx,ty:niceStep((yr1[1]-yr1[0])/5),dec:dec(stepx)}),t2=frame(g,b2,xr,yr2,{tx:stepx,ty:niceStep((yr2[1]-yr2[0])/5),dec:dec(stepx)});
+  // oben: blaue Fläche, roter Streifen, Rechteck
+  g.save();g.beginPath();g.rect(b1.l,b1.t,b1.w,b1.h);g.clip();
+  shade(g,t1.sx,t1.sy,o.f,o.a,x,css('--under'),.3);shade(g,t1.sx,t1.sy,o.f,x,x+hh,css('--over'),.55);
+  g.strokeStyle=css('--ink');g.lineWidth=1.6;g.setLineDash([6,4]);g.strokeRect(t1.sx(x),t1.sy(fx),t1.sx(x+hh)-t1.sx(x),t1.sy(0)-t1.sy(fx));g.setLineDash([]);g.restore();
+  curve(g,t1.sx,t1.sy,o.f,Math.max(o.a,xr[0]),Math.min(o.b,xr[1]),css('--navy'),2.6,xr,yr1);
+  vline(g,t1.sx(x),b1.t,b1.t+b1.h,css('--muted'),[2,4],1);vline(g,t1.sx(x+hh),b1.t,b1.t+b1.h,css('--muted'),[2,4],1);
+  tag(g,'x',t1.sx(x)-4,b1.t+13,css('--ink'),'right');tag(g,'x + h',t1.sx(x+hh)+4,b1.t+13,css('--ink'),'left');
+  tag(g,'f(x)',b1.l+8,b1.t+30,css('--navy'));
+  // unten: Kurve von A, Sekante, Gerade mit Steigung f(x)
+  const a0=Math.max(o.a,xr[0]),a1=Math.min(o.b,xr[1]);
+  curve(g,t2.sx,t2.sy,xx=>Aof(o,xx),a0,a1,css('--under'),3,xr,yr2);
+  g.save();g.beginPath();g.rect(b2.l,b2.t,b2.w,b2.h);g.clip();
+  const tl=zoom?2*hh:L*.14;g.strokeStyle=css('--muted');g.lineWidth=2;g.setLineDash([1,5]);g.lineCap='round';g.beginPath();g.moveTo(t2.sx(x-tl),t2.sy(Ax-fx*tl));g.lineTo(t2.sx(x+tl+hh),t2.sy(Ax+fx*(tl+hh)));g.stroke();g.setLineDash([]);
+  g.strokeStyle=css('--ink');g.lineWidth=2.4;g.beginPath();g.moveTo(t2.sx(x),t2.sy(Ax));g.lineTo(t2.sx(x+hh),t2.sy(Axh));g.stroke();
+  g.restore();
+  dot(g,t2.sx(x),t2.sy(Ax),5.5,css('--ink'));dot(g,t2.sx(x+hh),t2.sy(Axh),5.5,css('--ink'));
+  vline(g,t1.sx(x),b2.t,b2.t+b2.h,css('--muted'),[2,4],1);vline(g,t1.sx(x+hh),b2.t,b2.t+b2.h,css('--muted'),[2,4],1);
+  tag(g,nar?'Kurve von A':'Kurve von A mit Sekante',b2.l+8,b2.t+16,css('--navy'));
+  // Werte; Stellenzahl so, dass auch kleine Streifen nicht als 0 erscheinen
+  const dd=hh>=.1?4:hh>=.01?5:7;
+  $('r4c').textContent=de(q,5);$('r4d').textContent=de(fx,5);
+  const rel=Math.abs(q-fx)/Math.max(Math.abs(fx),1e-9);
+  $('n4a').innerHTML='<b>Für x = '+de(x,3)+' und h = '+de(hh,3)+':</b> Der rote Streifen hat die Fläche ΔA'+eq(dA,dd)+de(dA,dd)+'. Das Rechteck hat die Fläche f(x) · h = '+de(fx,5)+' · '+de(hh,3)+eq(fx*hh,dd)+de(fx*hh,dd)+'. Der Differenzenquotient ist ΔA / h'+eq(q,5)+de(q,5)+', der Funktionswert ist f(x)'+eq(fx,5)+de(fx,5)+'. '
+    +(rel<.002?'<span class="ok">Beide Werte stimmen schon sehr gut überein.</span>':rel<.05?'Beide Werte liegen schon nah beieinander.':'Bei diesem breiten Streifen ändert sich f merklich, die Näherung ist noch grob. Wähle ein kleineres h.');
+  const hs2=[1,.5,.1,.01,.001];
+  $('tb4').innerHTML='<caption>Für deine Stelle x = '+de(x,3)+' (so verhält sich ΔA / h, wenn h kleiner wird; zum Vergleich f(x)'+eq(fx,5)+de(fx,5)+')</caption><thead><tr><th>h</th><th>ΔA / h</th><th>Differenz ΔA / h − f(x)</th></tr></thead><tbody>'
+    +hs2.map(k=>{const qq=(Aof(o,x+k)-Ax)/k;return '<tr><td>'+de(k,3)+'</td><td>'+ap(qq,5)+'</td><td>'+ap(qq-fx,5)+'</td></tr>';}).join('')+'</tbody>';}
+
+/* Schritt 3 */
+function d33(){
+  const o=F3[f3.value],L=o.b-o.a,x=o.a+L*(+$('x5').value);$('x5v').textContent=de(x,2);
+  const Fa=o.F(o.a),Ax=Aof(o,x),Fx=o.F(x),shift=$('sh5').checked;
+  const{g,w,h,b1,b2}=twoPanels($('c5'),1.05,1.3,.42);
+  const xr=[o.a-L*.06,o.b+L*.04],tx=niceStep(L/6);
+  const[l1,h1]=rangeOf(o.F,o.a,o.b),[l2,h2]=rangeOf(xx=>Aof(o,xx),o.a,o.b);
+  const lo=Math.min(0,l1,l2),hi=Math.max(h1,h2),pad=(hi-lo)*.08,yr2=[lo-pad*(lo<0?1:0),hi+pad];
+  const t1=frame(g,b1,xr,[0,o.ym],{tx,ty:o.ym>8?2:1}),t2=frame(g,b2,xr,yr2,{tx,ty:niceStep((yr2[1]-yr2[0])/5)});
+  shade(g,t1.sx,t1.sy,o.f,o.a,x,css('--under'),.35);curve(g,t1.sx,t1.sy,o.f,o.a,o.b,css('--navy'),2.6,xr,[0,o.ym]);
+  tag(g,'f(x), Fläche A(x) von a bis x',b1.l+8,b1.t+16,css('--navy'));
+  curve(g,t2.sx,t2.sy,o.F,o.a,o.b,css('--ok'),3,xr,yr2);
+  curve(g,t2.sx,t2.sy,xx=>Aof(o,xx),o.a,o.b,css('--under'),1.6,xr,yr2);
+  curve(g,t2.sx,t2.sy,xx=>Aof(o,xx),o.a,x,css('--under'),3.4,xr,yr2);
+  if(shift){g.save();g.setLineDash([2,5]);g.lineCap='round';curve(g,t2.sx,t2.sy,xx=>Aof(o,xx)+Fa,o.a,o.b,css('--ink'),2.4,xr,yr2);g.restore();}
+  tag(g,'grün: F(x)   blau: A(x)'+(shift?'   gepunktet: A(x) + F(a)':''),b2.l+8,b2.t+16,css('--navy'));
+  // senkrechter Abstand F(a) bei a und bei x
+  const bx=(xv,y0,y1,txt,right)=>{vline(g,t2.sx(xv),t2.sy(y0),t2.sy(y1),css('--ink'),[],1.8);[y0,y1].forEach(y=>hline(g,t2.sy(y),t2.sx(xv)-5,t2.sx(xv)+5,css('--ink'),[],1.8));tag(g,txt,t2.sx(xv)+(right?9:-9),(t2.sy(y0)+t2.sy(y1))/2+4,css('--ink'),right?'left':'right');};
+  if(Fa!==0){bx(o.a,0,Fa,'F(a)'+eq(Fa,3)+de(Fa,3),true);bx(x,Ax,Fx,'F(a)',x<o.a+L*.8);}
+  dot(g,t2.sx(x),t2.sy(Fx),5.5,css('--ok'));dot(g,t2.sx(x),t2.sy(Ax),5.5,css('--under'));
+  vline(g,t1.sx(x),t1.sy(0),t1.sy(o.f(x)),css('--ink'),[5,4],1.4);
+  $('r5a').textContent=de(Ax,4);$('r5b').textContent=de(Fx,4);$('r5c').textContent=de(Fa,4);$('r5d').textContent=de(Fx-Fa,4);
+  $('n5').innerHTML='<b>Gegebene Stammfunktion: F(x) = '+o.Ft+'.</b> Bei a hat sie den Wert F(a)'+eq(Fa,4)+de(Fa,4)+', also nicht 0; darum liegt ihr Graph höher als der von A. <b>Für x = '+de(x,2)+':</b> Die Flächenfunktion hat den Wert A(x)'+eq(Ax,4)+de(Ax,4)+', die Stammfunktion F(x)'+eq(Fx,4)+de(Fx,4)+'. Die Differenz F(x) − F(a)'+eq(Fx-Fa,4)+de(Fx-Fa,4)+' stimmt mit A(x) überein.'
+    +' Der senkrechte Abstand der beiden Kurven ist an jeder Stelle F(a). Schiebt man A um F(a) nach oben, liegt es genau auf F.';}
+
+/* Schritt 4 */
+function d34(){
+  const o=F3[f3.value],L=o.b-o.a;
+  let u=+$('a6').value,v=+$('b6').value;if(v<u+.05){v=Math.min(1,u+.05);$('b6').value=v;if(v<u+.05){u=v-.05;$('a6').value=u;}}
+  const a=o.a+L*u,b=o.a+L*v,c=+$('k6').value;
+  $('a6v').textContent=de(a,2);$('b6v').textContent=de(b,2);$('k6v').textContent=de(c,1);
+  const I=simp(o.f,a,b),Fa=o.F(a)+c,Fb=o.F(b)+c;
+  const{g,w,h,b1,b2}=twoPanels($('c6'),1.05,1.3,.42);
+  const xr=[o.a-L*.06,o.b+L*.04],tx=niceStep(L/6);
+  const[l1,h1]=rangeOf(xx=>o.F(xx)+c,o.a,o.b),lo=Math.min(0,l1),hi=Math.max(0,h1),pad=(hi-lo)*.1,yr2=[lo-pad,hi+pad];
+  const t1=frame(g,b1,xr,[0,o.ym],{tx,ty:o.ym>8?2:1}),t2=frame(g,b2,xr,yr2,{tx,ty:niceStep((yr2[1]-yr2[0])/5)});
+  shade(g,t1.sx,t1.sy,o.f,a,b,css('--under'),.4);curve(g,t1.sx,t1.sy,o.f,o.a,o.b,css('--navy'),2.6,xr,[0,o.ym]);
+  tag(g,'f(x), Fläche I zwischen a und b',b1.l+8,b1.t+16,css('--navy'));
+  const mid=(a+b)/2;tag(g,'I',t1.sx(mid),t1.sy(o.f(mid)/2)+6,css('--ink'),'center','alphabetic','700 17px '+FONT);
+  curve(g,t2.sx,t2.sy,xx=>o.F(xx)+c,o.a,o.b,css('--ok'),3,xr,yr2);
+  tag(g,'F(x) + c',b2.l+8,b2.t+16,css('--navy'));
+  [a,b].forEach(xv=>{vline(g,t1.sx(xv),b1.t,b1.t+b1.h,css('--muted'),[2,4],1);vline(g,t2.sx(xv),b2.t,b2.t+b2.h,css('--muted'),[2,4],1);});
+  tag(g,'a',t1.sx(a)-4,b1.t+b1.h-6,css('--ink'),'right');tag(g,'b',t1.sx(b)+4,b1.t+b1.h-6,css('--ink'),'left');
+  hline(g,t2.sy(Fa),t2.sx(a),t2.sx(b),css('--ink'),[6,4],1.6);
+  vline(g,t2.sx(b),t2.sy(Fa),t2.sy(Fb),css('--over'),[],4);
+  dot(g,t2.sx(a),t2.sy(Fa),5.5,css('--ink'));dot(g,t2.sx(b),t2.sy(Fb),5.5,css('--ink'));
+  tag(g,'F(b) − F(a)',t2.sx(b)+(v<.8?10:-10),(t2.sy(Fa)+t2.sy(Fb))/2+4,css('--over'),v<.8?'left':'right');
+  $('r6a').textContent=de(I,5);$('r6b').textContent=de(Fa,5);$('r6c').textContent=de(Fb,5);$('r6d').textContent=de(Fb-Fa,5);
+  $('n6').innerHTML='<b>Stammfunktion: F(x) = '+o.Ft+', dazu die Konstante c.</b> <b>Ergebnis für a = '+de(a,2)+' und b = '+de(b,2)+':</b> Die Fläche ist I'+eq(I,5)+de(I,5)+'. Mit der Stammfunktion F + c rechnet man (F(b) + c) − (F(a) + c) = '+de(Fb,5)+' − '+(Fa<0?'('+de(Fa,5)+')':de(Fa,5))+((ex(Fb,5)&&ex(Fa,5)&&ex(Fb-Fa,5))?' = ':' ≈ ')+de(Fb-Fa,5)+'. '
+    +'Beide Wege stimmen '+(Math.abs(I-(Fb-Fa))<1e-6?'<span class="ok">überein</span>':'fast überein')+'. Verändere c: Die ganze grüne Kurve wandert nach oben oder unten, der rote Höhenunterschied bleibt gleich, weil c in F(b) + c und in F(a) + c steckt und bei der Differenz wegfällt.';}
+
+function draw3(){[d31,d32,d33,d34][hs]();}
+f3.onchange=draw3;['x3','x4','x5','a6','b6','k6'].forEach(i=>$(i).oninput=draw3);$('h4').onchange=draw3;$('zm4').onchange=draw3;$('sh5').onchange=draw3;
+lock();
 
 /* ---------- Schieberegler bei Aufgabe 2: Tank ---------- */
 const oT={f:x=>.2*x*x+1,a:0,b:6,F:x=>x**3/15+x,ym:9,xm:6.4};
@@ -681,7 +970,21 @@ function drawS(){
   if(!n.hidden){const c=-o.F(o.a);n.innerHTML='<b>Prüfung:</b> F(x) = x³/30 = '+de(o.F(x),3)+'. Mit c = '+de(c,2)+' ergibt F(x) + c = <span class="ok">'+de(o.F(x)+c,3)+'</span>, gemessen: A(x) = '+de(A,3)+'. Der leere Tank bei t = −3 legt c fest: A(−3) = 0.';}}
 xS.oninput=drawS;$('hS').oninput=drawS;$('traceS').onchange=drawS;$('hauptS').onchange=drawS;$('stripS').onchange=drawS;
 
-function redraw(){draw1();drawT();draw2();draw3();drawS();}
+
+/* ---------- Nachrechnen für x² auf [0; 2] ---------- */
+const nN=$('nN'),eN=$('eN');
+function drawN(){
+  const n=+nN.value,eps=+eN.value,q=1/n,U=8/6*(1-q)*(2-q),O=8/6*(1+q)*(2+q),I=8/3,pc=v=>(v/8*100)+'%';
+  $('nNv').textContent=n;$('rUN').textContent=de(U,4);$('rON').textContent=de(O,4);$('rDN').textContent=de(O-U,4);
+  $('sbuN').style.width=pc(U);$('sbrN').style.left=pc(U);$('sbrN').style.width='max(2px,'+pc(O-U)+')';$('sbiN').style.left='calc('+pc(I)+' - 1px)';
+  [U,O-U,O].forEach((v,j)=>{$('sbk'+(j+1)).textContent=de(v,4);$('sbe'+(j+1)).textContent=ex(v,4)?'=':'≈';});
+  const n0=Math.floor(8/eps+1e-9)+1;
+  $('pN').innerHTML='<b>Für dein n = '+n+':</b> U<sub>'+n+'</sub> = 8/6 · '+(n-1)+'/'+n+' · '+(2*n-1)+'/'+n+eq(U,4)+de(U,4)+' und O<sub>'+n+'</sub> = 8/6 · '+(n+1)+'/'+n+' · '+(2*n+1)+'/'+n+eq(O,4)+de(O,4)+'. Der Unterschied ist O<sub>n</sub> − U<sub>n</sub> = 8/'+n+eq(8/n,4)+de(8/n,4)+'. '
+   +'<b>Zu ε = '+de(eps,3)+':</b> Aus 8/n &lt; ε folgt n &gt; 8 : '+de(eps,3)+' = '+de(8/eps,0)+', also n₀ = '+n0+'. '+(n>=n0?'<span class="ok">Für dein n liegen U<sub>n</sub> und O<sub>n</sub> bereits im Streifen I ± ε.</span>':'Für dein n ist 8/n noch größer als ε; erhöhe n.');
+  const box=$('nNc');box.innerHTML='';[4,10,50,200].forEach(v=>{const b=document.createElement('button');b.type='button';b.textContent='n = '+v;b.setAttribute('aria-pressed',n===v);b.onclick=()=>{nN.value=v;drawN();};box.appendChild(b);});}
+nN.oninput=drawN;eN.onchange=drawN;
+
+function redraw(){draw1();drawT();drawN();draw2();draw3();drawS();}
 let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(redraw,80)});
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change',redraw);
 new MutationObserver(redraw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
