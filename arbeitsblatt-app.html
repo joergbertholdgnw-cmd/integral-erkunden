@@ -118,6 +118,13 @@ ul.l li{margin-bottom:4px}
 .sb-u{left:0;background:color-mix(in srgb,var(--under) 55%,transparent)}.sb-r{background:color-mix(in srgb,var(--over) 60%,transparent)}.sb-i{top:-6px!important;bottom:-6px!important;width:3px;background:var(--ok)}
 .sb-lab{display:flex;flex-wrap:wrap;gap:4px 12px;justify-content:space-between;font:.8rem var(--sans);color:var(--muted)}
 .chips button:disabled,.hs-steps button:disabled,.hs-next:disabled{opacity:.45;cursor:default}
+details.more{margin:10px 0 0}details.more>summary{cursor:pointer;font:600 .95rem var(--sans);color:var(--navy);padding:8px 0;min-height:44px;display:flex;align-items:center}details.more>summary::before{content:'▸';margin-right:8px;font-size:.9em}details.more[open]>summary::before{content:'▾'}
+.wortspeicher{font:.88rem var(--sans);color:var(--muted);margin:4px 0 8px}
+.t input.right{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 15%,transparent)}.t input.wrong{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 12%,transparent)}
+.check{min-height:44px}.check input[type=checkbox]{width:22px;height:22px;flex:0 0 auto}
+.chips button{min-height:40px;padding:8px 14px}.hs-next{min-height:44px}
+input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px;height:28px}input[type=range]::-moz-range-thumb{width:28px;height:28px}
+.sl-pm{display:flex;gap:8px;margin-top:4px}.sl-pm button{font:600 1rem var(--sans);min-width:44px;min-height:40px;border:1px solid var(--line);background:var(--card);color:var(--navy);border-radius:999px;cursor:pointer}
 </style>
 </head>
 <body>
@@ -140,7 +147,7 @@ ul.l li{margin-bottom:4px}
   <p><b>Phase 1 · Flächen mit Rechtecken einfangen.</b> Du näherst Flächeninhalte durch Rechtecke an und findest das <b>bestimmte Integral</b>.</p>
   <p><b>Phase 2 · Rückwärts ableiten.</b> Du suchst zu einer Steigungsfunktion die Funktion selbst: die <b>Stammfunktion</b>.</p>
   <p><b>Phase 3 · Beides verbinden.</b> Du entdeckst, warum Flächeninhalt und Stammfunktion zusammengehören: der <b>Hauptsatz</b>.</p>
-  <p style="font-style:italic;font-size:.92rem">Deine Eingaben werden in diesem Browser gespeichert. Nichts wird an einen Server gesendet.</p>
+  <p style="font-style:italic;font-size:.92rem">Deine Eingaben bleiben in diesem Browser gespeichert und werden nicht verschickt. Auf geteilten Geräten am Ende „Meine Eingaben löschen“ drücken. Zum Abgeben: drucken oder als PDF speichern. Zum Ausprobieren mit ausführlichen Begründungen gibt es die App <a href="./">„Von der Summe zum Integral“</a>.</p>
 </div>
 
 <!-- ============ EINSTIEG ============ -->
@@ -175,7 +182,7 @@ ul.l li{margin-bottom:4px}
 
 <h3>Aufgabe 1 · Unter- und Obersumme bei einer linearen Funktion</h3>
 <div class="task">
-  <div class="q"><b>a)</b><span>Skizziere den Graphen von v im Intervall [0; 4] (Wähle im Werkzeug „f(x) = 0,5·x + 2“). Berechne den Flächeninhalt zwischen Graph und t-Achse mit der Trapezformel. Was bedeutet dieser Wert im Sachzusammenhang?</span></div>
+  <div class="q"><b>a)</b><span>Zeichne den Graphen von v im Intervall [0; 4] ins Heft (zwei Punkte genügen; im Werkzeug ist „v(t) = 0,5·t + 2“ schon eingestellt). Berechne den Flächeninhalt zwischen Graph und t-Achse mit der Trapezformel. Was bedeutet dieser Wert im Sachzusammenhang?</span></div>
   <textarea data-save="a1a" aria-label="Antwort Aufgabe 1 a"></textarea>
   <div class="sol teacher"><b class="l">Lösung</b>A = (2 + 4)/2 · 4 = 12. Der Wert ist der zurückgelegte Weg: 12 m.</div>
   <div class="q"><b>b)</b><span>Du darfst nur Rechtecke verwenden. Teile [0; 4] in n = 4 Streifen der Breite 1 s. Für die <b>Untersumme</b> U<sub>4</sub> nimmst du als Höhe den kleineren, für die <b>Obersumme</b> O<sub>4</sub> den größeren Funktionswert eines Streifens. Berechne beide Summen.</span></div>
@@ -198,7 +205,8 @@ ul.l li{margin-bottom:4px}
     <div><label class="l" for="nT">Anzahl der Streifen n = <span class="val" id="nTv">6</span> (Breite <span class="val" id="wT">1</span> min)</label>
       <input type="range" id="nT" min="1" max="600" value="6"><div class="chips" id="nTc"></div></div>
     <div><label class="check"><input type="checkbox" id="showET"> Grenzwert anzeigen (erst nach deiner Schätzung)</label>
-      <button class="btn" type="button" id="takeT" style="margin-top:8px">Werte in die Tabelle eintragen</button>
+      <button class="btn" type="button" id="takeT" style="margin-top:8px">Werte für dieses n zum Kontrollieren eintragen</button>
+      <button class="btn" type="button" id="checkT" style="margin-top:8px">Meine Werte in der Tabelle prüfen</button>
       <div id="takeFb" role="status" style="font:.85rem var(--sans);color:var(--muted);min-height:1.2em;margin-top:4px"></div></div>
   </div>
   <canvas id="cT" width="1600" height="720" role="img" aria-label="Zufluss z(t) mit Rechtecken für Unter- und Obersumme"></canvas>
@@ -231,14 +239,16 @@ ul.l li{margin-bottom:4px}
   <div class="t">Merke 1 · Das bestimmte Integral</div>
   <p>Ist f stetig auf [a; b] und f(x) ≥ 0, dann streben Untersumme U<sub>n</sub> und Obersumme O<sub>n</sub> für n → ∞ gegen <input class="blank" data-save="m1a" data-ans="denselben|gemeinsamen|den gleichen|selben" aria-label="Lücke 1"> Grenzwert. Diesen Grenzwert nennt man das <input class="blank" data-save="m1b" data-ans="bestimmte|bestimmtes" aria-label="Lücke 2"> Integral von f in den Grenzen a und b:</p>
   <div class="eq">∫<sub>a</sub><sup>b</sup> f(x) dx = lim<sub>n→∞</sub> U<sub>n</sub> = lim<sub>n→∞</sub> O<sub>n</sub></div>
-  <p>Er gibt den <input class="blank" data-save="m1c" data-ans="flächeninhalt|inhalt|flaecheninhalt" aria-label="Lücke 3"> der Fläche zwischen dem Graphen von f und der x-Achse an. Dabei sind a und b die Integrationsgrenzen und f ist der Integrand.</p>
-  <p><b>Zum Zeichen:</b> ∫ ist ein gestrecktes S für „Summe“. dx steht für die schmale Streifenbreite Δx. ∫ f(x) dx ist also die Summe aller Streifen f(x)·Δx, wenn die Streifen immer schmaler werden.</p>
+  <p>Für f(x) ≥ 0 gibt er den <input class="blank" data-save="m1c" data-ans="flächeninhalt|inhalt|flaecheninhalt" aria-label="Lücke 3"> der Fläche zwischen dem Graphen von f und der x-Achse an. Dabei sind a und b die Integrationsgrenzen und f ist der Integrand (die Funktion, die integriert wird).</p>
+  <p><b>Zum Zeichen (Merkhilfe, keine Definition):</b> ∫ erinnert an „Summe“, f(x)·dx an „Höhe mal sehr schmale Breite“. Gemeint ist der Grenzwert der Rechtecksummen.</p>
   <p><b>Im Sachzusammenhang:</b> Ist f eine Änderungsrate (z. B. Zufluss in m³/min), dann gibt das Integral die <b>Gesamtänderung des Bestands</b> an (z. B. die zugeflossene Wassermenge).</p>
+  <p class="wortspeicher"><b>Wortspeicher:</b> gemeinsamen · bestimmte · Inhalt</p>
   <button class="btn" data-check>Prüfen</button>
-  <p class="note" style="font-size:.88rem">Du hast das nur an wachsenden Funktionen beobachtet. Für alle stetigen Funktionen mit f(x) ≥ 0 gilt es auch, das zeigt die Theorie später.</p>
+  <p class="note" style="font-size:.88rem">Du hast das nur an wachsenden Funktionen beobachtet. Es gilt für alle stetigen Funktionen mit f(x) ≥ 0; der Beweis kommt später. Bei fallendem f vertauschen sich links und rechts: Dann liefert die rechte Seite eines Streifens den kleineren Wert.</p>
+  <details class="more"><summary>Selbsttest</summary><p>Stimmt das? ∫<sub>0</sub><sup>4</sup> 2 dx = 8. Begründe mit einem Rechteck. <i>Antwort: Ja, die Fläche unter f(x) = 2 von 0 bis 4 ist ein Rechteck mit Breite 4 und Höhe 2.</i></p></details>
 </div>
 
-<h3>Aufgabe 3 (Zusatz) · Die Differenz O<sub>n</sub> − U<sub>n</sub> berechnen</h3>
+<h3>Aufgabe 3 (★ Zusatz) · Die Differenz O<sub>n</sub> − U<sub>n</sub> berechnen</h3>
 <p>Gegeben ist f(x) = x² im Intervall [1; 5] (im Werkzeug wählbar). Bei n Streifen ist die Breite 4/n und die linken Ränder sind x<sub>i</sub> = 1 + i·4/n.</p>
 <div class="task">
   <div class="q"><b>a)</b><span>Begründe: Bei dieser wachsenden Funktion unterscheiden sich O<sub>n</sub> und U<sub>n</sub> nur um ein einziges Rechteck. Zeige damit O<sub>n</sub> − U<sub>n</sub> = 96/n.</span></div>
@@ -255,7 +265,7 @@ ul.l li{margin-bottom:4px}
   <div class="sol teacher"><b class="l">Lösung</b>n = 4: 30 | 54 | 24; n = 10: 36,64 | 46,24 | 9,6; n = 100: 40,854 | 41,814 | 0,96; n = 1000: 41,285 | 41,381 | 0,096. Grenzwert ≈ 41,3 (exakt 124/3 ≈ 41,33).</div>
 </div>
 
-<h3>Aufgabe 3 (Zusatz, Fortsetzung) · Vom konkreten n zum allgemeinen n</h3>
+<p><b>Aufgabe 3 · Fortsetzung (★ Zusatz): Vom konkreten n zum allgemeinen n</b></p>
 <p>Für f(x) = x² auf [0; 2] kannst du U<sub>n</sub> und O<sub>n</sub> exakt ausrechnen. Rechne zuerst für ein festes n, dann allgemein, und prüfe mit dem Werkzeug.</p>
 <div class="applet" id="apN">
   <div class="ttl">Werkzeug · Nachrechnen für f(x) = x² auf [0; 2]</div>
@@ -280,14 +290,14 @@ ul.l li{margin-bottom:4px}
   <p class="note" id="pN"></p>
 </div>
 <div class="task">
-  <div class="q"><b>a)</b><span>Berechne U<sub>4</sub> und O<sub>4</sub> für f(x) = x² auf [0; 2] von Hand (Streifenbreite 0,5). Gib auch O<sub>4</sub> − U<sub>4</sub> an und erkläre, woher diese Differenz kommt.</span></div>
+  <div class="q"><b>c)</b><span>Berechne U<sub>4</sub> und O<sub>4</sub> für f(x) = x² auf [0; 2] von Hand (Streifenbreite 0,5). Gib auch O<sub>4</sub> − U<sub>4</sub> an und erkläre, woher diese Differenz kommt.</span></div>
   <textarea data-save="a3c" aria-label="Antwort Aufgabe 3 c"></textarea>
   <div class="sol teacher"><b class="l">Lösung</b>U<sub>4</sub> = 0,5 · (0 + 0,25 + 1 + 2,25) = 0,5 · 3,5 = 1,75; O<sub>4</sub> = 0,5 · (0,25 + 1 + 2,25 + 4) = 0,5 · 7,5 = 3,75. Differenz 2 = 0,5 · (f(2) − f(0)) = 0,5 · 4: Es bleibt ein einziges Rechteck der Breite 0,5 und der Höhe f(2) − f(0).</div>
-  <div class="q"><b>b)</b><span>Verallgemeinere auf n Streifen. Mit der Summenformel 1² + 2² + … + m² = m(m+1)(2m+1)/6 gilt U<sub>n</sub> = (2/n)·(2/n)²·[0² + 1² + … + (n−1)²] und O<sub>n</sub> = (2/n)·(2/n)²·[1² + 2² + … + n²]. Zeige U<sub>n</sub> = 8/6 · (1 − 1/n)(2 − 1/n) und O<sub>n</sub> = 8/6 · (1 + 1/n)(2 + 1/n). Prüfe für n = 4.</span></div>
+  <div class="q"><b>d)</b><span>Verallgemeinere auf n Streifen. Mit der Summenformel 1² + 2² + … + m² = m(m+1)(2m+1)/6 gilt U<sub>n</sub> = (2/n)·(2/n)²·[0² + 1² + … + (n−1)²] und O<sub>n</sub> = (2/n)·(2/n)²·[1² + 2² + … + n²]. Zeige U<sub>n</sub> = 8/6 · (1 − 1/n)(2 − 1/n) und O<sub>n</sub> = 8/6 · (1 + 1/n)(2 + 1/n). Prüfe für n = 4.</span></div>
   <textarea data-save="a3d" aria-label="Antwort Aufgabe 3 d"></textarea>
   <details class="tip"><summary>Tipp</summary><p>Es ist (2/n)·(2/n)² = 8/n³. Für U<sub>n</sub> setzt du m = n − 1, für O<sub>n</sub> m = n ein und kürzt durch n³.</p></details>
   <div class="sol teacher"><b class="l">Lösung</b>U<sub>n</sub> = 8/n³ · (n−1)·n·(2n−1)/6 = 8/6 · (n−1)/n · (2n−1)/n = 8/6 · (1 − 1/n)(2 − 1/n); O<sub>n</sub> = 8/n³ · n(n+1)(2n+1)/6 = 8/6 · (1 + 1/n)(2 + 1/n). Probe n = 4: U<sub>4</sub> = 8/6 · 0,75 · 1,75 = 1,75 und O<sub>4</sub> = 8/6 · 1,25 · 2,25 = 3,75.</div>
-  <div class="q"><b>c)</b><span><b>Grenzübergang:</b> Wohin streben U<sub>n</sub> und O<sub>n</sub> für n → ∞? Wie groß muss n mindestens sein, damit beide Summen höchstens ε = 0,01 vom Grenzwert entfernt sind? Nutze O<sub>n</sub> − U<sub>n</sub> = 8/n und prüfe im Werkzeug.</span></div>
+  <div class="q"><b>e)</b><span><b>Grenzübergang:</b> Wohin streben U<sub>n</sub> und O<sub>n</sub> für n → ∞? Wie groß muss n mindestens sein, damit beide Summen höchstens ε = 0,01 vom Grenzwert entfernt sind? Nutze O<sub>n</sub> − U<sub>n</sub> = 8/n und prüfe im Werkzeug. Merke: Zu jedem ε gibt es ein n₀, ab dem alle Werte näher als ε am Grenzwert liegen.</span></div>
   <textarea data-save="a3e" aria-label="Antwort Aufgabe 3 e"></textarea>
   <details class="tip"><summary>Tipp</summary><p>Der Flächeninhalt I liegt zwischen U<sub>n</sub> und O<sub>n</sub>. Keiner der beiden Werte ist weiter von I entfernt als O<sub>n</sub> von U<sub>n</sub>. Es genügt also 8/n &lt; ε.</p></details>
   <div class="sol teacher"><b class="l">Lösung</b>1/n → 0, also (1 ∓ 1/n) → 1 und (2 ∓ 1/n) → 2: beide Summen streben gegen 8/6 · 1 · 2 = 8/3 ≈ 2,6667. Aus 8/n &lt; 0,01 folgt n &gt; 800, also n₀ = 801. „Grenzwert“ heißt: Zu jeder noch so kleinen Toleranz ε gibt es ein n₀, ab dem alle weiteren U<sub>n</sub> und O<sub>n</sub> im Streifen I ± ε liegen; wegen O<sub>n</sub> − U<sub>n</sub> = 8/n bleiben sie dort.</div>
@@ -329,27 +339,33 @@ ul.l li{margin-bottom:4px}
   <div class="q"><b>b)</b><span>Was fällt dir an den Kurven auf? Gib eine Gleichung für F an und prüfe sie durch Ableiten. Warum legt die Steigung allein die Funktion F nicht eindeutig fest?</span></div>
   <textarea data-save="a4b" aria-label="Antwort Aufgabe 4 b"></textarea>
   <div class="sol teacher"><b class="l">Lösung</b>F(x) = x² − 2x + c, F′(x) = 2x − 2 = f(x). Eine Verschiebung in y-Richtung ändert keine Steigung, deshalb ist F nur bis auf die Konstante c bestimmt; ein Startpunkt legt c fest.</div>
-  <div class="q"><b>c)</b><span>Schalte im Werkzeug „Zeigen, wie F aus f entsteht“ ein und baue F für f(x) = 2x − 2 Schritt für Schritt auf: erst mit h = 0,5 bis zum Ende, dann mit h = 0,1 und h = 0,01 (Knopf „+100 Schritte“). Beschreibe, was in jedem Schritt passiert und was sich ändert, wenn h kleiner wird. Warum ist der Zuwachs von F in einem Schritt die Fläche eines Rechtecks unter dem Graphen von f?</span></div>
+  <div class="q"><b>c)</b><span>★ Schalte im Werkzeug „Zeigen, wie F aus f entsteht“ ein und baue F für f(x) = 2x − 2 Schritt für Schritt auf: erst mit h = 0,5 bis zum Ende, dann mit h = 0,1 und h = 0,01 (Knopf „+100 Schritte“). Beschreibe, was in jedem Schritt passiert und was sich ändert, wenn h kleiner wird. Warum ist der Zuwachs von F in einem Schritt die Fläche eines Rechtecks unter dem Graphen von f?</span></div>
   <textarea data-save="a4c" aria-label="Antwort Aufgabe 4 c"></textarea>
+  <details class="tip"><summary>Tipp</summary><p>Lies im Text unter dem Werkzeug mit: Bei jedem Schritt steht die Steigung f(x) und der Zuwachs Δy = h · f(x). Vergleiche den Zuwachs mit dem blauen Rechteck unten.</p></details>
   <div class="sol teacher"><b class="l">Lösung</b>Von einem Startpunkt aus geht man um h nach rechts und steigt mit der Steigung f(x) der aktuellen Stelle: Δy = h · f(x). Das ist die Fläche des Rechtecks mit Breite h und Höhe f(x) unter f (liegt es unter der x-Achse, zählt sie negativ). Der Streckenzug folgt F; bei h = 0,5 endet er bei 12 statt 15, bei h = 0,01 bei 14,94. Je kleiner h, desto besser. Die Summe aller Rechtecke ist die Änderung von F: Hier zeigt sich schon der Zusammenhang von Fläche und Stammfunktion.</div>
 </div>
 
 <h3>Aufgabe 5 · Vermuten und überprüfen</h3>
-<p>Stelle zu jeder Funktion f eine Vermutung für eine Stammfunktion F auf und überprüfe sie durch Ableiten. Das Richtungsfeld im Werkzeug dient zur Kontrolle.</p>
+<p>Stelle zu jeder Funktion f eine Vermutung für eine Stammfunktion F auf und überprüfe sie durch Ableiten. Das Richtungsfeld im Werkzeug dient zur Kontrolle. Pflicht sind die ersten beiden Zeilen, sin(x) und 1/x sind eine ★ Herausforderung (Formelsammlung erlaubt). Beispiel: f(x) = 2x → F(x) = x², Probe: (x²)′ = 2x ✓.</p>
 <div class="task">
   <div class="scroll"><table class="t">
     <tr><th>f(x)</th><th>Vermutung F(x)</th><th>Probe: F′(x) = ?</th></tr>
     <tr><td>2</td><td><input data-save="t5a1" aria-label="F zu 2"></td><td><input data-save="t5b1" aria-label="Probe 1"></td></tr>
     <tr><td>0,3·x²</td><td><input data-save="t5a2" aria-label="F zu 0,3x²"></td><td><input data-save="t5b2" aria-label="Probe 2"></td></tr>
-    <tr><td>sin(x)</td><td><input data-save="t5a3" aria-label="F zu sin"></td><td><input data-save="t5b3" aria-label="Probe 3"></td></tr>
-    <tr><td>1/x (x &gt; 0)</td><td><input data-save="t5a4" aria-label="F zu 1/x"></td><td><input data-save="t5b4" aria-label="Probe 4"></td></tr>
+    <tr><td>★ sin(x)</td><td><input data-save="t5a3" aria-label="F zu sin"></td><td><input data-save="t5b3" aria-label="Probe 3"></td></tr>
+    <tr><td>★ 1/x (x &gt; 0)</td><td><input data-save="t5a4" aria-label="F zu 1/x"></td><td><input data-save="t5b4" aria-label="Probe 4"></td></tr>
   </table></div>
   <div class="sol teacher"><b class="l">Lösung</b>2x + c · 0,1x³ + c · −cos(x) + c · ln(x) + c. Probe jeweils: 2 · 0,3x² · sin(x) · 1/x.</div>
+  <div class="q"><b>b)</b><span>Formuliere aus deinen Ergebnissen eine Regel: Welche Stammfunktion hat f(x) = xⁿ? Warum geht das bei n = −1 nicht?</span></div>
+  <textarea data-save="a5b" aria-label="Antwort Aufgabe 5 b"></textarea>
+  <div class="sol teacher"><b class="l">Lösung</b>F(x) = xⁿ⁺¹/(n + 1) + c. Für n = −1 stünde im Nenner 0; dort braucht man ln(x) (siehe Tabelle).</div>
 </div>
 <div class="merke" data-merke>
   <div class="t">Merke 2 · Stammfunktion</div>
-  <p>Eine Funktion F mit F′(x) = f(x) heißt <input class="blank" data-save="m2a" data-ans="stammfunktion" aria-label="Lücke 1"> von f. Mit F ist auch F(x) + c (c ∈ ℝ) eine Stammfunktion von f. Die Menge aller Stammfunktionen heißt <input class="blank" data-save="m2b" data-ans="unbestimmte|unbestimmtes" aria-label="Lücke 2"> Integral von f.</p>
+  <p>Eine Funktion F mit F′(x) = f(x) heißt <input class="blank" data-save="m2a" data-ans="stammfunktion" aria-label="Lücke 1"> von f. Mit F ist auch F(x) + c (c ∈ ℝ) eine Stammfunktion von f. Die Menge aller Stammfunktionen von f ist {F(x) + c | c ∈ ℝ}. Man schreibt dafür ∫ f(x) dx und nennt es das <input class="blank" data-save="m2b" data-ans="unbestimmte|unbestimmtes" aria-label="Lücke 2"> Integral von f (eine Menge von Funktionen, nicht eine Zahl).</p>
+  <p class="wortspeicher"><b>Wortspeicher:</b> Stammfunktion · unbestimmte</p>
   <button class="btn" data-check>Prüfen</button>
+  <details class="more"><summary>Selbsttest</summary><p>Ist F(x) = x² + 5 auch eine Stammfunktion von f(x) = 2x? <i>Antwort: Ja, F′(x) = 2x. Die 5 ist eine Konstante c.</i></p></details>
 </div>
 </section>
 
@@ -363,7 +379,7 @@ ul.l li{margin-bottom:4px}
   <p class="hs-key" style="font-size:.92rem"><b>Farben in allen vier Schritten:</b> <span class="k-a">■ blau</span> = Flächenfunktion A (Fläche und ihre Kurve), <span class="k-f">■ grün</span> = Stammfunktion F, <span class="k-d">■ rot</span> = Zuwachs oder Höhenunterschied.</p>
   <div class="controls">
     <div><label class="l" for="f3">Funktion f (der Graph liegt nicht unterhalb der x-Achse)</label><select id="f3"></select></div>
-    <div><label class="check"><input type="checkbox" id="unl"> Schritte 3 und 4 freischalten (erst nach Aufgabe 7)</label></div>
+    <div><label class="check"><input type="checkbox" id="unl" disabled> Schritte 3 und 4 freischalten (möglich, sobald du Aufgabe 7 b bearbeitet hast)</label></div>
   </div>
   <div class="chips hs-steps" role="group" aria-label="Schritte zum Hauptsatz">
     <button type="button" id="hs1" aria-pressed="true">1 · Flächenfunktion A</button>
@@ -379,9 +395,9 @@ ul.l li{margin-bottom:4px}
     <div class="read">
       <div class="u"><small>Fläche A(x)</small><b id="rA">–</b></div>
       <div><small>Funktionswert f(x)</small><b id="rf">–</b></div>
-      <div class="o"><small>Steigung der Spur von A bei x (numerisch bestimmt)</small><b id="rS">–</b></div>
+      <div class="o"><small>Steigung der Spur von A bei x (aus Zahlen berechnet)</small><b id="rS">–</b></div>
     </div>
-    <p class="note"><b>Beobachte:</b> A(a) = 0, und A wächst, solange f(x) &gt; 0. Vergleiche „Steigung der Spur von A bei x“ mit „Funktionswert f(x)“. Vermutung: Die Steigung von A an der Stelle x ist f(x).</p>
+    <p class="note"><b>Beobachte:</b> A(a) = 0, und A wächst, solange f(x) &gt; 0. Vergleiche „Steigung der Spur von A bei x“ mit „Funktionswert f(x)“. Was fällt dir auf? Halte es in Aufgabe 6 b fest.</p>
     <p><button type="button" class="btn hs-next" data-to="1">Weiter zu Schritt 2 ▶</button></p>
   </div>
 
@@ -400,12 +416,12 @@ ul.l li{margin-bottom:4px}
     </div>
     <p class="note" id="n4a"></p>
     <table class="gtab" id="tb4"></table>
-    <p class="note"><b>Der Gedanke dahinter</b> (die Beweisidee): Auf dem schmalen Streifen liegt f zwischen seinem kleinsten Wert m und seinem größten Wert M. Also gilt m · h ≤ ΔA ≤ M · h und damit <b>m ≤ ΔA / h ≤ M</b> (dieselbe Unter-/Obersummen-Idee wie in Phase 1). Wird h kleiner, rücken m und M an f(x) heran, weil f stetig ist. ΔA / h ist die Sekantensteigung von A; für h → 0 wird daraus die Tangentensteigung: <b>A′(x) = f(x)</b>. Ein vollständiger Beweis macht diese „Zange“ mit ε und δ genau.</p>
+    <details class="more"><summary>Erst nach Aufgabe 7 d öffnen: Die Beweisidee</summary><p class="note">Auf dem schmalen Streifen liegt f zwischen seinem kleinsten Wert m und seinem größten Wert M. Also gilt m · h ≤ ΔA ≤ M · h und damit <b>m ≤ ΔA / h ≤ M</b> (dieselbe Unter-/Obersummen-Idee wie in Phase 1). Wird h kleiner, rücken m und M an f(x) heran, weil f stetig ist. ΔA / h ist die Sekantensteigung von A; für h → 0 wird daraus die Tangentensteigung: <b>A′(x) = f(x)</b>. Ein vollständiger Beweis macht das „Heranrücken“ mit ε und δ genau.</p></details>
     <p><button type="button" class="btn hs-next" data-to="2" id="nx2">Weiter zu Schritt 3 ▶</button></p>
   </div>
 
   <div id="st3" class="hs" hidden>
-    <p style="font-size:.95rem"><b>Schritt 3 von 4: A und die Stammfunktion F.</b> Eine zweite Stammfunktion F von f ist als Formel gegeben. Beide haben an jeder Stelle die Steigung f(x). Ihre Differenz D = A − F hat dann D′ = f − f = 0 und ist auf einem Intervall konstant. Also unterscheiden sich A und F nur um eine Konstante. <b>Auftrag:</b> Schiebe x und achte auf den senkrechten Abstand der Kurven. Schiebe dann A um F(a) nach oben.</p>
+    <p style="font-size:.95rem"><b>Schritt 3 von 4: A und die Stammfunktion F.</b> Eine zweite Stammfunktion F von f ist als Formel gegeben; A ist die Fläche, die du gesammelt hast. <b>Auftrag:</b> Schiebe x und beobachte den senkrechten Abstand der beiden Kurven. Was fällt dir auf? Schiebe danach A um F(a) nach oben.</p>
     <div class="controls"><div><label class="l" for="x5">Obere Grenze x = <span class="val" id="x5v"></span></label><input type="range" id="x5" min="0" max="1" step="0.001" value="0.6"></div></div>
     <label class="check"><input type="checkbox" id="sh5"> A um F(a) nach oben schieben</label>
     <canvas id="c5" width="1600" height="1000" role="img" aria-label="Oben f mit Fläche von a bis x, unten eine Stammfunktion F und die um F(a) tiefer liegende Flächenfunktion A"></canvas>
@@ -417,7 +433,7 @@ ul.l li{margin-bottom:4px}
       <div class="o"><small>F(x) − F(a)</small><b id="r5d">–</b></div>
     </div>
     <p class="note" id="n5"></p>
-    <p class="note"><b>Der Gedanke dahinter:</b> A(x) = F(x) + c (Differenz konstant). Weil noch keine Fläche gesammelt ist, gilt A(a) = 0, also 0 = F(a) + c und c = −F(a). Damit ist <b>A(x) = F(x) − F(a)</b>. A ist nicht „die“ Stammfunktion, sondern die eine Stammfunktion mit A(a) = 0.</p>
+    <details class="more"><summary>Warum bleibt der Abstand gleich? (zum Aufklappen)</summary><p class="note">A und F haben dieselbe Steigung f(x), ihre Differenz D = A − F hat also D′ = f − f = 0. Eine Funktion mit überall der Steigung 0 ist auf einem Intervall konstant. Also gilt A(x) = F(x) + c. Weil noch keine Fläche gesammelt ist, gilt A(a) = 0, also 0 = F(a) + c und c = −F(a). Damit ist <b>A(x) = F(x) − F(a)</b>. A ist nicht „die“ Stammfunktion, sondern die eine mit A(a) = 0.</p></details>
     <p><button type="button" class="btn hs-next" data-to="3">Weiter zu Schritt 4 ▶</button></p>
   </div>
 
@@ -437,6 +453,7 @@ ul.l li{margin-bottom:4px}
       <div class="o"><small>(F(b) + c) − (F(a) + c)</small><b id="r6d">–</b></div>
     </div>
     <p class="note" id="n6"></p>
+    <details class="more"><summary>Antwort zum Auftrag mit c (zum Aufklappen)</summary><p class="note">Die grüne Kurve wandert nach oben oder unten, der rote Höhenunterschied und die Fläche I bleiben gleich, weil c in F(b) + c und in F(a) + c steckt und bei der Differenz wegfällt.</p></details>
     <p><button type="button" class="btn hs-next" data-to="2">◀ Zurück zu Schritt 3</button></p>
   </div>
 </div>
@@ -456,7 +473,7 @@ ul.l li{margin-bottom:4px}
 </div>
 
 <h3>Aufgabe 7 · Die Flächeninhaltsfunktion experimentell erkunden</h3>
-<p>Ein Regenwassertank ist bei t = −3 (in Minuten, t = 0 ist 12:00 Uhr) leer. Der Zufluss ist z(t) = 0,1·t² in m³/min. A(x) ist die Wassermenge, die seit t = −3 zugeflossen ist, also der Füllstand zur Zeit x. Ziehe unten den Zeitpunkt x von −3 nach rechts. Die Spur zeigt A(x).</p>
+<p>Ein Regenwassertank ist bei t = −3 (in Minuten, t = 0 ist 12:00 Uhr) leer. Der Zufluss ist z(t) = 0,1·t² in m³/min. A(x) ist die Wassermenge, die seit t = −3 zugeflossen ist, also die Wassermenge im Tank zur Zeit x. Ziehe unten den Zeitpunkt x von −3 nach rechts. Die Spur zeigt A(x).</p>
 <div class="applet" id="apS">
   <div class="ttl">Schieberegler · Regenwassertank, Zufluss z(t) = 0,1·t²</div>
   <div class="controls">
@@ -466,12 +483,12 @@ ul.l li{margin-bottom:4px}
       <label class="check"><input type="checkbox" id="stripS"> Schmalen Streifen einblenden (für Teil d)</label>
       <label class="l" for="hS" style="margin-top:4px">Streifenbreite h = <span class="val" id="hSv">0,5</span> min</label><input type="range" id="hS" min="0.02" max="1" step="0.01" value="0.5"></div>
   </div>
-  <canvas id="cS" width="1600" height="1000" role="img" aria-label="Zufluss mit Fläche und darunter der Füllstand"></canvas>
+  <canvas id="cS" width="1600" height="1000" role="img" aria-label="Zufluss mit Fläche und darunter die Wassermenge im Tank"></canvas>
   <div class="tankrow">
-    <div class="tank"><div class="vessel"><div class="lvl" id="lvlS"></div></div><span>Füllstand</span></div>
+    <div class="tank"><div class="vessel"><div class="lvl" id="lvlS"></div></div><span>Wassermenge</span></div>
     <div class="read">
       <div><small>Zufluss z(x) (m³/min)</small><b id="rZS">–</b></div>
-      <div class="u"><small>Füllstand A(x) (m³)</small><b id="rAS">–</b></div>
+      <div class="u"><small>Wassermenge A(x) (m³)</small><b id="rAS">–</b></div>
       <div class="o"><small>Steigung von A bei x</small><b id="rSS">–</b></div>
     </div>
   </div>
@@ -479,9 +496,9 @@ ul.l li{margin-bottom:4px}
   <p class="note" id="nS2" hidden></p>
 </div>
 <div class="task">
-  <div class="q"><b>a)</b><span>Sage voraus, wie der Füllstand A(x) verlaufen wird, bevor du den Regler bewegst. Beschreibe dann den Verlauf: Wo füllt sich der Tank am langsamsten, wo am schnellsten? Vergleiche mit dem Graphen von f.</span></div>
+  <div class="q"><b>a)</b><span>Sage voraus, wie die Wassermenge A(x) verlaufen wird, bevor du den Regler bewegst. Beschreibe dann den Verlauf: Wo füllt sich der Tank am langsamsten, wo am schnellsten? Vergleiche mit dem Graphen von f.</span></div>
   <textarea data-save="a7a" aria-label="Antwort Aufgabe 7 a"></textarea>
-  <div class="sol teacher"><b class="l">Lösung</b>Der Füllstand startet bei 0 und wächst, da z ≥ 0. Bei t = 0 ist der Zufluss 0, dort ist A am flachsten (waagerechte Tangente). Am schnellsten füllt sich der Tank, wo z am größten ist (rechter Rand).</div>
+  <div class="sol teacher"><b class="l">Lösung</b>Die Wassermenge startet bei 0 und wächst, da z ≥ 0. Bei t = 0 ist der Zufluss 0, dort ist A am flachsten (waagerechte Tangente). Am schnellsten füllt sich der Tank, wo z am größten ist (rechter Rand).</div>
   <div class="q"><b>b)</b><span>Stelle eine Vermutung zum Zusammenhang zwischen A und f auf. Eine Stammfunktion von f ist F(x) = x³/30. Bestimme die Konstante c so, dass A(x) = F(x) + c gilt.</span></div>
   <textarea data-save="a7b" aria-label="Antwort Aufgabe 7 b"></textarea>
   <details class="tip"><summary>Tipp</summary><p>Setze x = −3 in A(x) = F(x) + c ein. Was muss A(−3) sein, wenn der Tank bei t = −3 leer ist? Löse die Gleichung nach c auf.</p></details>
@@ -489,12 +506,13 @@ ul.l li{margin-bottom:4px}
   <div class="q"><b>c)</b><span>Deute im Sachzusammenhang: Was bedeutet A(3) = 1,8? Was bedeutet c, und warum hängt es vom Startzeitpunkt ab?</span></div>
   <textarea data-save="a7c" aria-label="Antwort Aufgabe 7 c"></textarea>
   <div class="sol teacher"><b class="l">Lösung</b>Bis t = 3 sind 1,8 m³ Wasser zugeflossen. Die Konstante c legt den Anfangsbestand fest: Weil der Tank bei t = −3 leer ist, wird c so gewählt, dass A(−3) = 0 gilt. Bei anderem Startzeitpunkt oder Anfangsbestand verschiebt sich die Kurve um eine Konstante.</div>
-  <div class="q"><b>d)</b><span><b>Warum gilt das immer?</b> Blende im Werkzeug den schmalen Streifen der Breite h ein. Der Füllstand wächst zwischen x und x + h um ΔA = A(x + h) − A(x). Begründe, dass ΔA ungefähr z(x)·h beträgt, und folge daraus A′(x) = z(x). Was passiert mit ΔA/h, wenn h kleiner wird?</span></div>
+  <div class="q"><b>d)</b><span><b>Warum gilt das immer?</b> Blende im Werkzeug den schmalen Streifen der Breite h ein. Die Wassermenge wächst zwischen x und x + h um ΔA = A(x + h) − A(x). Begründe, dass ΔA ungefähr z(x)·h beträgt, und folge daraus A′(x) = z(x). Was passiert mit ΔA/h, wenn h kleiner wird?</span></div>
   <textarea data-save="a7d" aria-label="Antwort Aufgabe 7 d"></textarea>
   <details class="tip"><summary>Tipp</summary><p>Wenn h sehr klein ist, ändert sich der Zufluss in dieser Zeit kaum. Das Wasser, das in der Zeit h zufließt, ist dann fast ein Rechteck mit Höhe z(x) und Breite h.</p></details>
   <div class="sol teacher"><b class="l">Lösung</b>Bei schmalem Streifen ist der Zufluss fast konstant z(x): ΔA ≈ z(x)·h. Teilt man durch h, folgt ΔA/h ≈ z(x). Für h → 0 wird aus dem Differenzenquotienten die Ableitung: A′(x) = z(x). Damit ist A eine Stammfunktion von z, nicht nur bei diesem Beispiel, sondern für jede stetige Zuflussfunktion. Hier schließt sich der Kreis zur Rechteckidee aus Phase 1.</div>
-  <div class="q"><b>e)</b><span>Schalte im Werkzeug „Flächeninhaltsfunktion und Hauptsatz in vier Schritten“ die Schritte 3 und 4 frei (Funktion: Zufluss z(t) = 0,1·t²). Beschreibe, wie sich die Kurve von A und die gegebene Stammfunktion F unterscheiden. Berechne dann mit Schritt 4 die Wassermenge zwischen zwei selbst gewählten Zeitpunkten und prüfe sie mit F(b) − F(a). Wie ändert sich das Ergebnis, wenn du c veränderst?</span></div>
+  <div class="q"><b>e)</b><span>★ Schalte im Werkzeug „Flächeninhaltsfunktion und Hauptsatz in vier Schritten“ die Schritte 3 und 4 frei (Funktion: Zufluss z(t) = 0,1·t²). Beschreibe, wie sich die Kurve von A und die gegebene Stammfunktion F unterscheiden. Berechne dann mit Schritt 4 die Wassermenge zwischen zwei selbst gewählten Zeitpunkten und prüfe sie mit F(b) − F(a). Wie ändert sich das Ergebnis, wenn du c veränderst?</span></div>
   <textarea data-save="a7f" aria-label="Antwort Aufgabe 7 e"></textarea>
+  <details class="tip"><summary>Tipp</summary><p>Vergleiche die Höhe der beiden Kurven bei x = a. Was ist F(a)? Und was ist A(a)?</p></details>
   <div class="sol teacher"><b class="l">Lösung</b>A und F unterscheiden sich um die Konstante F(a): A(x) = F(x) − F(a). Die Wassermenge zwischen a und b ist F(b) − F(a), unabhängig davon, welche Stammfunktion (also welches c) man nimmt, weil c bei der Differenz herausfällt. Die Kurve F + c wandert, der Höhenunterschied bleibt gleich.</div>
 </div>
 
@@ -502,12 +520,14 @@ ul.l li{margin-bottom:4px}
 <p>Formuliere in eigenen Worten: Wie berechnest du ein bestimmtes Integral, wenn du eine Stammfunktion kennst? Vergleiche danach mit dem Merkkasten.</p>
 <textarea data-save="a7e" aria-label="Eigene Formulierung des Hauptsatzes"></textarea>
 <div class="merke" data-merke>
-  <div class="t">Merke 3 · Hauptsatz der Differenzial- und Integralrechnung</div>
+  <div class="t">Merke 3 · Hauptsatz der Differential- und Integralrechnung</div>
   <p>Ist f stetig auf [a; b] und F irgendeine Stammfunktion von f, dann gilt</p>
   <div class="eq"><b>∫<sub>a</sub><sup>b</sup> f(x) dx = F(b) − F(a)</b></div>
-  <p>Die Flächeninhaltsfunktion A(x) ist eine <input class="blank" data-save="m3a" data-ans="stammfunktion" aria-label="Lücke"> von f mit A(a) = 0. Darum genügt es, eine beliebige Stammfunktion an den Grenzen auszuwerten.</p>
-  <p><b>Im Sachzusammenhang:</b> Ist f die Änderungsrate eines Bestands, dann ändert sich der Bestand von a bis b um F(b) − F(a). Die Ableitung des Bestands ist die Änderungsrate.</p>
+  <p>Die Flächeninhaltsfunktion A(x) = ∫<sub>a</sub><sup>x</sup> f(t) dt ist eine <input class="blank" data-save="m3a" data-ans="stammfunktion" aria-label="Lücke"> von f mit A(a) = 0, es gilt A′(x) = <input class="blank" data-save="m3b" data-ans="f(x)|f" aria-label="Lücke 2">. Darum genügt es, eine beliebige Stammfunktion an den Grenzen auszuwerten. A(x) ist eine Funktion (die Integralfunktion), ∫<sub>a</sub><sup>b</sup> f(x) dx ist eine Zahl.</p>
+  <p class="wortspeicher"><b>Wortspeicher:</b> Stammfunktion · f(x)</p>
+  <p><b>Im Sachzusammenhang:</b> Ist f die Änderungsrate eines Bestands, dann ändert sich der Bestand von a bis b um F(b) − F(a). Die Ableitung des Bestands ist die Änderungsrate. Flächenstücke unterhalb der x-Achse zählen negativ: Das Integral ist dann eine Bilanz (siehe Aufgabe 8, Zusatz).</p>
   <button class="btn" data-check>Prüfen</button>
+  <details class="more"><summary>Selbsttest</summary><p>Berechne ∫<sub>1</sub><sup>3</sup> 2x dx. <i>Antwort: F(x) = x², also 3² − 1² = 8.</i></p></details>
 </div>
 </section>
 
@@ -525,9 +545,18 @@ ul.l li{margin-bottom:4px}
   </table></div>
   <div class="sol teacher"><b class="l">Lösung</b>0,25x² + 2x → 4 + 8 = 12 (Aufgabe 1 a) · x³/15 + x → 14,4 + 6 = 20,4 (Aufgabe 2 c) · x³/3 → 125/3 − 1/3 = 124/3 ≈ 41,33 (Aufgabe 3 b).</div>
 </div>
+<h3>Aufgabe 8 (★ Zusatz) · Zufluss und Abfluss</h3>
+<p>Ein Tank enthält zu Beginn 10 m³ Wasser. Zufluss minus Abfluss ist z(t) = 2 − t (in m³/min, 0 ≤ t ≤ 4). Ist z positiv, steigt die Wassermenge, ist z negativ, sinkt sie.</p>
+<div class="task">
+  <div class="q"><b>a)</b><span>Skizziere z im Heft. Wann ist die Wassermenge am größten? Wie viel Wasser ist nach 4 Minuten im Tank? Was bedeutet das Flächenstück unterhalb der t-Achse?</span></div>
+  <textarea data-save="a8z" aria-label="Antwort Aufgabe 8 Zusatz"></textarea>
+  <details class="tip"><summary>Tipp</summary><p>Bestimme eine Stammfunktion von z und berechne ∫ von 0 bis 2 und von 2 bis 4 getrennt. Was fällt bei den Vorzeichen auf?</p></details>
+  <div class="sol teacher"><b class="l">Lösung</b>F(t) = 2t − t²/2. Die Wassermenge ist bei t = 2 am größten (z wechselt das Vorzeichen). ∫<sub>0</sub><sup>2</sup> z dt = 2, ∫<sub>2</sub><sup>4</sup> z dt = −2, zusammen 0: Nach 4 Minuten sind wieder 10 m³ im Tank. Das Flächenstück unter der t-Achse zählt negativ und bedeutet Abfluss. Das Integral ist eine Bilanz (Zufluss minus Abfluss), nicht die Summe der Flächeninhalte.</div>
+</div>
 <h3>Aufgabe 9 · Reflexion</h3>
 <p>Erkläre in drei Sätzen, warum man dasselbe Integral einmal als Fläche (Rechtecksummen) und einmal mit einer Stammfunktion berechnen kann. Nutze die Begriffe Flächeninhaltsfunktion, Ableitung und Stammfunktion und deute am Beispiel des Wassertanks: Was ist die Änderungsrate, was der Bestand?</p>
 <div class="task">
+  <details class="more"><summary>Satzanfänge als Hilfe</summary><p>„Das Integral ist …“ · „Wenn man die rechte Grenze wandern lässt, entsteht …“ · „Das passt zusammen, weil …“ · „Im Tank-Beispiel ist die Änderungsrate …, der Bestand …“. Frage zum Schluss: Was ist der Unterschied zwischen A(x) und A(3)?</p></details>
   <textarea data-save="a9" aria-label="Antwort Aufgabe 9" style="min-height:120px"></textarea>
   <div class="sol teacher"><b class="l">Erwartungshorizont</b>Das Integral ist der Grenzwert von Rechtecksummen und damit der Flächeninhalt. Lässt man die rechte Grenze wandern, entsteht die Flächeninhaltsfunktion A(x), deren Ableitung f(x) ist; A ist also eine Stammfunktion von f. Zwei Stammfunktionen unterscheiden sich nur um eine Konstante, deshalb liefert F(b) − F(a) denselben Wert wie die Fläche. Im Tank-Beispiel: Der Zufluss ist die Änderungsrate, die Wassermenge im Tank der Bestand; der Bestand wächst in jedem Moment genau so schnell, wie der Zufluss angibt.</div>
 </div>
@@ -545,7 +574,7 @@ ul.l li{margin-bottom:4px}
  <tr><td>55–80</td><td>Phase 3</td><td>Aufgabe 6, 7, Merke 3</td><td>PA, Plenum</td></tr>
  <tr><td>80–90</td><td>Abschluss</td><td>Aufgabe 8, 9 (9 auch Hausaufgabe)</td><td>EA</td></tr>
 </table></div>
-<p>Aufgabe 3 ist Zusatz für schnelle Paare. Der Plan ist dicht (siehe Einordnung unten).</p>
+<p>Zusatz (★) für schnelle Paare: Aufgabe 3, 4 c, 7 e, 8. Das Vier-Schritte-Werkzeug in Phase 3 wird erst nach Aufgabe 7 b freigeschaltet (Vorhersage und Beobachtung zuerst, Beweisidee nach Aufgabe 7 d). Der Plan ist dicht: Bei Zeitnot Aufgabe 6 als Ausblick nehmen und Aufgabe 9 als Hausaufgabe oder Einstieg der Folgestunde geben; die vollständige Begründung des Hauptsatzes kann in der Folgestunde erfolgen.</p>
 
 <h3>Didaktischer Kommentar</h3>
 <ul class="l">
@@ -566,7 +595,8 @@ ul.l li{margin-bottom:4px}
  <li>Hauptsatz als Rechenrezept ohne Begründung; Integral immer als positive Fläche.</li>
 </ul>
 
-<h2>Fachdidaktische Einordnung (Prüfung durch einen Fachseminarleiter)</h2>
+<h2>Fachdidaktische Einordnung</h2>
+<p class="teacher"><i>Stand 4.11.2026: Überarbeitet nach Rückmeldungen eines Schülers und eines Fachberaters. Eingearbeitet: Reihenfolge von Vorhersage und Werkzeug in Phase 3, Bilanz-Aufgabe (8, Zusatz), Selbsttests, Wortspeicher in den Merkkästen, einklappbare Begründungen. Offen: Abgleich mit dem aktuellen Kerncurriculum, eigene Lehrkraft-Version ohne Lösungen im Quelltext.</i></p>
 <h4>Was der aktuellen Diskussion entspricht</h4>
 <ul class="l">
  <li><b>Grundvorstellungen als Leitlinie.</b> Der Entwurf verknüpft die Flächenvorstellung mit der Rekonstruktion von Beständen (Tacho-Einstieg). Das entspricht der Grundvorstellungsorientierung (u. a. Greefrath, Oldenburg, Siller, Ulm &amp; Weigand 2016; Danckwerts &amp; Vogel 2006).</li>
@@ -602,7 +632,7 @@ ul.l li{margin-bottom:4px}
   </div>
   <form id="gate" autocomplete="off"><label class="f" for="code">Code</label><input type="text" id="code" autocomplete="off"><button class="btn" type="submit">Öffnen</button></form>
   <p style="max-width:calc(70ch + 76px)">Hinweis: Die Lehrkraft-Ansicht ist nur durch einen Code verdeckt. Wer den Quelltext der Seite liest, kann die Lösungen trotzdem finden.</p>
-  <p class="stand" style="margin:18px 0 0;font:.8rem var(--sans);color:var(--muted)">Version: 4.11.2026, 13:04 Uhr</p>
+  <p class="stand" style="margin:18px 0 0;font:.8rem var(--sans);color:var(--muted)">Version: 4.11.2026, 13:20 Uhr</p>
 </footer>
 </div>
 
@@ -681,7 +711,7 @@ function draw1(){
   const xr=[-.3,o.xm],yr=[0,o.ym];const{sx,sy}=frame(g,box,xr,yr,{ty:o.ym>10?5:(o.ym>6?2:1)});
   const wd=(o.b-o.a)/n,thin=n<=80,su=$('showU').checked,so=$('showO').checked;g.lineWidth=1;
   for(let i=0;i<n;i++){const x0=o.a+i*wd,x1=x0+wd;
-    if(so){const y=o.f(x1);g.fillStyle=css('--over');g.globalAlpha=.32;g.fillRect(sx(x0),sy(y),sx(x1)-sx(x0)+.6,sy(0)-sy(y));g.globalAlpha=1;if(thin){g.strokeStyle=css('--over');g.strokeRect(sx(x0),sy(y),sx(x1)-sx(x0),sy(0)-sy(y));}}
+    if(so){const y=o.f(x1);g.fillStyle=css('--over');g.globalAlpha=.32;g.fillRect(sx(x0),sy(y),sx(x1)-sx(x0)+.6,sy(0)-sy(y));g.globalAlpha=1;if(thin){g.strokeStyle=css('--over');g.setLineDash([5,3]);g.strokeRect(sx(x0),sy(y),sx(x1)-sx(x0),sy(0)-sy(y));g.setLineDash([]);}}
     if(su){const y=o.f(x0);g.fillStyle=css('--under');g.globalAlpha=.42;g.fillRect(sx(x0),sy(y),sx(x1)-sx(x0)+.6,sy(0)-sy(y));g.globalAlpha=1;if(thin){g.strokeStyle=css('--under');g.strokeRect(sx(x0),sy(y),sx(x1)-sx(x0),sy(0)-sy(y));}}}
   curve(g,sx,sy,o.f,o.a,o.b,css('--navy'),2.6,xr,yr);
   g.fillStyle=css('--muted');g.font='13px '+FONT;g.textAlign='left';g.fillText('x',box.l+box.w-10,sy(0)-8);
@@ -779,7 +809,7 @@ function area(o,x){const n=800,w=(x-o.a)/n;let s=0;for(let i=0;i<n;i++){s+=(o.f(
 function simp(f,u,v){if(v<=u)return 0;const n=200,w=(v-u)/n;let s=f(u)+f(v);for(let i=1;i<n;i++)s+=f(u+i*w)*(i%2?4:2);return s*w/3;}
 const Aof=(o,t)=>simp(o.f,o.a,t);
 function shade(g,sx,sy,f,u,v,col,al){const N=160;g.beginPath();g.moveTo(sx(u),sy(0));for(let i=0;i<=N;i++){const x=u+(v-u)*i/N;g.lineTo(sx(x),sy(f(x)));}g.lineTo(sx(v),sy(0));g.closePath();g.fillStyle=col;g.globalAlpha=al;g.fill();g.globalAlpha=1;}
-function tag(g,txt,x,y,col,al,bl,font){g.save();g.fillStyle=col;g.font=font||('600 13px '+FONT);g.textAlign=al||'left';g.textBaseline=bl||'alphabetic';g.fillText(txt,x,y);g.restore();}
+function tag(g,txt,x,y,col,al,bl,font){g.save();g.font=font||('600 13px '+FONT);g.textAlign=al||'left';g.textBaseline=bl||'alphabetic';g.lineJoin='round';g.lineWidth=4;g.strokeStyle=css('--card');g.strokeText(txt,x,y);g.fillStyle=col;g.fillText(txt,x,y);g.restore();}
 function vline(g,x,y0,y1,col,dash,lw){g.save();g.strokeStyle=col;g.lineWidth=lw||1.2;g.setLineDash(dash||[]);g.beginPath();g.moveTo(x,y0);g.lineTo(x,y1);g.stroke();g.restore();}
 function hline(g,y,x0,x1,col,dash,lw){g.save();g.strokeStyle=col;g.lineWidth=lw||1.2;g.setLineDash(dash||[]);g.beginPath();g.moveTo(x0,y);g.lineTo(x1,y);g.stroke();g.restore();}
 function dot(g,x,y,r,col){g.fillStyle=col;g.beginPath();g.arc(x,y,r,0,7);g.fill();}
@@ -790,11 +820,12 @@ function rangeOf(fn,a,b){let lo=1e99,hi=-1e99;for(let i=0;i<=200;i++){const v=fn
 
 
 let hs=0;
-function lock(){const u=$('unl').checked;$('hs3').disabled=!u;$('hs4').disabled=!u;$('nx2').disabled=!u;$('nx2').textContent=u?'Weiter zu Schritt 3 ▶':'Schritt 3 und 4: nach Aufgabe 7 freischalten';if(!u&&hs>1)hs=1;for(let k=0;k<4;k++){$('st'+(k+1)).hidden=k!==hs;$('hs'+(k+1)).setAttribute('aria-pressed',k===hs);}}
+const a7b=document.querySelector('[data-save="a7b"]');
+function lock(){const ok=a7b.value.trim().length>=20;$('unl').disabled=!ok;if(!ok)$('unl').checked=false;const u=$('unl').checked;$('hs3').disabled=!u;$('hs4').disabled=!u;$('nx2').disabled=!u;$('nx2').textContent=u?'Weiter zu Schritt 3 ▶':'Schritt 3 und 4: nach Aufgabe 7 freischalten';if(!u&&hs>1)hs=1;for(let k=0;k<4;k++){$('st'+(k+1)).hidden=k!==hs;$('hs'+(k+1)).setAttribute('aria-pressed',k===hs);}}
 function setStep(i){hs=i;for(let k=0;k<4;k++){$('st'+(k+1)).hidden=k!==i;$('hs'+(k+1)).setAttribute('aria-pressed',k===i);}draw3();}
 for(let k=0;k<4;k++)$('hs'+(k+1)).onclick=()=>setStep(k);
 document.querySelectorAll('.hs-next').forEach(b=>b.onclick=()=>{if(b.disabled)return;setStep(+b.dataset.to);$('st'+(hs+1)).scrollIntoView({block:'start'});});
-$('unl').onchange=()=>{lock();draw3();};
+$('unl').onchange=()=>{lock();draw3();};a7b.addEventListener('input',lock);
 /* Schritt 1 */
 function d31(){
   const o=F3[f3.value],x=o.a+(o.b-o.a)*(+$('x3').value);$('x3v').textContent=de(x,2);
@@ -900,7 +931,7 @@ function d34(){
   tag(g,'F(b) − F(a)',t2.sx(b)+(v<.8?10:-10),(t2.sy(Fa)+t2.sy(Fb))/2+4,css('--over'),v<.8?'left':'right');
   $('r6a').textContent=de(I,5);$('r6b').textContent=de(Fa,5);$('r6c').textContent=de(Fb,5);$('r6d').textContent=de(Fb-Fa,5);
   $('n6').innerHTML='<b>Stammfunktion: F(x) = '+o.Ft+', dazu die Konstante c.</b> <b>Ergebnis für a = '+de(a,2)+' und b = '+de(b,2)+':</b> Die Fläche ist I'+eq(I,5)+de(I,5)+'. Mit der Stammfunktion F + c rechnet man (F(b) + c) − (F(a) + c) = '+de(Fb,5)+' − '+(Fa<0?'('+de(Fa,5)+')':de(Fa,5))+((ex(Fb,5)&&ex(Fa,5)&&ex(Fb-Fa,5))?' = ':' ≈ ')+de(Fb-Fa,5)+'. '
-    +'Beide Wege stimmen '+(Math.abs(I-(Fb-Fa))<1e-6?'<span class="ok">überein</span>':'fast überein')+'. Verändere c: Die ganze grüne Kurve wandert nach oben oder unten, der rote Höhenunterschied bleibt gleich, weil c in F(b) + c und in F(a) + c steckt und bei der Differenz wegfällt.';}
+    +'Beide Wege stimmen '+(Math.abs(I-(Fb-Fa))<1e-6?'<span class="ok">überein</span>':'fast überein')+'.';}
 
 function draw3(){[d31,d32,d33,d34][hs]();}
 f3.onchange=draw3;['x3','x4','x5','a6','b6','k6'].forEach(i=>$(i).oninput=draw3);$('h4').onchange=draw3;$('zm4').onchange=draw3;$('sh5').onchange=draw3;
@@ -916,7 +947,7 @@ function drawT(){
   const xr=[-.3,o.xm],yr=[0,o.ym];const{sx,sy}=frame(g,box,xr,yr,{ty:2});
   const wd=(o.b-o.a)/n,thin=n<=80;g.lineWidth=1;
   for(let i=0;i<n;i++){const x0=o.a+i*wd,x1=x0+wd;
-    let y=o.f(x1);g.fillStyle=css('--over');g.globalAlpha=.32;g.fillRect(sx(x0),sy(y),sx(x1)-sx(x0)+.6,sy(0)-sy(y));g.globalAlpha=1;if(thin){g.strokeStyle=css('--over');g.strokeRect(sx(x0),sy(y),sx(x1)-sx(x0),sy(0)-sy(y));}
+    let y=o.f(x1);g.fillStyle=css('--over');g.globalAlpha=.32;g.fillRect(sx(x0),sy(y),sx(x1)-sx(x0)+.6,sy(0)-sy(y));g.globalAlpha=1;if(thin){g.strokeStyle=css('--over');g.setLineDash([5,3]);g.strokeRect(sx(x0),sy(y),sx(x1)-sx(x0),sy(0)-sy(y));g.setLineDash([]);}
     y=o.f(x0);g.fillStyle=css('--under');g.globalAlpha=.42;g.fillRect(sx(x0),sy(y),sx(x1)-sx(x0)+.6,sy(0)-sy(y));g.globalAlpha=1;if(thin){g.strokeStyle=css('--under');g.strokeRect(sx(x0),sy(y),sx(x1)-sx(x0),sy(0)-sy(y));}}
   curve(g,sx,sy,o.f,o.a,o.b,css('--navy'),2.6,xr,yr);
   g.fillStyle=css('--muted');g.font='13px '+FONT;g.textAlign='left';g.fillText('t in min',box.l+box.w-48,sy(0)-8);g.fillText('z in m³/min',box.l+6,box.t+14);
@@ -925,12 +956,18 @@ function drawT(){
   $('rET').textContent=$('showET').checked?de(E,4):'verborgen';
   chipsT();}
 nT.oninput=drawT;$('showET').onchange=drawT;
+$('checkT').addEventListener('click',()=>{
+  const fb=$('takeFb');let ok=0,bad=0;
+  Object.entries(colIdx).forEach(([n,k])=>{const[U,O]=sums(oT,+n),vals={u:U,o:O,d:O-U};
+    for(const key of ['u','o','d']){const el=document.querySelector('[data-save="t2'+key+k+'"]');if(!el)continue;const t=el.value.trim().replace(',','.');el.classList.remove('right','wrong');if(!t)continue;
+      const good=Math.abs(parseFloat(t)-vals[key])<=Math.max(.01,Math.abs(vals[key])*.001);el.classList.add(good?'right':'wrong');good?ok++:bad++;}});
+  fb.textContent=ok+bad===0?'Trage zuerst Werte in die Tabelle ein.':'Geprüft: '+ok+' richtig, '+bad+' noch nicht richtig (rote Felder).';});
 $('takeT').addEventListener('click',()=>{
   const n=+nT.value,k=colIdx[n],fb=$('takeFb');
   if(!k){fb.textContent='Stelle n auf 6, 12, 30, 60 oder 600 ein.';return;}
   const[U,O]=sums(oT,n),vals={u:U,o:O,d:O-U};
   for(const key of ['u','o','d']){const el=document.querySelector('[data-save="t2'+key+k+'"]');if(el){el.value=de(vals[key]);el.dispatchEvent(new Event('input'));}}
-  fb.textContent='Eingetragen für n = '+n+'.';setTimeout(()=>{if(fb.textContent.startsWith('Eingetragen'))fb.textContent=''},3000);});
+  fb.textContent='Eingetragen für n = '+n+' (Tabelle weiter unten).';setTimeout(()=>{if(fb.textContent.startsWith('Eingetragen'))fb.textContent=''},3000);});
 
 /* ---------- Schieberegler bei Aufgabe 7: Regenwassertank ---------- */
 const oS={f:x=>.1*x*x,a:-3,b:4,F:x=>x**3/30,ym:2,Am:4};
@@ -945,7 +982,7 @@ function drawS(){
   g.fillStyle=css('--under');g.globalAlpha=.35;g.fill();g.globalAlpha=1;
   curve(g,t1.sx,t1.sy,o.f,o.a,o.b,css('--navy'),2.6,xr,[0,o.ym]);
   g.strokeStyle=css('--over');g.lineWidth=1.5;g.setLineDash([5,4]);g.beginPath();g.moveTo(t1.sx(x),t1.sy(0));g.lineTo(t1.sx(x),t1.sy(o.f(x)));g.stroke();g.setLineDash([]);
-  g.fillStyle=css('--navy');g.font='600 13px '+FONT;g.textAlign='left';g.fillText('Zufluss z(t) in m³/min',bx1.l+8,bx1.t+16);g.fillText('Füllstand A(t) in m³',bx2.l+8,bx2.t+16);
+  g.fillStyle=css('--navy');g.font='600 13px '+FONT;g.textAlign='left';g.fillText('Zufluss z(t) in m³/min',bx1.l+8,bx1.t+16);g.fillText('Wassermenge A(t) in m³',bx2.l+8,bx2.t+16);
   g.fillStyle=css('--muted');g.font='13px '+FONT;g.fillText('t in min',bx2.l+bx2.w-52,t2.sy(0)-8);
   const A=area(o,x);
   const hv=+$('hS').value;$('hSv').textContent=de(hv,2);
@@ -990,6 +1027,14 @@ matchMedia('(prefers-color-scheme: dark)').addEventListener('change',redraw);
 new MutationObserver(redraw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
 document.fonts&&document.fonts.ready.then(redraw);
 redraw();
+/* Plus-/Minus-Knöpfe an den Reglern (Touch) und Ansage geänderter Messwerte */
+[['n1',0],['nT',0],['nN',1],['x3',.025],['x4',.025],['x5',.025],['a6',.025],['b6',.025],['k6',.5],['c2',.5],['xS',.025]].forEach(([id,step])=>{const el=$(id);if(!el)return;
+  const stp=step||Math.max(1,Math.round((+el.max-+el.min)/100));
+  const w=document.createElement('div');w.className='sl-pm';
+  [['−',-1],['+',1]].forEach(([t,d])=>{const b=document.createElement('button');b.type='button';b.textContent=t;b.setAttribute('aria-label',(d<0?'Wert verkleinern: ':'Wert vergrößern: ')+id);
+    b.onclick=()=>{el.value=Math.min(+el.max,Math.max(+el.min,+el.value+d*stp));el.dispatchEvent(new Event('input'));};w.appendChild(b);});
+  el.insertAdjacentElement('afterend',w);});
+document.querySelectorAll('.read').forEach(e=>e.setAttribute('aria-live','polite'));
 /* Navigation: aktuellen Abschnitt hervorheben */
 const links=[...document.querySelectorAll('nav.nav a[href^="#"]')];
 const secs=['einstieg','phase1','phase2','phase3','abschluss'].map($);
