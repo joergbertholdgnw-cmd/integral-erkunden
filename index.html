@@ -292,7 +292,7 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
     <p><button type="button" class="hs-next" data-to="2">◀ Zurück zu Schritt 3</button></p>
   </div>
 </section>
-<p class="stand" style="margin:18px 0 0;font:.8rem var(--sans);color:var(--muted)">Version: 4.11.2026, 15:03 Uhr</p>
+<p class="stand" style="margin:18px 0 0;font:.8rem var(--sans);color:var(--muted)">Version: 4.11.2026, 15:09 Uhr</p>
 </div>
 
 <script>
@@ -410,7 +410,7 @@ function drawG(){
   document.getElementById('gdx').textContent=de(dx,4);document.getElementById('gU').textContent=de(U,4);
   document.getElementById('gO').textContent=de(O,4);document.getElementById('gD').textContent=de(O-U,4);
   document.getElementById('gwhy').innerHTML=slide>.98
-    ?'<b>Die roten Stücke passen genau in eine Säule.</b> Ihre Höhe ist immer f(b) − f(a) = '+de(fb-fa,2)+', ihre Breite Δx = '+de(L,2)+'/n. Also gilt O<sub>n</sub> − U<sub>n</sub> = '+de(fb-fa,2)+' · '+de(L,2)+'/n = '+de((fb-fa)*L,2)+'/n'+eq(O-U,4)+de(O-U,4)+'. Die Höhe bleibt gleich, die Breite wird für n → ∞ beliebig klein. Damit geht der Unterschied gegen 0.'
+    ?'<b>Die roten Stücke passen genau in eine Säule.</b> Ihre Höhe ist immer f(b) − f(a) = f('+de(o.b,2)+') − f('+de(o.a,2)+') = '+de(fb,2)+' − '+de(fa,2)+' = '+de(fb-fa,2)+', ihre Breite ist Δx = (b − a)/n = ('+de(o.b,2)+' − '+de(o.a,2)+')/n = '+de(L,2)+'/n. Also gilt O<sub>n</sub> − U<sub>n</sub> = '+de(fb-fa,2)+' · '+de(L,2)+'/n = '+de((fb-fa)*L,2)+'/n. Für dein n = '+n+' ist das '+de((fb-fa)*L,2)+'/'+n+eq(O-U,4)+de(O-U,4)+'. Die Höhe bleibt gleich, die Breite wird für n → ∞ beliebig klein. Damit geht der Unterschied gegen 0.'
     :'<b>Rot ist der Unterschied O<sub>n</sub> − U<sub>n</sub>.</b> Schiebe die roten Stücke nach rechts: Sie stapeln sich zu einer einzigen Säule. Wie hoch ist sie, und wie breit?';
   // ---- Folgendiagramm ----
   const cv2=document.getElementById('cg2');cv2.dataset.ratio=narrow?.75:.42;const r2=setup(cv2),g2=r2.g;const b2={l:52,t:12,w:r2.w-68,h:r2.h-40};
@@ -438,7 +438,7 @@ function drawG(){
   document.getElementById('geps-note').innerHTML='<b>Warum haben U<sub>n</sub> und O<sub>n</sub> denselben Grenzwert I'+eq(o.I,4)+de(o.I,4)+'?</b> Die Zahlen unten gelten für dein eingestelltes n = '+n+' und ändern sich mit dem Regler.<ol class="steps">'
     +'<li><b>Eingeklemmt.</b> Die Untersumme ist immer zu klein, die Obersumme immer zu groß. Der Flächeninhalt I liegt dazwischen: U<sub>n</sub> ≤ I ≤ O<sub>n</sub>. Für n = '+n+': '+Un+eq(U,4)+de(U,4)+' ≤ I'+eq(o.I,4)+de(o.I,4)+' ≤ '+On+eq(O,4)+de(O,4)+'.</li>'
     +'<li><b>Abstand zu I.</b> Keiner der beiden Werte ist weiter von I entfernt als O<sub>n</sub> von U<sub>n</sub>. Ist also O<sub>n</sub> − U<sub>n</sub> kleiner als ε = '+E+', dann liegen U<sub>n</sub> und O<sub>n</sub> beide im grünen Streifen. Für n = '+n+': '+Dn+eq(O-U,4)+de(O-U,4)+(inside?', das ist kleiner als ε = '+E+'.':', das ist nicht kleiner als ε = '+E+'.')+'</li>'
-    +'<li><b>Ab welchem n?</b> Die rote Säule hat die Höhe f(b) − f(a) = '+de(fb-fa,2)+' und die Breite Δx = (b − a)/n = '+de(L,2)+'/n. Also ist für jedes n: O<sub>n</sub> − U<sub>n</sub> = '+de(fb-fa,2)+' · '+de(L,2)+'/n = '+K+'/n. Für n = '+n+': '+Dn+' = '+de(fb-fa,2)+' · '+de(L,2)+'/'+n+' = '+K+'/'+n+eq(O-U,4)+de(O-U,4)+'. '
+    +'<li><b>Ab welchem n?</b> Die rote Säule hat die Höhe f(b) − f(a) = f('+de(o.b,2)+') − f('+de(o.a,2)+') = '+de(fb,2)+' − '+de(fa,2)+' = '+de(fb-fa,2)+' und die Breite Δx = (b − a)/n = ('+de(o.b,2)+' − '+de(o.a,2)+')/n = '+de(L,2)+'/n. Also ist für jedes n: O<sub>n</sub> − U<sub>n</sub> = '+de(fb-fa,2)+' · '+de(L,2)+'/n = '+K+'/n. Für n = '+n+': '+Dn+' = '+de(fb-fa,2)+' · '+de(L,2)+'/'+n+' = '+K+'/'+n+eq(O-U,4)+de(O-U,4)+'. '
       +'Die Bedingung '+K+'/n &lt; '+E+' gilt für n &gt; '+K+'/'+E+eq((fb-fa)*L/eps,2)+de((fb-fa)*L/eps,2)+', also ab <b>n₀ = '+n0+'</b>. '+(inside?'<span class="ok">Dein n = '+n+' ist mindestens n₀: Beide Werte liegen im Streifen.</span>':'Dein n = '+n+' ist kleiner als n₀ = '+n0+': Beide Werte müssen noch nicht im Streifen liegen.')+'</li>'
     +'<li><b>Was „Grenzwert“ heißt.</b> Wir lassen n immer größer werden (n → ∞) und fragen, ob sich die Werte einer festen Zahl beliebig genau nähern. Geprüft wird so: Jemand legt eine Toleranz ε fest, so klein er will. Wir müssen dann ein n₀ nennen können, ab dem <i>alle</i> weiteren Werte (n₀, n₀ + 1, n₀ + 2, …) im Streifen I ± ε liegen. Für ε = '+E+' ist das n₀ = '+n0+'. Für ein zehnmal kleineres ε = '+de(eps/10,4)+' brauchen wir n₀ = '+(Math.floor((fb-fa)*L/(eps/10)+1e-9)+1)+'. Ein solches n₀ gibt es immer: die erste ganze Zahl über '+K+'/ε. Weil O<sub>n</sub> − U<sub>n</sub> = '+K+'/n mit wachsendem n nur kleiner wird, springt kein späterer Wert wieder aus dem Streifen heraus. Das heißt: U<sub>n</sub> und O<sub>n</sub> haben den Grenzwert I'+eq(o.I,4)+de(o.I,4)+'. Schreibweise: lim<sub>n→∞</sub> U<sub>n</sub> = lim<sub>n→∞</sub> O<sub>n</sub> = I.</li></ol>';
   const tm=document.getElementById('gterm');tm.parentElement.hidden=!o.term;
