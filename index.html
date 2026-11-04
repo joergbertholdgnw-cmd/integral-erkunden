@@ -141,14 +141,20 @@ h2 sub,.note sub{font-size:.75em}
 </section>
 
 <section id="p3" role="tabpanel" aria-labelledby="t3" hidden>
-  <p class="lead">Jeder Strich zeigt die Steigung f(x) an seiner Stelle. Eine Funktion F, deren Graph den Strichen folgt, ist eine Stammfunktion von f. Verschiebe die Kurve mit c.</p>
+  <p class="lead">Jeder Strich zeigt die Steigung f(x) an seiner Stelle. Eine Funktion F, deren Graph den Strichen folgt, ist eine Stammfunktion von f. Verschiebe die Kurve mit c. Unten kannst du Schritt für Schritt verfolgen, wie der Graph von F aus f entsteht.</p>
   <div class="controls">
     <div><label for="f2">Steigungsfunktion f</label><select id="f2"></select></div>
     <div><label for="c2">Konstante c = <span class="val" id="c2v">0</span></label><input type="range" id="c2" min="-3" max="3" step="0.5" value="0">
       <label class="check" style="margin-top:8px"><input type="checkbox" id="all2"> Alle Kurven zeigen</label></div>
   </div>
-  <div class="stage"><canvas id="cvs2" width="1000" height="760" role="img" aria-label="Richtungsfeld mit Stammfunktion"></canvas></div>
+  <div class="controls">
+    <label class="check"><input type="checkbox" id="bld"> Zeigen, wie F aus f entsteht (Schritt für Schritt)</label>
+    <div id="bldc" hidden><label for="bh">Schrittweite h</label><select id="bh"><option value="1">h = 1</option><option value="0.5" selected>h = 0,5</option><option value="0.25">h = 0,25</option><option value="0.1">h = 0,1</option></select>
+      <div class="chips"><button id="bb" type="button">◀ zurück</button><button id="bf" type="button">Schritt ▶</button><button id="be" type="button">bis zum Ende</button></div></div>
+  </div>
+  <div class="stage"><canvas id="cvs2" width="1000" height="760" role="img" aria-label="Richtungsfeld mit Stammfunktion; auf Wunsch darunter der Graph von f und der schrittweise Aufbau von F"></canvas></div>
   <p class="note" id="n2"></p>
+  <p class="note" id="n2b" hidden></p>
 </section>
 
 <section id="p4" role="tabpanel" aria-labelledby="t4" hidden>
@@ -346,28 +352,75 @@ gstack.onchange=()=>{slideTarget=gstack.checked?1:0;animSlide();};
 
 /* ---------- Phase 2 ---------- */
 const F2=[
- {t:'f(x) = 2x − 2',f:x=>2*x-2,F:x=>x*x-2*x,ft:'F(x) = x² − 2x + c',xr:[-3,5],yr:[-4,6]},
- {t:'f(x) = 2',f:x=>2,F:x=>2*x,ft:'F(x) = 2x + c',xr:[-3,5],yr:[-5,7]},
- {t:'f(x) = 0,3·x²',f:x=>.3*x*x,F:x=>.1*x**3,ft:'F(x) = 0,1·x³ + c',xr:[-4,4],yr:[-5,5]},
- {t:'f(x) = sin(x)',f:x=>Math.sin(x),F:x=>-Math.cos(x),ft:'F(x) = −cos(x) + c',xr:[-6.4,6.4],yr:[-4.5,4.5]},
- {t:'f(x) = 1/x  (x > 0)',f:x=>1/x,F:x=>Math.log(x),ft:'F(x) = ln(x) + c',xr:[-.4,6],yr:[-3.2,3.2],pos:true}];
+ {t:'f(x) = 2x − 2',f:x=>2*x-2,F:x=>x*x-2*x,ft:'F(x) = x² − 2x + c',xr:[-3,5],yr:[-4,6],x0:-1},
+ {t:'f(x) = 2',f:x=>2,F:x=>2*x,ft:'F(x) = 2x + c',xr:[-3,5],yr:[-5,7],x0:-2},
+ {t:'f(x) = 0,3·x²',f:x=>.3*x*x,F:x=>.1*x**3,ft:'F(x) = 0,1·x³ + c',xr:[-4,4],yr:[-5,5],x0:-3},
+ {t:'f(x) = sin(x)',f:x=>Math.sin(x),F:x=>-Math.cos(x),ft:'F(x) = −cos(x) + c',xr:[-6.4,6.4],yr:[-4.5,4.5],x0:-6},
+ {t:'f(x) = 1/x  (x > 0)',f:x=>1/x,F:x=>Math.log(x),ft:'F(x) = ln(x) + c',xr:[-.4,6],yr:[-3.2,3.2],pos:true,x0:.5}];
 const f2=document.getElementById('f2'),c2=document.getElementById('c2');F2.forEach((o,i)=>f2.add(new Option(o.t,i)));
+let bk=0;
+const bld=document.getElementById('bld'),bh=document.getElementById('bh');
 function draw2(){
   const o=F2[f2.value],c=+c2.value;document.getElementById('c2v').textContent=de(c,1);
-  const {g,w,h}=setup(document.getElementById('cvs2'));const box={l:40,t:10,w:w-52,h:h-34};
-  const{sx,sy}=frame(g,box,o.xr,o.yr,{tx:o.xr[1]>5.5?1:1,ty:1});
+  const build=bld.checked;document.getElementById('bldc').hidden=!build;
+  const cv=document.getElementById('cvs2');cv.dataset.ratio=build?(cv.getBoundingClientRect().width<600?1.3:1.02):.76;
+  const {g,w,h}=setup(cv);
+  const tot=h-34,topH=build?Math.round((tot-34-18)*.58):tot;
+  const box={l:40,t:10,w:w-52,h:topH};
+  const{sx,sy}=frame(g,box,o.xr,o.yr,{tx:1,ty:1});
   const dx=(o.xr[1]-o.xr[0])/ (box.w/34), dy=(o.yr[1]-o.yr[0])/(box.h/34);
-  g.strokeStyle=css('--muted');g.lineWidth=1.4;g.globalAlpha=.75;g.beginPath();
+  g.strokeStyle=css('--muted');g.lineWidth=1.4;g.globalAlpha=build?.4:.75;g.beginPath();
   const L=13;
   for(let x=o.xr[0]+dx/2;x<o.xr[1];x+=dx){ if(o.pos&&x<=0.05)continue;
     for(let y=o.yr[0]+dy/2;y<o.yr[1];y+=dy){const m=o.f(x);
       const kx=(sx(1)-sx(0)),ky=(sy(0)-sy(1));let vx=kx,vy=-m*ky;const l=Math.hypot(vx,vy);vx=vx/l*L;vy=vy/l*L;
       g.moveTo(sx(x)-vx/2,sy(y)-vy/2);g.lineTo(sx(x)+vx/2,sy(y)+vy/2);}}
   g.stroke();g.globalAlpha=1;
-  if(document.getElementById('all2').checked){for(let k=-3;k<=3;k+=.5){if(k===c)continue;curve(g,sx,sy,x=>o.F(x)+k,o.pos?0.02:o.xr[0],o.xr[1],css('--under'),1.2,o.xr,o.yr);}}
-  curve(g,sx,sy,x=>o.F(x)+c,o.pos?0.02:o.xr[0],o.xr[1],css('--over'),3,o.xr,o.yr);
+  if(document.getElementById('all2').checked&&!build){for(let k=-3;k<=3;k+=.5){if(k===c)continue;curve(g,sx,sy,x=>o.F(x)+k,o.pos?0.02:o.xr[0],o.xr[1],css('--under'),1.2,o.xr,o.yr);}}
+  if(build){g.save();g.globalAlpha=.7;g.setLineDash([6,4]);}
+  curve(g,sx,sy,x=>o.F(x)+c,o.pos?0.02:o.xr[0],o.xr[1],css('--over'),build?2:3,o.xr,o.yr);
+  if(build){g.restore();buildPanels(g,o,c,box,sx,sy,w,h,topH);}
+  else document.getElementById('n2b').hidden=true;
   document.getElementById('n2').innerHTML='<b>'+o.ft.replace('+ c','+ '+(c<0?'('+de(c,1)+')':de(c,1)))+'</b>. Die Ableitung ist <b>'+o.t.replace(/^f\(x\) = /,'')+'</b> für jede Wahl von c. Die Konstante verschiebt die Kurve nach oben oder unten und ändert keine Steigung.';}
-f2.onchange=draw2;c2.oninput=draw2;document.getElementById('all2').onchange=draw2;
+/* Aufbau von F aus f: Streckenzug mit Steigung f(x_i) auf jedem Schritt der Breite h */
+function buildPanels(g,o,c,box,sx,sy,w,h,topH){
+  const hh=+bh.value,x0=o.x0,N=Math.floor((o.xr[1]-x0)/hh+1e-9);bk=Math.max(0,Math.min(bk,N));
+  const xs=[],ys=[o.F(x0)+c];for(let i=0;i<=N;i++)xs.push(x0+i*hh);
+  for(let i=0;i<N;i++)ys.push(ys[i]+hh*o.f(xs[i]));
+  // unteres Feld: f
+  const bt=box.t+topH+34,box2={l:40,t:bt,w:box.w,h:h-bt-24};
+  let lo=0,hi=0;for(let i=0;i<=200;i++){const x=o.xr[0]+(o.xr[1]-o.xr[0])*i/200;if(o.pos&&x<.05)continue;const v=o.f(x);if(isFinite(v)){lo=Math.min(lo,v);hi=Math.max(hi,v);}}
+  lo=Math.max(lo,o.yr[0]);hi=Math.min(hi,o.yr[1]);const pad=(hi-lo)*.12||1;const yrf=[Math.min(lo-pad,-.0),hi+pad];if(yrf[0]>0)yrf[0]=0;
+  const ty=niceStep((yrf[1]-yrf[0])/4),t2=frame(g,box2,o.xr,yrf,{tx:1,ty});
+  g.fillStyle=css('--navy');g.font='600 13px '+FONT;g.textAlign='left';g.textBaseline='alphabetic';
+  g.fillText('F(x) + c: Streckenzug',box.l+8,box.t+16);g.fillText('f(x): Steigung für den nächsten Schritt',box2.l+8,box2.t+16);
+  // Rechtecke unter f (= Zuwachs von F)
+  for(let i=0;i<bk;i++){const last=i===bk-1,top=o.f(xs[i]);
+    g.fillStyle=css(last?'--over':'--under');g.globalAlpha=last?.5:.25;g.fillRect(t2.sx(xs[i]),t2.sy(top),t2.sx(xs[i]+hh)-t2.sx(xs[i]),t2.sy(0)-t2.sy(top));g.globalAlpha=1;
+    g.strokeStyle=css(last?'--over':'--under');g.lineWidth=1;g.strokeRect(t2.sx(xs[i]),t2.sy(top),t2.sx(xs[i]+hh)-t2.sx(xs[i]),t2.sy(0)-t2.sy(top));}
+  curve(g,t2.sx,t2.sy,o.f,o.pos?0.02:o.xr[0],o.xr[1],css('--navy'),2.6,o.xr,yrf);
+  // oberes Feld: Streckenzug
+  g.save();g.beginPath();g.rect(box.l,box.t,box.w,box.h);g.clip();
+  g.strokeStyle=css('--navy');g.lineWidth=2.6;g.lineJoin='round';g.beginPath();g.moveTo(sx(xs[0]),sy(ys[0]));for(let i=1;i<=bk;i++)g.lineTo(sx(xs[i]),sy(ys[i]));g.stroke();
+  g.fillStyle=css('--navy');for(let i=0;i<=bk;i++){g.beginPath();g.arc(sx(xs[i]),sy(ys[i]),i===bk?5.5:3,0,7);g.fill();}
+  if(bk>0){const i=bk-1;g.strokeStyle=css('--ink');g.lineWidth=1.4;g.setLineDash([5,4]);g.beginPath();g.moveTo(sx(xs[i]),sy(ys[i]));g.lineTo(sx(xs[i+1]),sy(ys[i]));g.lineTo(sx(xs[i+1]),sy(ys[i+1]));g.stroke();g.setLineDash([]);}
+  g.restore();
+  // Verbindung: aktuelle Stelle in beiden Feldern
+  if(bk<N){const xv=xs[bk];g.strokeStyle=css('--muted');g.lineWidth=1;g.setLineDash([2,4]);g.beginPath();g.moveTo(sx(xv),box.t);g.lineTo(sx(xv),box2.t+box2.h);g.stroke();g.setLineDash([]);
+    const fv=o.f(xv);g.fillStyle=css('--over');g.beginPath();g.arc(t2.sx(xv),t2.sy(fv),5.5,0,7);g.fill();}
+  // Text
+  const n=document.getElementById('n2b');n.hidden=false;
+  const P=(i)=>'('+de(xs[i],2)+' | '+de(ys[i],3)+')';
+  document.getElementById('bf').disabled=bk>=N;document.getElementById('be').disabled=bk>=N;document.getElementById('bb').disabled=bk<=0;
+  if(bk===0){n.innerHTML='<b>So entsteht F aus f.</b> Wir starten im Punkt '+P(0)+' auf der Kurve von F + c. An jeder Stelle x sagt f(x), wie steil F dort steigt. Wir gehen also von x = '+de(x0,2)+' um h = '+de(hh,2)+' nach rechts und steigen dabei mit der Steigung f('+de(x0,2)+') = '+de(o.f(x0),3)+'. Klicke auf „Schritt ▶“.';}
+  else{const i=bk-1,m=o.f(xs[i]);
+    n.innerHTML='<b>Schritt '+bk+' von '+N+'.</b> Bei x = '+de(xs[i],2)+' ist die Steigung f('+de(xs[i],2)+') = '+de(m,3)+'. Auf der Breite h = '+de(hh,2)+' wächst der Graph von F deshalb um <b>Δy = h · f(x) = '+de(hh,2)+' · '+(m<0?'('+de(m,3)+')':de(m,3))+' = '+de(hh*m,3)+'</b>. Das ist genau die Fläche des roten Rechtecks zwischen dem Graphen von f und der x-Achse (Breite h, Höhe f(x)); liegt das Rechteck unter der x-Achse, zählt die Fläche negativ und F fällt. Neuer Punkt: '+P(bk)+'.'
+    +'<br>Bisher: F hat sich von '+de(ys[0],3)+' auf '+de(ys[bk],3)+' verändert. Die Änderung '+de(ys[bk]-ys[0],3)+' ist die Summe aller bisherigen Rechtecke.'
+    +(bk===N?'<br><b>Der Streckenzug folgt dem Graphen von F.</b> Am Ende liegt er bei '+de(ys[N],3)+', der exakte Wert ist F('+de(xs[N],2)+') + c = '+de(o.F(xs[N])+c,3)+'. Wähle ein kleineres h: Dann sind die Rechtecke schmaler, der Streckenzug passt besser zur Kurve, und die Summe der Rechtecke nähert sich der Fläche unter f. So hängen F und f zusammen: <b>F wächst an jeder Stelle so schnell, wie f(x) angibt, und der Zuwachs von F ist die Fläche zwischen f und der x-Achse.</b>':'');}
+}
+f2.onchange=()=>{bk=0;draw2()};c2.oninput=draw2;document.getElementById('all2').onchange=draw2;
+bld.onchange=()=>{bk=0;draw2()};bh.onchange=()=>{bk=0;draw2()};
+document.getElementById('bf').onclick=()=>{bk++;draw2()};document.getElementById('bb').onclick=()=>{bk--;draw2()};document.getElementById('be').onclick=()=>{bk=1e9;draw2()};
 
 /* ---------- Phase 3 ---------- */
 const F3=[
