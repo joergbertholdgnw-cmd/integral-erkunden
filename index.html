@@ -125,9 +125,9 @@ h2 sub,.note sub{font-size:.75em}
   <div style="margin-top:4px" class="sumbar" aria-hidden="true"><div class="sb-u" id="sbu"></div><div class="sb-r" id="sbr"></div><div class="sb-i" id="sbi"></div></div>
   <div class="sb-lab"><span id="sbl0">0</span><span id="sbl1"></span></div>
   <ul style="list-style:none;margin:2px 0 6px;padding:0;font:.9rem var(--sans)">
-    <li><span style="color:var(--under)">■</span> <b>Blau</b>: Untersumme U<sub>n</sub> = <b id="sbk1">–</b></li>
-    <li><span style="color:var(--over)">■</span> <b>Rot</b>: Unterschied O<sub>n</sub> − U<sub>n</sub> = <b id="sbk2">–</b>; das Ende des roten Stücks ist die Obersumme O<sub>n</sub> = <b id="sbk3">–</b></li>
-    <li><span style="color:var(--ok)">▮</span> <b>Grüne Marke</b>: Flächeninhalt I = <b id="sbk4">–</b>, liegt immer im roten Abschnitt</li>
+    <li><span style="color:var(--under)">■</span> <b>Blau</b>: Untersumme U<sub>n</sub> <span id="sbe1">=</span> <b id="sbk1">–</b></li>
+    <li><span style="color:var(--over)">■</span> <b>Rot</b>: Unterschied O<sub>n</sub> − U<sub>n</sub> <span id="sbe2">=</span> <b id="sbk2">–</b>; das Ende des roten Stücks ist die Obersumme O<sub>n</sub> <span id="sbe3">=</span> <b id="sbk3">–</b></li>
+    <li><span style="color:var(--ok)">▮</span> <b>Grüne Marke</b>: Flächeninhalt I <span id="sbe4">=</span> <b id="sbk4">–</b>, liegt immer im roten Abschnitt</li>
   </ul>
   <p class="note"><b>Warum reicht es, nur Rot anzuschauen?</b> Blau zusammen ist die Untersumme U<sub>n</sub>. Die Obersumme besteht aus denselben blauen Rechtecken und den roten Stücken obendrauf: O<sub>n</sub> = U<sub>n</sub> + Rot. Die Fläche I liegt immer zwischen U<sub>n</sub> und O<sub>n</sub>, im Balken also immer im roten Abschnitt. Ob U<sub>n</sub> und O<sub>n</sub> denselben Grenzwert haben, hängt deshalb nur davon ab, ob Rot gegen 0 geht. Wie groß Blau genau ist, müssen wir dafür nicht wissen. Das ist der Vorteil: Blau ist schwer zu berechnen, Rot passt in eine Säule und ist einfach Höhe mal Breite.</p>
   <p class="note" id="gwhy"></p>
@@ -149,8 +149,8 @@ h2 sub,.note sub{font-size:.75em}
   </div>
   <div class="controls">
     <label class="check"><input type="checkbox" id="bld"> Zeigen, wie F aus f entsteht (Schritt für Schritt)</label>
-    <div id="bldc" hidden><label for="bh">Schrittweite h</label><select id="bh"><option value="1">h = 1</option><option value="0.5" selected>h = 0,5</option><option value="0.25">h = 0,25</option><option value="0.1">h = 0,1</option></select>
-      <div class="chips"><button id="bb" type="button">◀ zurück</button><button id="bf" type="button">Schritt ▶</button><button id="be" type="button">bis zum Ende</button></div></div>
+    <div id="bldc" hidden><label for="bh">Schrittweite h</label><select id="bh"><option value="1">h = 1</option><option value="0.5" selected>h = 0,5</option><option value="0.25">h = 0,25</option><option value="0.1">h = 0,1</option><option value="0.01">h = 0,01</option></select>
+      <div class="chips"><button id="bb" type="button">◀ zurück</button><button id="bf" type="button">Schritt ▶</button><button id="bf10" type="button">+10 Schritte</button><button id="bf100" type="button">+100 Schritte</button><button id="be" type="button">bis zum Ende</button></div></div>
   </div>
   <div class="stage"><canvas id="cvs2" width="1000" height="760" role="img" aria-label="Richtungsfeld mit Stammfunktion; auf Wunsch darunter der Graph von f und der schrittweise Aufbau von F"></canvas></div>
   <p class="note" id="n2"></p>
@@ -172,12 +172,16 @@ h2 sub,.note sub{font-size:.75em}
   <label class="check"><input type="checkbox" id="haupt"> Stammfunktion F einblenden und Hauptsatz prüfen</label>
   <p class="note" id="n3" hidden></p>
 </section>
-<p class="stand" style="margin:18px 0 0;font:.8rem var(--sans);color:var(--muted)">Version: 4.11.2026, 11:55 Uhr</p>
+<p class="stand" style="margin:18px 0 0;font:.8rem var(--sans);color:var(--muted)">Version: 4.11.2026, 12:04 Uhr</p>
 </div>
 
 <script>
 (function(){
 const de=(v,d=3)=>v.toLocaleString('de-DE',{minimumFractionDigits:0,maximumFractionDigits:d});
+/* ex: ist v auf d Nachkommastellen exakt? eq: Gleichheitszeichen oder ≈; ap: Zahl mit ≈ davor, wenn gerundet */
+const ex=(v,d)=>Math.abs(v-Math.round(v*10**d)/10**d)<1e-9*Math.max(1,Math.abs(v));
+const eq=(v,d)=>ex(v,d)?' = ':' ≈ ';
+const ap=(v,d)=>(ex(v,d)?'':'≈ ')+de(v,d);
 const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 const FONT='"Source Sans 3",system-ui,sans-serif';
 function setup(cv){const r=cv.getBoundingClientRect();const k=Math.max(1,window.devicePixelRatio||1);const w=Math.round(r.width||800);
@@ -281,12 +285,12 @@ function drawG(){
   const[U,O]=sumsG(o,n);
   {const [,Omax]=sumsG(o,1),pc=v=>(v/Omax*100)+'%';
    document.getElementById('sbu').style.width=pc(U);const r=document.getElementById('sbr');r.style.left=pc(U);r.style.width='max(2px,'+pc(O-U)+')';
-   document.getElementById('sbi').style.left='calc('+pc(o.I)+' - 1px)';document.getElementById('sbl1').textContent='Skala: 0 bis O₁ = '+de(Omax,2);
-   document.getElementById('sbk1').textContent=de(U,4);document.getElementById('sbk2').textContent=de(O-U,4);document.getElementById('sbk3').textContent=de(O,4);document.getElementById('sbk4').textContent=de(o.I,4);}
+   document.getElementById('sbi').style.left='calc('+pc(o.I)+' - 1px)';document.getElementById('sbl1').textContent='Skala: 0 bis O₁'+eq(Omax,2)+de(Omax,2);
+   [U,O-U,O,o.I].forEach((v,j)=>{document.getElementById('sbk'+(j+1)).textContent=de(v,4);document.getElementById('sbe'+(j+1)).textContent=ex(v,4)?'=':'≈';});}
   document.getElementById('gdx').textContent=de(dx,4);document.getElementById('gU').textContent=de(U,4);
   document.getElementById('gO').textContent=de(O,4);document.getElementById('gD').textContent=de(O-U,4);
   document.getElementById('gwhy').innerHTML=slide>.98
-    ?'<b>Die roten Stücke passen genau in eine Säule.</b> Ihre Höhe ist immer f(b) − f(a) = '+de(fb-fa,2)+', ihre Breite Δx = '+de(L,2)+'/n. Also gilt O<sub>n</sub> − U<sub>n</sub> = '+de(fb-fa,2)+' · '+de(L,2)+'/n = '+de((fb-fa)*L,2)+'/n = '+de(O-U,4)+'. Die Höhe bleibt gleich, die Breite wird für n → ∞ beliebig klein. Damit geht der Unterschied gegen 0.'
+    ?'<b>Die roten Stücke passen genau in eine Säule.</b> Ihre Höhe ist immer f(b) − f(a) = '+de(fb-fa,2)+', ihre Breite Δx = '+de(L,2)+'/n. Also gilt O<sub>n</sub> − U<sub>n</sub> = '+de(fb-fa,2)+' · '+de(L,2)+'/n = '+de((fb-fa)*L,2)+'/n'+eq(O-U,4)+de(O-U,4)+'. Die Höhe bleibt gleich, die Breite wird für n → ∞ beliebig klein. Damit geht der Unterschied gegen 0.'
     :'<b>Rot ist der Unterschied O<sub>n</sub> − U<sub>n</sub>.</b> Schiebe die roten Stücke nach rechts: Sie stapeln sich zu einer einzigen Säule. Wie hoch ist sie, und wie breit?';
   // ---- Folgendiagramm ----
   const cv2=document.getElementById('cg2');cv2.dataset.ratio=narrow?.75:.42;const r2=setup(cv2),g2=r2.g;const b2={l:52,t:12,w:r2.w-68,h:r2.h-40};
@@ -310,12 +314,12 @@ function drawG(){
   g2.restore();
   const inside=O-U<eps;
   const K=de((fb-fa)*L,2),E=de(eps,2);
-  document.getElementById('geps-note').innerHTML='<b>Warum haben U<sub>n</sub> und O<sub>n</sub> den Grenzwert I = '+de(o.I,4)+'?</b><ol class="steps">'
+  document.getElementById('geps-note').innerHTML='<b>Warum haben U<sub>n</sub> und O<sub>n</sub> den Grenzwert I'+eq(o.I,4)+de(o.I,4)+'?</b><ol class="steps">'
     +'<li><b>Eingeklemmt.</b> Die Untersumme ist immer zu klein, die Obersumme immer zu groß. Der Flächeninhalt I liegt dazwischen: U<sub>n</sub> ≤ I ≤ O<sub>n</sub>.</li>'
     +'<li><b>Abstand zu I.</b> Keiner der beiden Werte ist weiter von I entfernt als O<sub>n</sub> von U<sub>n</sub>. Ist also O<sub>n</sub> − U<sub>n</sub> kleiner als ε = '+E+', dann liegen U<sub>n</sub> und O<sub>n</sub> beide im grünen Streifen.</li>'
-    +'<li><b>Ab welchem n?</b> Die rote Säule hat die Höhe f(b) − f(a) = '+de(fb-fa,2)+' und die Breite Δx = (b − a)/n = '+de(L,2)+'/n. Also ist O<sub>n</sub> − U<sub>n</sub> = '+de(fb-fa,2)+' · '+de(L,2)+'/n = '+K+'/n. Die Bedingung '+K+'/n &lt; '+E+' gilt für n &gt; '+K+' : '+E+' = '+de((fb-fa)*L/eps,2)+'. Spätestens ab <b>n₀ = '+n0+'</b> liegen beide Werte im Streifen. '
-      +'Für n = '+n+' ist O<sub>n</sub> − U<sub>n</sub> = '+de(O-U,4)+(inside?', <span class="ok">das ist kleiner als ε.</span>':', das ist noch zu groß.')+'</li>'
-    +'<li><b>Was „Grenzwert“ heißt.</b> Wir lassen n immer größer werden (n → ∞) und fragen, ob sich die Werte einer festen Zahl beliebig genau nähern. Geprüft wird so: Jemand legt eine Toleranz ε fest, so klein er will. Wir müssen dann ein n₀ nennen können, ab dem <i>alle</i> weiteren Werte (n₀, n₀ + 1, n₀ + 2, …) im Streifen I ± ε liegen. Für ε = '+E+' ist das n₀ = '+n0+'. Für ein zehnmal kleineres ε = '+de(eps/10,4)+' brauchen wir n₀ = '+(Math.floor((fb-fa)*L/(eps/10)+1e-9)+1)+'. Ein solches n₀ gibt es immer: die erste ganze Zahl über '+K+' : ε. Weil O<sub>n</sub> − U<sub>n</sub> = '+K+'/n mit wachsendem n nur kleiner wird, springt kein späterer Wert wieder aus dem Streifen heraus. Das heißt: U<sub>n</sub> und O<sub>n</sub> haben den Grenzwert I = '+de(o.I,4)+'. Schreibweise: lim<sub>n→∞</sub> U<sub>n</sub> = lim<sub>n→∞</sub> O<sub>n</sub> = I.</li></ol>';
+    +'<li><b>Ab welchem n?</b> Die rote Säule hat die Höhe f(b) − f(a) = '+de(fb-fa,2)+' und die Breite Δx = (b − a)/n = '+de(L,2)+'/n. Also ist O<sub>n</sub> − U<sub>n</sub> = '+de(fb-fa,2)+' · '+de(L,2)+'/n = '+K+'/n. Die Bedingung '+K+'/n &lt; '+E+' gilt für n &gt; '+K+' : '+E+eq((fb-fa)*L/eps,2)+de((fb-fa)*L/eps,2)+'. Spätestens ab <b>n₀ = '+n0+'</b> liegen beide Werte im Streifen. '
+      +'Für n = '+n+' ist O<sub>n</sub> − U<sub>n</sub>'+eq(O-U,4)+de(O-U,4)+(inside?', <span class="ok">das ist kleiner als ε.</span>':', das ist noch zu groß.')+'</li>'
+    +'<li><b>Was „Grenzwert“ heißt.</b> Wir lassen n immer größer werden (n → ∞) und fragen, ob sich die Werte einer festen Zahl beliebig genau nähern. Geprüft wird so: Jemand legt eine Toleranz ε fest, so klein er will. Wir müssen dann ein n₀ nennen können, ab dem <i>alle</i> weiteren Werte (n₀, n₀ + 1, n₀ + 2, …) im Streifen I ± ε liegen. Für ε = '+E+' ist das n₀ = '+n0+'. Für ein zehnmal kleineres ε = '+de(eps/10,4)+' brauchen wir n₀ = '+(Math.floor((fb-fa)*L/(eps/10)+1e-9)+1)+'. Ein solches n₀ gibt es immer: die erste ganze Zahl über '+K+' : ε. Weil O<sub>n</sub> − U<sub>n</sub> = '+K+'/n mit wachsendem n nur kleiner wird, springt kein späterer Wert wieder aus dem Streifen heraus. Das heißt: U<sub>n</sub> und O<sub>n</sub> haben den Grenzwert I'+eq(o.I,4)+de(o.I,4)+'. Schreibweise: lim<sub>n→∞</sub> U<sub>n</sub> = lim<sub>n→∞</sub> O<sub>n</sub> = I.</li></ol>';
   const tm=document.getElementById('gterm');tm.hidden=!o.term;
   if(o.term){const q=1/n,tab=[4,10,100,1000,1000000].map(m=>'<tr><td>'+de(m,0)+'</td><td>'+de(8/6*(1-1/m)*(2-1/m),6)+'</td><td>'+de(8/6*(1+1/m)*(2+1/m),6)+'</td><td>'+de(8/m,6)+'</td></tr>').join('');
     tm.innerHTML='<b>Nachrechnen für f(x) = x² auf [0; 2]</b>'
@@ -334,9 +338,9 @@ function drawG(){
     +'Untersumme mit m = n − 1: U<sub>n</sub> = 8/n³ · (n−1) · n · (2n−1)/6 = 8/6 · (n−1)(2n−1)/n² = 8/6 · (n−1)/n · (2n−1)/n = <b>8/6 · (1 − 1/n) · (2 − 1/n)</b><br>'
     +'Obersumme mit m = n: O<sub>n</sub> = 8/n³ · n · (n+1) · (2n+1)/6 = 8/6 · (n+1)(2n+1)/n² = 8/6 · (n+1)/n · (2n+1)/n = <b>8/6 · (1 + 1/n) · (2 + 1/n)</b><br>'
     +'Probe für n = 4: U<sub>4</sub> = 8/6 · 0,75 · 1,75 = 1,75 und O<sub>4</sub> = 8/6 · 1,25 · 2,25 = 3,75. Das stimmt mit Teil 1 überein.</li>'
-    +'<li><b>Dein eingestelltes n = '+n+':</b> U<sub>'+n+'</sub> = 8/6 · '+de(1-q,4)+' · '+de(2-q,4)+' = '+de(U,4)+' und O<sub>'+n+'</sub> = 8/6 · '+de(1+q,4)+' · '+de(2+q,4)+' = '+de(O,4)+'.</li>'
+    +'<li><b>Dein eingestelltes n = '+n+':</b> U<sub>'+n+'</sub> = 8/6 · '+(n-1)+'/'+n+' · '+(2*n-1)+'/'+n+eq(U,4)+de(U,4)+' und O<sub>'+n+'</sub> = 8/6 · '+(n+1)+'/'+n+' · '+(2*n+1)+'/'+n+eq(O,4)+de(O,4)+'.</li>'
     +'<li><b>Grenzübergang n → ∞:</b> 1/n wird beliebig klein und geht gegen 0. Dann gehen (1 − 1/n) und (1 + 1/n) gegen 1, (2 − 1/n) und (2 + 1/n) gegen 2. Beide Summen streben gegen 8/6 · 1 · 2 = 8/3 ≈ 2,6667, das ist der Wert I aus dem grünen Streifen.</li></ol>'
-    +'<table class="gtab"><caption>Dieselben Formeln für feste n (unabhängig vom Regler):</caption><thead><tr><th>n</th><th>U<sub>n</sub></th><th>O<sub>n</sub></th><th>O<sub>n</sub> − U<sub>n</sub> = 8/n</th></tr></thead><tbody>'+tab+'</tbody></table>';}
+    +'<table class="gtab"><caption>Dieselben Formeln für feste n (unabhängig vom Regler, auf höchstens 6 Nachkommastellen gerundet):</caption><thead><tr><th>n</th><th>U<sub>n</sub></th><th>O<sub>n</sub></th><th>O<sub>n</sub> − U<sub>n</sub> = 8/n</th></tr></thead><tbody>'+tab+'</tbody></table>';}
 }
 function niceStep(r){const p=Math.pow(10,Math.floor(Math.log10(r))),m=r/p;return (m<1.5?1:m<3.5?2:m<7.5?5:10)*p;}
 function animSlide(){cancelAnimationFrame(slideRaf);if(reduce){slide=slideTarget;drawG();return;}
@@ -398,12 +402,12 @@ function buildPanels(g,o,c,box,sx,sy,w,h,topH){
   // Rechtecke unter f (= Zuwachs von F)
   for(let i=0;i<bk;i++){const last=i===bk-1,top=o.f(xs[i]);
     g.fillStyle=css(last?'--over':'--under');g.globalAlpha=last?.5:.25;g.fillRect(t2.sx(xs[i]),t2.sy(top),t2.sx(xs[i]+hh)-t2.sx(xs[i]),t2.sy(0)-t2.sy(top));g.globalAlpha=1;
-    g.strokeStyle=css(last?'--over':'--under');g.lineWidth=1;g.strokeRect(t2.sx(xs[i]),t2.sy(top),t2.sx(xs[i]+hh)-t2.sx(xs[i]),t2.sy(0)-t2.sy(top));}
+    if(N<=60){g.strokeStyle=css(last?'--over':'--under');g.lineWidth=1;g.strokeRect(t2.sx(xs[i]),t2.sy(top),t2.sx(xs[i]+hh)-t2.sx(xs[i]),t2.sy(0)-t2.sy(top));}}
   curve(g,t2.sx,t2.sy,o.f,o.pos?0.02:o.xr[0],o.xr[1],css('--navy'),2.6,o.xr,yrf);
   // oberes Feld: Streckenzug
   g.save();g.beginPath();g.rect(box.l,box.t,box.w,box.h);g.clip();
   g.strokeStyle=css('--navy');g.lineWidth=2.6;g.lineJoin='round';g.beginPath();g.moveTo(sx(xs[0]),sy(ys[0]));for(let i=1;i<=bk;i++)g.lineTo(sx(xs[i]),sy(ys[i]));g.stroke();
-  g.fillStyle=css('--navy');for(let i=0;i<=bk;i++){g.beginPath();g.arc(sx(xs[i]),sy(ys[i]),i===bk?5.5:3,0,7);g.fill();}
+  g.fillStyle=css('--navy');for(let i=0;i<=bk;i++){if(N>60&&i!==bk&&i!==0)continue;g.beginPath();g.arc(sx(xs[i]),sy(ys[i]),i===bk?5.5:3,0,7);g.fill();}
   if(bk>0){const i=bk-1;g.strokeStyle=css('--ink');g.lineWidth=1.4;g.setLineDash([5,4]);g.beginPath();g.moveTo(sx(xs[i]),sy(ys[i]));g.lineTo(sx(xs[i+1]),sy(ys[i]));g.lineTo(sx(xs[i+1]),sy(ys[i+1]));g.stroke();g.setLineDash([]);}
   g.restore();
   // Verbindung: aktuelle Stelle in beiden Feldern
@@ -411,17 +415,18 @@ function buildPanels(g,o,c,box,sx,sy,w,h,topH){
     const fv=o.f(xv);g.fillStyle=css('--over');g.beginPath();g.arc(t2.sx(xv),t2.sy(fv),5.5,0,7);g.fill();}
   // Text
   const n=document.getElementById('n2b');n.hidden=false;
-  const P=(i)=>'('+de(xs[i],2)+' | '+de(ys[i],3)+')';
-  document.getElementById('bf').disabled=bk>=N;document.getElementById('be').disabled=bk>=N;document.getElementById('bb').disabled=bk<=0;
-  if(bk===0){n.innerHTML='<b>So entsteht F aus f.</b> Wir starten im Punkt '+P(0)+' auf der Kurve von F + c. An jeder Stelle x sagt f(x), wie steil F dort steigt. Wir gehen also von x = '+de(x0,2)+' um h = '+de(hh,2)+' nach rechts und steigen dabei mit der Steigung f('+de(x0,2)+') = '+de(o.f(x0),3)+'. Klicke auf „Schritt ▶“.';}
+  const P=(i)=>(ex(xs[i],2)&&ex(ys[i],3)?'':'≈ ')+'('+de(xs[i],2)+' | '+de(ys[i],3)+')';
+  document.getElementById('bf').disabled=bk>=N;document.getElementById('bf10').disabled=bk>=N;document.getElementById('bf100').disabled=bk>=N;document.getElementById('be').disabled=bk>=N;document.getElementById('bb').disabled=bk<=0;
+  if(bk===0){n.innerHTML='<b>So entsteht F aus f.</b> Wir starten im Punkt '+P(0)+' auf der Kurve von F + c. An jeder Stelle x sagt f(x), wie steil F dort steigt. Wir gehen also von x = '+de(x0,2)+' um h = '+de(hh,2)+' nach rechts und steigen dabei mit der Steigung f('+de(x0,2)+')'+eq(o.f(x0),3)+de(o.f(x0),3)+'. Klicke auf „Schritt ▶“.';}
   else{const i=bk-1,m=o.f(xs[i]);
-    n.innerHTML='<b>Schritt '+bk+' von '+N+'.</b> Bei x = '+de(xs[i],2)+' ist die Steigung f('+de(xs[i],2)+') = '+de(m,3)+'. Auf der Breite h = '+de(hh,2)+' wächst der Graph von F deshalb um <b>Δy = h · f(x) = '+de(hh,2)+' · '+(m<0?'('+de(m,3)+')':de(m,3))+' = '+de(hh*m,3)+'</b>. Das ist genau die Fläche des roten Rechtecks zwischen dem Graphen von f und der x-Achse (Breite h, Höhe f(x)); liegt das Rechteck unter der x-Achse, zählt die Fläche negativ und F fällt. Neuer Punkt: '+P(bk)+'.'
-    +'<br>Bisher: F hat sich von '+de(ys[0],3)+' auf '+de(ys[bk],3)+' verändert. Die Änderung '+de(ys[bk]-ys[0],3)+' ist die Summe aller bisherigen Rechtecke.'
-    +(bk===N?'<br><b>Der Streckenzug folgt dem Graphen von F.</b> Am Ende liegt er bei '+de(ys[N],3)+', der exakte Wert ist F('+de(xs[N],2)+') + c = '+de(o.F(xs[N])+c,3)+'. Wähle ein kleineres h: Dann sind die Rechtecke schmaler, der Streckenzug passt besser zur Kurve, und die Summe der Rechtecke nähert sich der Fläche unter f. So hängen F und f zusammen: <b>F wächst an jeder Stelle so schnell, wie f(x) angibt, und der Zuwachs von F ist die Fläche zwischen f und der x-Achse.</b>':'');}
+    const dd=hh>=.5?3:hh>=.1?4:5,sg1=eq(m,3),sg2=(ex(m,3)&&ex(hh*m,dd))?' = ':' ≈ ';
+    n.innerHTML='<b>Schritt '+bk+' von '+N+'.</b> Bei x = '+de(xs[i],2)+' ist die Steigung f('+de(xs[i],2)+')'+sg1+de(m,3)+'. Auf der Breite h = '+de(hh,2)+' wächst der Graph von F deshalb um <b>Δy = h · f(x)'+sg1+de(hh,2)+' · '+(m<0?'('+de(m,3)+')':de(m,3))+sg2+de(hh*m,dd)+'</b>. Das ist genau die Fläche des roten Rechtecks zwischen dem Graphen von f und der x-Achse (Breite h, Höhe f(x)); liegt das Rechteck unter der x-Achse, zählt die Fläche negativ und F fällt. Neuer Punkt: '+P(bk)+'.'
+    +'<br>Bisher: F hat sich von '+ap(ys[0],3)+' auf '+ap(ys[bk],3)+' verändert. Die Änderung '+ap(ys[bk]-ys[0],3)+' ist die Summe aller bisherigen Rechtecke.'
+    +(bk===N?'<br><b>Der Streckenzug folgt dem Graphen von F.</b> Am Ende liegt er bei '+ap(ys[N],3)+', der exakte Wert ist F('+de(xs[N],2)+') + c'+eq(o.F(xs[N])+c,3)+de(o.F(xs[N])+c,3)+'. Wähle ein kleineres h: Dann sind die Rechtecke schmaler, der Streckenzug passt besser zur Kurve, und die Summe der Rechtecke nähert sich der Fläche unter f. So hängen F und f zusammen: <b>F wächst an jeder Stelle so schnell, wie f(x) angibt, und der Zuwachs von F ist die Fläche zwischen f und der x-Achse.</b>':'');}
 }
 f2.onchange=()=>{bk=0;draw2()};c2.oninput=draw2;document.getElementById('all2').onchange=draw2;
 bld.onchange=()=>{bk=0;draw2()};bh.onchange=()=>{bk=0;draw2()};
-document.getElementById('bf').onclick=()=>{bk++;draw2()};document.getElementById('bb').onclick=()=>{bk--;draw2()};document.getElementById('be').onclick=()=>{bk=1e9;draw2()};
+document.getElementById('bf').onclick=()=>{bk++;draw2()};document.getElementById('bf10').onclick=()=>{bk+=10;draw2()};document.getElementById('bf100').onclick=()=>{bk+=100;draw2()};document.getElementById('bb').onclick=()=>{bk--;draw2()};document.getElementById('be').onclick=()=>{bk=1e9;draw2()};
 
 /* ---------- Phase 3 ---------- */
 const F3=[
@@ -450,7 +455,7 @@ function draw3(){
   const ts=(o.b-o.a)*.12;g.strokeStyle=css('--navy');g.lineWidth=2;g.beginPath();g.moveTo(t2.sx(x-ts),t2.sy(A-S*ts));g.lineTo(t2.sx(x+ts),t2.sy(A+S*ts));g.stroke();
   document.getElementById('rA').textContent=de(A,3);document.getElementById('rf').textContent=de(o.f(x),3);document.getElementById('rS').textContent=de(S,3);
   const n=document.getElementById('n3');n.hidden=!document.getElementById('haupt').checked;
-  if(!n.hidden){const Fx=o.F(x),Fa=o.F(o.a);n.innerHTML='<b>Hauptsatz:</b> F(x) − F(a) = '+de(Fx,3)+' − ('+de(Fa,3)+') = <span class="ok">'+de(Fx-Fa,3)+'</span>, gemessen: A(x) = '+de(A,3)+'. Die Steigung der unteren Kurve stimmt mit f(x) überein, also ist A eine Stammfunktion von f.';}}
+  if(!n.hidden){const Fx=o.F(x),Fa=o.F(o.a);n.innerHTML='<b>Hauptsatz:</b> F(x) − F(a)'+((ex(Fx,3)&&ex(Fa,3))?' = ':' ≈ ')+de(Fx,3)+' − ('+de(Fa,3)+')'+eq(Fx-Fa,3)+'<span class="ok">'+de(Fx-Fa,3)+'</span>, gemessen: A(x) ≈ '+de(A,3)+' (numerisch berechnet). Die Steigung der unteren Kurve stimmt mit f(x) überein, also ist A eine Stammfunktion von f.';}}
 f3.onchange=draw3;x3.oninput=draw3;document.getElementById('haupt').onchange=draw3;
 
 function redraw(){const i=tabs.findIndex(b=>b.getAttribute('aria-selected')==='true');[draw1,drawG,draw2,draw3][i]();}
