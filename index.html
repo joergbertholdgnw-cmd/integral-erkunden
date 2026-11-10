@@ -89,10 +89,11 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
 <div class="wrap">
 <h1>Von der Summe zum Integral</h1>
 <p class="sub">Zum Arbeitsblatt „Integralrechnung – Einstieg“, Jahrgang 12</p>
-<p class="purpose">Diese Seite ist zum Ausprobieren und Nachbereiten, mit ausführlichen Begründungen. Die Aufgaben und Eingabefelder stehen im Arbeitsblatt. Phase 1 und 1b gehören zu den Aufgaben 2 und 3, Phase 2 zu den Aufgaben 4 und 5, Phase 3 zu den Aufgaben 6 und 7.</p>
+<p class="purpose">Diese Seite ist zum Ausprobieren und Nachbereiten, mit ausführlichen Begründungen. Die Aufgaben und Eingabefelder stehen im Arbeitsblatt. Phase 1 und 1b gehören zu den Aufgaben 2 und 3. Phase 1c ist ein Zusatz: Dort wird die Fläche als Wassermenge gedeutet, die in ein Gefäß fließt. Phase 2 zu den Aufgaben 4 und 5, Phase 3 zu den Aufgaben 6 und 7.</p>
 <div class="tabs" role="tablist">
   <button role="tab" id="t1" aria-selected="true" aria-controls="p1"><span class="lg">Phase </span>1 · Rechtecksummen</button>
   <button role="tab" id="t2" aria-selected="false" aria-controls="p2"><span class="lg">Phase </span>1b · Grenzwert<span class="lg">prozess</span></button>
+  <button role="tab" id="t1c" aria-selected="false" aria-controls="p1c"><span class="lg">Phase </span>1c · Gefäß füllen</button>
   <button role="tab" id="t3" aria-selected="false" aria-controls="p3"><span class="lg">Phase </span>2 · Stammfunktion</button>
   <button role="tab" id="t4" aria-selected="false" aria-controls="p4"><span class="lg">Phase </span>3 · Flächenfunktion</button>
 </div>
@@ -157,6 +158,42 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
   <div class="tl" style="margin-top:4px"><span>n (die Achse ist gestaucht, damit auch große n auf den Bildschirm passen)</span><span><span style="color:var(--under)">●</span> U<sub>n</sub> &nbsp; <span style="color:var(--over)">●</span> O<sub>n</sub> &nbsp; <span style="color:var(--ok)">━</span> Grenzwert I</span></div>
   <details class="more"><summary>Warum haben U<sub>n</sub> und O<sub>n</sub> denselben Grenzwert? Die Begründung in vier Schritten (zum Aufklappen)</summary><p class="note" id="geps-note"></p></details>
   <details class="more" hidden><summary>Zusatz für Schnelle: Nachrechnen für f(x) = x² auf [0; 2]</summary><p class="note" id="gterm"></p></details>
+</section>
+
+<section id="p1c" role="tabpanel" aria-labelledby="t1c" hidden>
+  <p class="lead">In ein Gefäß fließt Wasser. <b>f(t)</b> ist die <b>Füllmenge</b> in Litern nach t Minuten. <b>f′(t)</b> ist die <b>Zuflussrate</b> in Litern pro Minute: Sie gibt an, wie schnell sich die Füllmenge gerade ändert. Starte den Füllvorgang oder schiebe die Zeit t. Oben siehst du den Graphen von f′, unten entsteht der Graph von f, links steigt das Wasser im Gefäß.</p>
+  <div class="controls">
+    <div><label for="fv">Füllvorgang</label><select id="fv"></select></div>
+    <div><label for="v0">Anfangsfüllung f(0) = <span class="val" id="v0v">0</span> Liter</label><input type="range" id="v0" min="0" max="5" step="0.5" value="0"></div>
+  </div>
+  <div class="controls">
+    <div><label for="tv">Zeit t = <span class="val" id="tvv">0</span> min</label><input type="range" id="tv" min="0" max="10" step="0.01" value="4">
+      <div class="chips"><button id="vplay" type="button" aria-pressed="false">▶ Abspielen</button><button id="vnull" type="button">zurück auf t = 0</button></div></div>
+    <div>
+      <label class="check"><input type="checkbox" id="vstr" checked> Minutenstreifen und Wasserschichten färben</label>
+      <label class="check"><input type="checkbox" id="vtan" checked> Tangente an den Graphen von f zeigen</label>
+      <label class="check"><input type="checkbox" id="vall"> Ganzen Graphen von f zeigen (erst nach deiner Vorhersage)</label>
+    </div>
+  </div>
+  <div class="stage"><canvas id="cv5" width="1600" height="1150" role="img" aria-label="Links ein Gefäß, das sich mit Wasser füllt; rechts oben der Graph der Zuflussrate f′ mit der Fläche bis t, rechts unten der Graph der Füllmenge f"></canvas></div>
+  <div class="tl" style="margin-top:4px"><span><span style="color:var(--navy)">━</span> f′: Zuflussrate</span><span><span style="color:var(--under)">■</span> Fläche unter f′ = zugeflossenes Wasser</span><span><span style="color:var(--ok)">━</span> f: Füllmenge</span><span>gepunktet: Tangente mit Steigung f′(t)</span></div>
+  <div class="read" id="vread">
+    <div><small>Zeit t</small><b id="vt">–</b></div>
+    <div><small>Zuflussrate f′(t)</small><b id="vr">–</b></div>
+    <div class="u"><small>Fläche unter f′ von 0 bis t</small><b id="vA">–</b></div>
+    <div class="e"><small>Füllmenge f(t)</small><b id="vf">–</b></div>
+  </div>
+  <p class="note" id="vnote"></p>
+  <div class="defbox"><b>Merke (Füllmenge und Zuflussrate):</b> Die Zuflussrate ist die momentane Änderungsrate der Füllmenge, also ihre Ableitung: <b>f′</b>. Je größer f′(t), desto steiler steigt der Graph von f. Umgekehrt bekommt man die Füllmenge aus der Zuflussrate über die Fläche unter dem Graphen von f′: <b>f(t) = f(0) + ∫<sub>0</sub><sup>t</sup> f′(s) ds</b>. In Worten: Füllmenge jetzt = Füllmenge am Anfang + zugeflossenes Wasser. Fließt mehr ab als zu, ist f′(t) &lt; 0; diese Fläche unterhalb der t-Achse zählt negativ. <i>Einheiten:</i> Liter pro Minute mal Minuten ergibt Liter.</div>
+  <h2 style="font-size:1.15rem;color:var(--navy);margin:22px 0 6px">Aufträge</h2>
+  <div class="note"><b>1 · Ablesen.</b> Wähle „Pumpe mit Pause“ und f(0) = 0. Bestimme nur mit dem Graphen von f′, wie viel Wasser nach 3, nach 5 und nach 10 Minuten im Gefäß ist. Prüfe dann mit dem Regler.
+    <details class="more"><summary>Antwort</summary><p>Nach 3 min: 3 · 3 = 9 Liter. Von 3 bis 5 min ist f′ = 0, es kommt nichts dazu: f(5) = 9 Liter, der Graph von f verläuft dort waagerecht. Danach kommen 5 · 1,5 = 7,5 Liter dazu: f(10) = 16,5 Liter. Jede Wassermenge ist hier eine Rechteckfläche unter dem Graphen von f′.</p></details></div>
+  <div class="note"><b>2 · Vorhersagen.</b> Wähle „Hahn wird aufgedreht“. Ist der Graph von f eine Gerade oder eine Kurve? Begründe mit den Minutenstreifen, bevor du den ganzen Graphen einblendest.
+    <details class="more"><summary>Antwort</summary><p>Die Minutenstreifen unter f′ werden immer größer (0,2; 0,6; 1,0; 1,4 … Liter), weil f′ wächst. Darum werden die Wasserschichten dicker und die Stufen am Graphen von f höher. Der Graph von f wird immer steiler, er ist eine Kurve: f(t) = 0,2 · t² (bei f(0) = 0).</p></details></div>
+  <div class="note"><b>3 · Zufluss und Abfluss.</b> Wähle „Zufluss wird zum Abfluss“. Wann ist am meisten Wasser im Gefäß? Wie viel ist nach 10 Minuten darin?
+    <details class="more"><summary>Antwort</summary><p>Am meisten bei t = 5: Bis dahin ist f′(t) &gt; 0, danach ist f′(t) &lt; 0, dann fließt mehr ab als zu. Der Graph von f hat bei t = 5 einen Hochpunkt mit waagerechter Tangente, denn f′(5) = 0. Die Fläche über der t-Achse (7,5) und die unter der t-Achse (7,5) sind gleich groß, die Bilanz ist 0: Nach 10 Minuten ist wieder genau die Anfangsfüllung im Gefäß.</p></details></div>
+  <div class="note"><b>4 · Anfangsfüllung.</b> Verändere f(0). Was ändert sich am Graphen von f′, was am Graphen von f?
+    <details class="more"><summary>Antwort</summary><p>Der Graph von f′ bleibt gleich: Wie schnell Wasser zufließt, hängt nicht davon ab, wie viel schon im Gefäß ist. Der Graph von f wird um f(0) nach oben verschoben. Verschiedene Füllmengenfunktionen können also dieselbe Zuflussrate haben. Das begegnet dir in Phase 2 wieder (Stammfunktion und Konstante c).</p></details></div>
 </section>
 
 <section id="p3" role="tabpanel" aria-labelledby="t3" hidden>
@@ -292,7 +329,7 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
     <p><button type="button" class="hs-next" data-to="2">◀ Zurück zu Schritt 3</button></p>
   </div>
 </section>
-<p class="stand" style="margin:18px 0 0;font:.8rem var(--sans);color:var(--muted)">Version: 9.11.2026, 23:10 Uhr</p>
+<p class="stand" style="margin:18px 0 0;font:.8rem var(--sans);color:var(--muted)">Version: 11.11.2026, 0:15 Uhr</p>
 </div>
 
 <script>
@@ -326,8 +363,8 @@ function curve(g,sx,sy,f,a,b,col,lw,xr,yr){g.save();g.beginPath();g.rect(sx(xr[0
 
 /* ---------- Tabs ---------- */
 const tabs=[...document.querySelectorAll('.tabs button')];
-function show(i){tabs.forEach((b,j)=>{b.setAttribute('aria-selected',j===i);document.getElementById('p'+(j+1)).hidden=j!==i;});
-  try{localStorage.setItem('integral-tab',i)}catch(e){} redraw();}
+function show(i){tabs.forEach((b,j)=>{b.setAttribute('aria-selected',j===i);document.getElementById(b.getAttribute('aria-controls')).hidden=j!==i;});
+  try{localStorage.setItem('integral-tabid',tabs[i].id)}catch(e){} if(tabs[i].id!=='t1c')stopV(); redraw();}
 tabs.forEach((b,i)=>b.addEventListener('click',()=>show(i)));
 
 /* ---------- Phase 1 ---------- */
@@ -691,20 +728,108 @@ function d34(){
 function draw3(){[d31,d32,d33,d34][hs]();}
 f3.onchange=draw3;['x3','x4','x5','a6','b6','k6'].forEach(i=>E3(i).oninput=draw3);E3('h4').onchange=draw3;E3('zm4').onchange=draw3;E3('sh5').onchange=draw3;
 
-function redraw(){const i=tabs.findIndex(b=>b.getAttribute('aria-selected')==='true');[draw1,drawG,draw2,draw3][i]();}
+/* ---------- Phase 1c: Gefäß füllen (Füllmenge f, Zuflussrate f′) ---------- */
+const FV=[
+ {t:'Konstanter Zufluss: f′(t) = 2',r:t=>2,F:t=>2*t,yr:[0,4.6]},
+ {t:'Pumpe mit Pause: f′(t) = 3, dann 0, dann 1,5',r:t=>t<3?3:t<5?0:1.5,F:t=>t<3?3*t:t<5?9:9+1.5*(t-5),yr:[0,4.6]},
+ {t:'Hahn wird aufgedreht: f′(t) = 0,4 · t',r:t=>.4*t,F:t=>.2*t*t,yr:[0,4.6]},
+ {t:'Hahn wird zugedreht: f′(t) = 4 − 0,4 · t',r:t=>4-.4*t,F:t=>4*t-.2*t*t,yr:[0,4.6]},
+ {t:'Zufluss wird zum Abfluss: f′(t) = 3 − 0,6 · t',r:t=>3-.6*t,F:t=>3*t-.3*t*t,yr:[-3.6,3.6]}];
+const EV=id=>document.getElementById(id),fv=EV('fv'),VMAX=25,TMAX=10;
+FV.forEach((o,i)=>fv.add(new Option(o.t,i)));fv.value=1;
+/* Farbe eines Minutenstreifens: abwechselnd kräftig/hell, Abfluss rot */
+const sCol=(k,neg)=>({c:css(neg?'--over':'--under'),a:neg?(k%2?.22:.45):(k%2?.28:.6)});
+function drawV(){
+  const o=FV[fv.value],t=+EV('tv').value,V0=+EV('v0').value,strips=EV('vstr').checked;
+  const r=o.r(t),A=o.F(t),lev=V0+A;
+  EV('tvv').textContent=de(t,2);EV('v0v').textContent=de(V0,1);
+  const cv=EV('cv5'),cw=cv.getBoundingClientRect().width||800,nar=cw<600;cv.dataset.ratio=nar?1.3:.72;
+  const{g,w,h}=setup(cv);
+  const col=nar?Math.max(72,w*.25):w*.2,gx=col+40;
+  const b1={l:gx,t:24,w:w-gx-14,h:(h-24-48-28)*.42};
+  const b2={l:gx,t:b1.t+b1.h+48,w:b1.w};b2.h=h-b2.t-28;
+  const xr=[0,10.4],yr2=[0,26];
+  const t1=frame(g,b1,xr,o.yr,{tx:1,ty:1}),t2=frame(g,b2,xr,yr2,{tx:1,ty:5});
+  const pos=x=>Math.max(0,o.r(x)),neg=x=>Math.min(0,o.r(x));
+  // Minutenstreifen [k; k+1] bis zur Zeit t
+  const parts=[];for(let k=0;k<Math.ceil(t-1e-9);k++){const u=k,v=Math.min(k+1,t);parts.push({k,u,v,d:o.F(v)-o.F(u)});}
+  /* oben: Zuflussrate f′ mit Fläche von 0 bis t */
+  if(strips)parts.forEach(p=>{const c=sCol(p.k,p.d<0);shade(g,t1.sx,t1.sy,p.d<0?neg:pos,p.u+1e-9,p.v-1e-9,c.c,c.a);});
+  else if(t>0){shade(g,t1.sx,t1.sy,pos,0,t,css('--under'),.45);shade(g,t1.sx,t1.sy,neg,0,t,css('--over'),.35);}
+  curve(g,t1.sx,t1.sy,o.r,0,TMAX,css('--navy'),2.6,xr,o.yr);
+  vline(g,t1.sx(t),b1.t,b1.t+b1.h,css('--ink'),[5,4],1.2);dot(g,t1.sx(t),t1.sy(r),5.5,css('--navy'));
+  tag(g,nar?'f′(t) in L/min':'f′(t) in Liter pro Minute',b1.l+8,b1.t+15,css('--navy'));
+  tag(g,'t in min',b1.l+b1.w-4,t1.sy(0)-6,css('--muted'),'right');
+  if(t>0)tag(g,'Fläche bis t: '+ap(A,2),b1.l+b1.w-4,b1.t+(nar?33:15),css('--under'),'right');
+  /* unten: Füllmenge f */
+  if(EV('vall').checked){g.save();g.setLineDash([6,5]);g.globalAlpha=.6;curve(g,t2.sx,t2.sy,x=>V0+o.F(x),0,TMAX,css('--ok'),1.6,xr,yr2);g.restore();}
+  if(strips)parts.forEach(p=>{const y0=V0+o.F(p.u),y1=V0+o.F(p.v),c=sCol(p.k,p.d<0);
+    hline(g,t2.sy(y0),t2.sx(p.u),t2.sx(p.v),css('--muted'),[3,4],1.1);
+    g.save();g.fillStyle=c.c;g.globalAlpha=Math.min(1,c.a+.25);const ya=t2.sy(Math.max(y0,y1)),yb=t2.sy(Math.min(y0,y1));g.fillRect(t2.sx(p.v)-3,ya,6,Math.max(1,yb-ya));g.restore();});
+  if(t>0)curve(g,t2.sx,t2.sy,x=>V0+o.F(x),0,t,css('--ok'),3.2,xr,yr2);
+  vline(g,t2.sx(t),t2.sy(0),t2.sy(lev),css('--ink'),[5,4],1.2);
+  if(EV('vtan').checked){const d=1.7;g.save();g.beginPath();g.rect(b2.l,b2.t,b2.w,b2.h);g.clip();g.strokeStyle=css('--ink');g.lineWidth=2;g.setLineDash([2,4]);g.lineCap='round';g.beginPath();
+    g.moveTo(t2.sx(t-d),t2.sy(lev-r*d));g.lineTo(t2.sx(t+d),t2.sy(lev+r*d));g.stroke();g.restore();
+    const right=t<7.5;tag(g,'Steigung '+de(r,2),t2.sx(t+(right?d:-d))+(right?6:-6),t2.sy(lev+(right?r:-r)*d)+(r>=0===right?0:12),css('--ink'),right?'left':'right');}
+  dot(g,t2.sx(t),t2.sy(lev),6,css('--ok'));
+  tag(g,nar?'f(t) in L':'f(t) in Liter',b2.l+8,b2.t+15,css('--ok'));
+  tag(g,'t in min',b2.l+b2.w-4,t2.sy(0)-6,css('--muted'),'right');
+  /* links: Gefäß, gleicher Maßstab wie die Achse von f */
+  const vx0=8,vx1=col-8,yB=t2.sy(0),yT=t2.sy(VMAX),xm=(vx0+vx1)/2;
+  if(strips){const st=[];if(V0>0)st.push({v:V0,c:css('--muted'),a:.35});
+    parts.forEach(p=>{if(p.d>=0){const c=sCol(p.k,false);st.push({v:p.d,c:c.c,a:c.a});}
+      else{let rem=-p.d;while(rem>1e-12&&st.length){const top=st[st.length-1],take=Math.min(rem,top.v);top.v-=take;rem-=take;if(top.v<=1e-12)st.pop();}}});
+    let acc=0;st.forEach(L=>{const ya=t2.sy(acc+L.v),yb=t2.sy(acc);g.save();g.fillStyle=L.c;g.globalAlpha=L.a;g.fillRect(vx0,ya,vx1-vx0,yb-ya);g.restore();acc+=L.v;});}
+  else{g.save();g.fillStyle=css('--under');g.globalAlpha=.5;g.fillRect(vx0,t2.sy(lev),vx1-vx0,yB-t2.sy(lev));g.restore();}
+  hline(g,t2.sy(lev),vx0,vx1,css('--under'),[],2.2);
+  hline(g,t2.sy(lev),vx1+2,t2.sx(t)-6,css('--ok'),[3,4],1.2);
+  for(let v=5;v<=VMAX;v+=5)hline(g,t2.sy(v),vx1-9,vx1,css('--muted'),[],1.2);
+  g.save();g.strokeStyle=css('--ink');g.lineWidth=2.6;g.lineJoin='round';g.beginPath();g.moveTo(vx0,yT-8);g.lineTo(vx0,yB);g.lineTo(vx1,yB);g.lineTo(vx1,yT-8);g.stroke();g.restore();
+  // Wasserhahn oben, Strahl so breit wie der Zufluss stark ist
+  const tapY=b1.t+44;g.save();g.fillStyle=css('--muted');g.fillRect(0,tapY-5,xm+5,10);g.fillRect(xm-5,tapY-5,10,16);
+  if(r>0){g.fillStyle=css('--under');g.globalAlpha=.6;const sw=Math.min(vx1-vx0-6,2+r*(nar?2.6:4));g.fillRect(xm-sw/2,tapY+11,sw,t2.sy(lev)-tapY-11);}
+  if(r<0){g.fillStyle=css('--muted');g.fillRect(vx1,yB-13,12,8);g.fillStyle=css('--over');g.globalAlpha=.6;const sw=2+(-r)*(nar?1.6:2.4);g.fillRect(vx1+9-sw/2,yB-5,sw,22);}
+  g.restore();
+  tag(g,'f′(t) =',2,tapY-26,css('--navy'),'left','alphabetic','600 12px '+FONT);
+  tag(g,de(r,2)+' L/min',2,tapY-11,css('--navy'),'left','alphabetic','700 12px '+FONT);
+  tag(g,r<0?'Abfluss':'Gefäß',xm,yB+16,css(r<0?'--over':'--muted'),'center','alphabetic','600 12px '+FONT);
+  /* Messwerte und Erklärung */
+  EV('vt').textContent=de(t,2)+' min';EV('vr').textContent=de(r,2)+' L/min';EV('vA').textContent=ap(A,2)+' L';EV('vf').textContent=ap(lev,2)+' L';
+  const ts=de(t,2);let txt='<b>Nach t = '+ts+' min:</b> ';
+  txt+=r>0?'Gerade fließen f′('+ts+') = '+de(r,2)+' Liter pro Minute zu. ':r<0?'Gerade ist f′('+ts+') = '+de(r,2)+': Es fließt mehr ab als zu, die Füllmenge nimmt ab, der Graph von f fällt. ':'Gerade ist f′('+ts+') = 0: Die Füllmenge ändert sich nicht, der Graph von f verläuft waagerecht. ';
+  if(t>0){let P=0,N=0;parts.forEach(q=>{if(q.d>0)P+=q.d;else N-=q.d;});/* Streifen wechseln nie innen das Vorzeichen */
+    if(N>1e-6)txt+='Die Fläche über der t-Achse ist '+ap(P,2)+', die unter der t-Achse '+ap(N,2)+' (zählt negativ). Bilanz: '+de(P,2)+' − '+de(N,2)+eq(A,2)+de(A,2)+'. So viele Liter sind seit dem Start insgesamt dazugekommen. ';
+    else txt+='Die Fläche unter dem Graphen von f′ von 0 bis '+ts+' ist '+ap(A,2)+'. Genau so viele Liter sind seit dem Start dazugekommen. ';
+    txt+='<b>Füllmenge:</b> f('+ts+') = f(0) + Fläche = '+de(V0,1)+' + '+de(A,2)+eq(lev,2)+de(lev,2)+' Liter.';
+    if(strips)txt+=' Jeder Minutenstreifen unter f′ hat dieselbe Farbe wie die Wasserschicht, die in dieser Minute dazukommt, und wie die senkrechte Stufe am Graphen von f.';}
+  else txt+='Noch ist nichts zugeflossen: f(0) = '+de(V0,1)+' Liter.';
+  if(EV('vtan').checked)txt+=' Die Tangente an den Graphen von f hat die Steigung f′(t): Je stärker der Zufluss, desto steiler der Graph von f.';
+  EV('vnote').innerHTML=txt;}
+let vraf=0,vlast=0;
+function stopV(){if(vraf){cancelAnimationFrame(vraf);vraf=0;}const b=EV('vplay');if(b){b.setAttribute('aria-pressed','false');b.textContent='▶ Abspielen';}}
+function stepV(ts){const s=EV('tv');if(vlast){let nt=+s.value+(ts-vlast)/1200;/* 1 Minute pro 1,2 Sekunden */
+  if(nt>=TMAX){s.value=TMAX;drawV();stopV();return;}s.value=nt;drawV();}vlast=ts;vraf=requestAnimationFrame(stepV);}
+EV('vplay').onclick=()=>{if(vraf){stopV();return;}const s=EV('tv');if(+s.value>=TMAX-1e-6)s.value=0;vlast=0;
+  EV('vplay').setAttribute('aria-pressed','true');EV('vplay').textContent='⏸ Anhalten';vraf=requestAnimationFrame(stepV);};
+EV('vnull').onclick=()=>{stopV();EV('tv').value=0;drawV();};
+EV('tv').oninput=()=>{stopV();drawV();};
+fv.onchange=()=>{stopV();drawV();};EV('v0').oninput=drawV;['vstr','vtan','vall'].forEach(i=>EV(i).onchange=drawV);
+
+function redraw(){const i=tabs.findIndex(b=>b.getAttribute('aria-selected')==='true');[draw1,drawG,drawV,draw2,draw3][i]();}
 let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(redraw,80)});
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change',redraw);
 new MutationObserver(redraw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
-let t0=0;try{t0=+localStorage.getItem('integral-tab')||0}catch(e){}
+let t0=0;try{const sid=localStorage.getItem('integral-tabid');if(sid)t0=Math.max(0,tabs.findIndex(b=>b.id===sid));else{const o=+localStorage.getItem('integral-tab')||0;t0=o<2?o:o+1;}}catch(e){}
 document.fonts&&document.fonts.ready.then(redraw);
-f2.value=0;x3.value=.5;f3.value=0;fg.value=0;show(Math.min(t0,3));
+f2.value=0;x3.value=.5;f3.value=0;fg.value=0;show(Math.min(t0,tabs.length-1));
 /* Plus-/Minus-Knöpfe an den Reglern (Touch) und Ansage geänderter Messwerte */
-[['n1',0],['ng',1],['x3',.025],['x4',.025],['x5',.025],['a6',.025],['b6',.025],['k6',.5],['c2',.5]].forEach(([id,step])=>{const el=document.getElementById(id);if(!el)return;
+[['n1',0],['ng',1],['tv',.25],['v0',.5],['x3',.025],['x4',.025],['x5',.025],['a6',.025],['b6',.025],['k6',.5],['c2',.5]].forEach(([id,step])=>{const el=document.getElementById(id);if(!el)return;
   const w=document.createElement('div');w.className='sl-pm';
   [['−',-1],['+',1]].forEach(([t,d])=>{const b=document.createElement('button');b.type='button';b.textContent=t;b.setAttribute('aria-label',(d<0?'Wert verkleinern: ':'Wert vergrößern: ')+id);
     b.onclick=()=>{el.value=Math.min(+el.max,Math.max(+el.min,+el.value+d*step));el.dispatchEvent(new Event('input'));};w.appendChild(b);});
   el.insertAdjacentElement('afterend',w);});
 document.querySelectorAll('.read').forEach(e=>e.setAttribute('aria-live','polite'));
+document.getElementById('vread').setAttribute('aria-live','off'); /* sonst liest der Screenreader beim Abspielen jeden Zwischenwert vor */
 })();
 </script>
 
