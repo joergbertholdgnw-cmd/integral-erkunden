@@ -237,15 +237,15 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
 
 <div class="merke" data-merke>
   <div class="t">Merke 1 · Das bestimmte Integral</div>
-  <p>Ist f stetig auf [a; b] und f(x) ≥ 0, dann streben Untersumme U<sub>n</sub> und Obersumme O<sub>n</sub> für n → ∞ gegen <input class="blank" data-save="m1a" data-ans="denselben|gemeinsamen|den gleichen|selben" aria-label="Lücke 1"> Grenzwert. Diesen Grenzwert nennt man das <input class="blank" data-save="m1b" data-ans="bestimmte|bestimmtes" aria-label="Lücke 2"> Integral von f in den Grenzen a und b:</p>
+  <p>Ist f stetig auf [a; b], dann streben Untersumme U<sub>n</sub> und Obersumme O<sub>n</sub> für n → ∞ gegen <input class="blank" data-save="m1a" data-ans="denselben|gemeinsamen|den gleichen|selben" aria-label="Lücke 1"> Grenzwert. Diesen Grenzwert nennt man das <input class="blank" data-save="m1b" data-ans="bestimmte|bestimmtes" aria-label="Lücke 2"> Integral von f in den Grenzen a und b:</p>
   <div class="eq">∫<sub>a</sub><sup>b</sup> f(x) dx = lim<sub>n→∞</sub> U<sub>n</sub> = lim<sub>n→∞</sub> O<sub>n</sub></div>
   <p>Beispiel: Für f(x) = 2 ist ∫<sub>0</sub><sup>4</sup> 2 dx = 8, denn die Fläche ist ein Rechteck mit Breite 4 und Höhe 2.</p>
-  <p>Für f(x) ≥ 0 gibt er den <input class="blank" data-save="m1c" data-ans="flächeninhalt|inhalt|flaecheninhalt" aria-label="Lücke 3"> der Fläche zwischen dem Graphen von f und der x-Achse an. Dabei sind a und b die Integrationsgrenzen und f ist der Integrand (die Funktion, die integriert wird).</p>
+  <p>Für f(x) ≥ 0 gibt er den <input class="blank" data-save="m1c" data-ans="flächeninhalt|inhalt|flaecheninhalt" aria-label="Lücke 3"> der Fläche zwischen dem Graphen von f und der x-Achse an. Liegt der Graph teilweise unterhalb der x-Achse, zählen diese Flächenstücke negativ: Das Integral ist dann eine <b>Flächenbilanz</b> (orientierter Flächeninhalt). Dabei sind a und b die Integrationsgrenzen und f ist der Integrand (die Funktion, die integriert wird).</p>
   <p><b>Zum Zeichen (Merkhilfe, keine Definition):</b> ∫ erinnert an „Summe“, f(x)·dx an „Höhe mal sehr schmale Breite“. Gemeint ist der Grenzwert der Rechtecksummen.</p>
   <p><b>Im Sachzusammenhang:</b> Ist f eine Änderungsrate (z. B. Zufluss in m³/min), dann gibt das Integral die <b>Gesamtänderung des Bestands</b> an (z. B. die zugeflossene Wassermenge).</p>
   <p class="wortspeicher"><b>Wortspeicher:</b> gemeinsamen · bestimmte · Inhalt</p>
   <button class="btn" data-check>Prüfen</button>
-  <p class="note" style="font-size:.88rem">Du hast das nur an wachsenden Funktionen beobachtet. Es gilt für alle stetigen Funktionen mit f(x) ≥ 0; der Beweis kommt später. Bei fallendem f vertauschen sich links und rechts: Dann liefert die rechte Seite eines Streifens den kleineren Wert.</p>
+  <p class="note" style="font-size:.88rem">Du hast das nur an wachsenden Funktionen beobachtet. Es gilt für alle stetigen Funktionen; der Beweis kommt später. Bei fallendem f vertauschen sich links und rechts: Dann liefert die rechte Seite eines Streifens den kleineren Wert.</p>
   <details class="more"><summary>Selbsttest</summary><p>Stimmt das? ∫<sub>0</sub><sup>4</sup> 2 dx = 8. Begründe mit einem Rechteck. <i>Antwort: Ja, die Fläche unter f(x) = 2 von 0 bis 4 ist ein Rechteck mit Breite 4 und Höhe 2.</i></p></details>
 </div>
 
@@ -363,7 +363,7 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
 </div>
 <div class="merke" data-merke>
   <div class="t">Merke 2 · Stammfunktion</div>
-  <p>Eine Funktion F mit F′(x) = f(x) für alle x heißt <input class="blank" data-save="m2a" data-ans="stammfunktion" aria-label="Lücke 1"> von f. Beispiel: x² ist eine Stammfunktion von 2x, denn (x²)′ = 2x. Mit F ist auch F(x) + c (c ∈ ℝ) eine Stammfunktion von f. Die Menge aller Stammfunktionen von f ist {F(x) + c | c ∈ ℝ}. Man schreibt dafür ∫ f(x) dx und nennt es das <input class="blank" data-save="m2b" data-ans="unbestimmte|unbestimmtes" aria-label="Lücke 2"> Integral von f (eine Menge von Funktionen, nicht eine Zahl).</p>
+  <p>Eine Funktion F mit F′(x) = f(x) für alle x heißt <input class="blank" data-save="m2a" data-ans="stammfunktion" aria-label="Lücke 1"> von f. Beispiel: x² ist eine Stammfunktion von 2x, denn (x²)′ = 2x. Mit F ist auch F(x) + c (c ∈ ℝ) eine Stammfunktion von f. <i>Im Sachzusammenhang</i> entspricht c dem Anfangsbestand: Zur selben Änderungsrate passen viele Bestandsfunktionen. Die Menge aller Stammfunktionen von f ist {F(x) + c | c ∈ ℝ}. Man schreibt dafür ∫ f(x) dx und nennt es das <input class="blank" data-save="m2b" data-ans="unbestimmte|unbestimmtes" aria-label="Lücke 2"> Integral von f (eine Menge von Funktionen, nicht eine Zahl).</p>
   <p class="wortspeicher"><b>Wortspeicher:</b> Stammfunktion · unbestimmte</p>
   <button class="btn" data-check>Prüfen</button>
   <details class="more"><summary>Selbsttest</summary><p>Ist F(x) = x² + 5 auch eine Stammfunktion von f(x) = 2x? <i>Antwort: Ja, F′(x) = 2x. Die 5 ist eine Konstante c.</i></p></details>
@@ -535,7 +535,7 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
 <!-- ============ ABSCHLUSS ============ -->
 <section id="abschluss">
 <h2>Anwendung und Reflexion</h2>
-<h3>Aufgabe 8 · Hauptsatz anwenden und mit Phase 1 vergleichen</h3>
+<h3>Aufgabe 8 a · Hauptsatz anwenden und mit Phase 1 vergleichen</h3>
 <p>Bestimme jeweils eine Stammfunktion, berechne das Integral und vergleiche mit deinen Ergebnissen aus Phase 1. Gib zum ersten Integral den Weg (in m) und zum zweiten die Wassermenge (in m³) an.</p>
 <div class="task">
   <div class="scroll"><table class="t">
@@ -546,11 +546,11 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
   </table></div>
   <div class="sol teacher"><b class="l">Lösung</b>0,25x² + 2x → 4 + 8 = 12 (Aufgabe 1 a) · x³/15 + x → 14,4 + 6 = 20,4 (Aufgabe 2 c) · x³/3 → 125/3 − 1/3 = 124/3 ≈ 41,33 (Aufgabe 3 b).</div>
 </div>
-<h3>Aufgabe 8 (★ Zusatz) · Zufluss und Abfluss</h3>
+<h3>Aufgabe 8 b · Zufluss und Abfluss (Bilanz)</h3>
 <p>Ein Tank enthält zu Beginn 10 m³ Wasser. Zufluss minus Abfluss ist z(t) = 2 − t (in m³/min, 0 ≤ t ≤ 4). Ist z positiv, steigt die Wassermenge, ist z negativ, sinkt sie.</p>
 <div class="task">
   <div class="q"><b>a)</b><span>Skizziere z im Heft. Wann ist die Wassermenge am größten? Wie viel Wasser ist nach 4 Minuten im Tank? Was bedeutet das Flächenstück unterhalb der t-Achse?</span></div>
-  <textarea data-save="a8z" aria-label="Antwort Aufgabe 8 Zusatz"></textarea>
+  <textarea data-save="a8z" aria-label="Antwort Aufgabe 8 b"></textarea>
   <details class="tip"><summary>Tipp</summary><p>Bestimme eine Stammfunktion von z und berechne ∫ von 0 bis 2 und von 2 bis 4 getrennt. Was fällt bei den Vorzeichen auf?</p></details>
   <div class="sol teacher"><b class="l">Lösung</b>F(t) = 2t − t²/2. Die Wassermenge ist bei t = 2 am größten (z wechselt das Vorzeichen). ∫<sub>0</sub><sup>2</sup> z dt = 2, ∫<sub>2</sub><sup>4</sup> z dt = −2, zusammen 0: Nach 4 Minuten sind wieder 10 m³ im Tank. Das Flächenstück unter der t-Achse zählt negativ und bedeutet Abfluss. Das Integral ist eine Bilanz (Zufluss minus Abfluss), nicht die Summe der Flächeninhalte.</div>
 </div>
@@ -575,7 +575,7 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
  <tr><td>55–80</td><td>Phase 3</td><td>Aufgabe 6, 7, Merke 3</td><td>PA, Plenum</td></tr>
  <tr><td>80–90</td><td>Abschluss</td><td>Aufgabe 8, 9 (9 auch Hausaufgabe)</td><td>EA</td></tr>
 </table></div>
-<p>Zusatz (★) für schnelle Paare: Aufgabe 3, 4 c, 7 e, 8. Das Vier-Schritte-Werkzeug in Phase 3 wird erst nach Aufgabe 7 b freigeschaltet (Vorhersage und Beobachtung zuerst, Beweisidee nach Aufgabe 7 d). Der Plan ist dicht: Bei Zeitnot Aufgabe 6 als Ausblick nehmen und Aufgabe 9 als Hausaufgabe oder Einstieg der Folgestunde geben; die vollständige Begründung des Hauptsatzes kann in der Folgestunde erfolgen.</p>
+<p>Zusatz (★) für schnelle Paare: Aufgabe 3, 4 c, 7 e. Aufgabe 8 b (Bilanz mit Abfluss) ist Pflicht, weil das Integral als orientierte Fläche zum Integralbegriff gehört. Das Vier-Schritte-Werkzeug in Phase 3 wird erst nach Aufgabe 7 b freigeschaltet (Vorhersage und Beobachtung zuerst, Beweisidee nach Aufgabe 7 d). Der Plan ist dicht: Bei Zeitnot Aufgabe 6 als Ausblick nehmen und Aufgabe 9 als Hausaufgabe oder Einstieg der Folgestunde geben; die vollständige Begründung des Hauptsatzes kann in der Folgestunde erfolgen.</p>
 
 <h3>Didaktischer Kommentar</h3>
 <ul class="l">
@@ -633,7 +633,7 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
   </div>
   <form id="gate" autocomplete="off"><label class="f" for="code">Code</label><input type="text" id="code" autocomplete="off"><button class="btn" type="submit">Öffnen</button></form>
   <p style="max-width:calc(70ch + 76px)">Hinweis: Die Lehrkraft-Ansicht ist nur durch einen Code verdeckt. Wer den Quelltext der Seite liest, kann die Lösungen trotzdem finden.</p>
-  <p class="stand" style="margin:18px 0 0;font:.8rem var(--sans);color:var(--muted)">Version: 4.11.2026, 15:09 Uhr</p>
+  <p class="stand" style="margin:18px 0 0;font:.8rem var(--sans);color:var(--muted)">Version: 12.11.2026, 0:30 Uhr</p>
 </footer>
 </div>
 
