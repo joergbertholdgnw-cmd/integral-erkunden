@@ -27,7 +27,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--serif);fon
 h1{font-size:1.9rem;line-height:1.15;margin:0 0 4px;color:var(--navy);text-wrap:balance}
 .sub{margin:0 0 18px;color:var(--muted);font-style:italic}
 .tabs{display:flex;flex-wrap:nowrap;gap:4px;border-bottom:2px solid var(--navy);margin-bottom:16px}
-.tabs button{flex:1 1 auto;white-space:nowrap;font:600 .9rem var(--sans);padding:9px 8px;border:1px solid var(--line);border-bottom:none;background:var(--panel);color:var(--muted);cursor:pointer;border-radius:4px 4px 0 0}
+.tabs button{flex:1 1 auto;min-width:0;white-space:normal;line-height:1.25;font:600 .9rem var(--sans);padding:9px 8px;border:1px solid var(--line);border-bottom:none;background:var(--panel);color:var(--muted);cursor:pointer;border-radius:4px 4px 0 0}
 .tabs button[aria-selected="true"]{background:var(--navy);color:var(--bg);border-color:var(--navy)}
 .tabs button:focus-visible,.chips button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--under);outline-offset:2px}
 .lead{margin:0 0 14px;max-width:calc(65ch + 76px)}
@@ -91,6 +91,9 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
 .tryfb{display:block;margin-top:4px;line-height:1.4}.tryfb:empty{display:none}
 .try .mc{margin-top:6px}.try .mc button{text-align:left}
 .try.solved::before{content:'✓ gelöst';display:inline-block;font:700 .8rem var(--sans);color:var(--ok);margin-bottom:2px}
+.rates{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;margin:10px 0;font:.8rem var(--sans)}.rates label{display:flex;flex-direction:column;align-items:center;color:var(--muted)}.rates input{width:100%;min-width:0;font:.95rem var(--sans);padding:6px 2px;text-align:center;border:1px solid var(--line);border-radius:3px;background:var(--card);color:var(--ink);min-height:40px}
+@media (max-width:600px){.rates{grid-template-columns:repeat(5,1fr)}}
+.goal-list{list-style:none;padding:0;margin:6px 0 0}.goal-list li{margin:3px 0}
 .prog{display:inline-block;margin-left:5px;font-size:.78em;font-weight:700;opacity:.85}
 .quiz{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:8px 0}.quiz figure{margin:0;background:var(--card);border:1px solid var(--line);padding:4px}.quiz figcaption{font:600 .85rem var(--sans);color:var(--navy);padding:2px 4px}
 .quiz select{margin:4px;font:.95rem var(--sans);padding:6px;min-height:40px;background:var(--card);color:var(--ink);border:1px solid var(--line)}.quiz select.right{outline:3px solid var(--ok)}.quiz select.wrong{outline:3px solid var(--over)}.quiz canvas{width:100%}
@@ -101,13 +104,14 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
 <div class="wrap">
 <h1>Von der Summe zum Integral</h1>
 <p class="sub">Zum Arbeitsblatt „Integralrechnung – Einstieg“, Jahrgang 12</p>
-<p class="purpose">Diese Seite ist zum Ausprobieren und Nachbereiten. Phase 0 gehört zu Aufgabe 0 des Arbeitsblatts (Einstieg): Aus der Zuflussrate wird die Wassermenge in einem Gefäß rekonstruiert. Phase 1 gehört zu den Aufgaben 1 und 2, Phase 1b ist eine Vertiefung zu Aufgabe 3 (Zusatz). Phase 2 gehört zu den Aufgaben 4 und 5, Phase 3 zu den Aufgaben 6 und 7. Die Zahl im Reiter zeigt, wie viele Aufträge du dort schon gelöst hast.</p>
+<p class="purpose">Diese Seite ist zum Ausprobieren und Nachbereiten. Phase 0 gehört zu Aufgabe 0 des Arbeitsblatts (Einstieg): Aus der Zuflussrate wird die Wassermenge in einem Gefäß rekonstruiert. Phase 1 gehört zu den Aufgaben 1 und 2, Phase 1b ist eine Vertiefung zu Aufgabe 3 (Zusatz). Phase 2 gehört zu den Aufgaben 4 und 5, Phase 3 zu den Aufgaben 6 und 7. Im Reiter „★ Üben“ findest du eine Bau-Challenge und Übungsserien mit Zufallszahlen. Die Zahl im Reiter zeigt, wie viele Aufträge du dort schon gelöst hast.</p>
 <div class="tabs" role="tablist">
   <button role="tab" id="t1c" aria-selected="true" aria-controls="p1c"><span class="lg">Phase </span>0 · Gefäß füllen</button>
   <button role="tab" id="t1" aria-selected="false" aria-controls="p1"><span class="lg">Phase </span>1 · Rechtecksummen</button>
   <button role="tab" id="t2" aria-selected="false" aria-controls="p2"><span class="lg">Phase </span>1b · Vertiefung<span class="lg">: Grenzwert</span></button>
   <button role="tab" id="t3" aria-selected="false" aria-controls="p3"><span class="lg">Phase </span>2 · Stammfunktion</button>
   <button role="tab" id="t4" aria-selected="false" aria-controls="p4"><span class="lg">Phase </span>3 · Integralfunktion</button>
+  <button role="tab" id="t5" aria-selected="false" aria-controls="p5">★ Üben</button>
 </div>
 
 <section id="p1c" role="tabpanel" aria-labelledby="t1c">
@@ -410,7 +414,38 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
     <p><button type="button" class="hs-next" data-to="2">◀ Zurück zu Schritt 3</button></p>
   </div>
 </section>
-<p class="stand" style="margin:18px 0 0;font:.8rem var(--sans);color:var(--muted)">Version: 27.11.2026, 13:15 Uhr</p>
+
+<section id="p5" role="tabpanel" aria-labelledby="t5" hidden>
+  <p class="lead"><b>Hier wendest du an, was du in den Phasen 0 bis 3 gelernt hast.</b> In Teil A baust du selbst einen Füllvorgang, der ein Ziel erreicht. Teil B ist eine Übungsserie mit fünf Aufgaben und sofortiger Rückmeldung.</p>
+  <h2 class="hs-h" style="font-size:1.15rem;margin:18px 0 6px">A · Baue deinen Füllvorgang</h2>
+  <p class="lead">Lege für jede Minute die Zuflussrate fest: Ziehe die Balken nach oben oder unten oder tippe die Werte ein. Negative Werte bedeuten Abfluss. Darunter siehst du die Füllmenge F, das Gefäß ist am Anfang leer. Wähle eine Challenge und erfülle alle Bedingungen.</p>
+  <div class="chips" id="chsel" role="group" aria-label="Challenge wählen"></div>
+  <div class="note" id="chgoal" aria-live="polite"></div>
+  <div class="stage" style="margin-top:10px"><canvas id="cb1" width="1600" height="560" style="touch-action:none;cursor:ns-resize" role="img" aria-label="Zuflussrate je Minute als Balken; Balken lassen sich nach oben und unten ziehen"></canvas><canvas id="cb2" width="1600" height="560" role="img" aria-label="Füllmenge F, die sich aus den Raten ergibt"></canvas></div>
+  <p class="tl" style="margin:4px 0 0;display:block">Oben: Zuflussrate je Minute (ziehen). Unten: Füllmenge F. Zum Scrollen auf dem Handy neben die Grafik tippen.</p>
+  <div class="rates" id="brates" role="group" aria-label="Zuflussraten je Minute in Litern pro Minute"></div>
+  <div class="chips"><button type="button" id="breset">Alle Raten auf 0</button></div>
+  <div class="read">
+    <div class="e"><small>Füllmenge F(10)</small><b id="bF10">–</b></div>
+    <div class="u"><small>höchste Füllmenge</small><b id="bmax">–</b></div>
+    <div><small>durchschnittliche Zuflussrate</small><b id="bavg">–</b></div>
+  </div>
+  <div hidden><div class="try" data-id="ch1" data-custom></div><div class="try" data-id="ch2" data-custom></div><div class="try" data-id="ch3" data-custom></div><div class="try" data-id="ch4" data-custom></div></div>
+
+  <h2 class="hs-h" style="font-size:1.15rem;margin:26px 0 6px">B · Übungsserie</h2>
+  <p class="lead">Fünf Aufgaben mit zufälligen Zahlen. Einen Punkt gibt es, wenn die erste Antwort stimmt. Bei einem Fehler bekommst du einen Tipp und einen zweiten Versuch. Ab 4 Punkten gilt die Serie als geschafft.</p>
+  <div class="chips" id="ulevel" role="group" aria-label="Niveau"><button type="button" data-l="1" aria-pressed="true">Grundlagen</button><button type="button" data-l="2" aria-pressed="false">Fortgeschritten (mit Abfluss und Hauptsatz)</button></div>
+  <div class="note" id="ubox" style="margin-top:10px">
+    <div id="uhead" style="font:600 .9rem var(--sans);color:var(--muted)"></div>
+    <div id="uq" style="margin:6px 0"></div>
+    <div class="stage" id="ustage"><canvas id="cu" width="1600" height="640" role="img" aria-label="Graph zur Übungsaufgabe"></canvas></div>
+    <div class="try" id="utry" style="margin-top:8px"><label><span id="ulab">Antwort:</span> <input id="uin" inputmode="decimal" aria-label="Deine Antwort"> <span id="uunit"></span></label>
+      <button type="button" class="trybtn" id="ucheck">Prüfen</button> <button type="button" class="hs-next" id="unext" hidden style="margin-top:0">Nächste Aufgabe ▶</button>
+      <span class="tryfb" id="ufb" role="status"></span></div>
+  </div>
+  <div hidden><div class="try" data-id="serie" data-custom></div></div>
+</section>
+<p class="stand" style="margin:18px 0 0;font:.8rem var(--sans);color:var(--muted)">Version: 27.11.2026, 14:00 Uhr</p>
 </div>
 
 <script>
@@ -453,13 +488,14 @@ tabs.forEach((b,i)=>b.addEventListener('click',()=>show(i)));
 /* ---------- Aufträge mit Eingabe und Rückmeldung; Fortschritt im Reiter ---------- */
 let done={};try{done=JSON.parse(localStorage.getItem('integral-done')||'{}')||{}}catch(e){}
 function saveDone(){try{localStorage.setItem('integral-done',JSON.stringify(done))}catch(e){}}
-function updProg(){tabs.forEach(b=>{const p=document.getElementById(b.getAttribute('aria-controls')),all=[...p.querySelectorAll('.try')];let s=b.querySelector('.prog');
+function updProg(){tabs.forEach(b=>{const p=document.getElementById(b.getAttribute('aria-controls')),all=[...p.querySelectorAll('.try[data-id]')];let s=b.querySelector('.prog');
   if(!all.length){if(s)s.remove();return;}if(!s){s=document.createElement('span');s.className='prog';b.appendChild(s);}
   const k=all.filter(x=>done[x.dataset.id]).length;s.textContent=(k===all.length?'✓ ':'')+k+'/'+all.length;s.setAttribute('aria-label',k+' von '+all.length+' Aufträgen gelöst');});}
 function initTry(box){const id=box.dataset.id,fb=box.querySelector('.tryfb'),det=document.querySelector('details[data-after="'+id+'"]');
   const reveal=()=>{if(det)det.hidden=false;};
   const solved=()=>{done[id]=1;saveDone();box.classList.add('solved');reveal();updProg();};
   if(done[id]){box.classList.add('solved');reveal();}
+  if(box.hasAttribute('data-custom'))return;
   if(box.hasAttribute('data-quiz')){const sels=[...document.querySelectorAll('#qzf select')];sels.forEach(s=>s.onchange=()=>s.classList.remove('right','wrong'));
     box.querySelector('.trybtn').onclick=()=>{if(sels.every(s=>!s.value)){fb.textContent='Wähle zuerst zu jedem f einen Graphen von F.';return;}
       let ok=0;const ms=[];sels.forEach(s=>{s.classList.remove('right','wrong');if(!s.value)return;const r=s.value===s.dataset.ans;s.classList.add(r?'right':'wrong');if(r)ok++;else ms.push('<b>'+s.dataset.name+':</b> '+(s.value==='3'&&s.dataset.w3?s.dataset.w3:s.dataset.hint));});
@@ -957,6 +993,132 @@ EV('vnull').onclick=()=>{stopV();EV('tv').value=0;drawV();};
 EV('tv').oninput=()=>{stopV();drawV();};
 fv.onchange=()=>{stopV();drawV();};EV('v0').oninput=drawV;['vhide','vstr','vtan','vall','vavg'].forEach(i=>EV(i).onchange=drawV);
 
+/* ---------- Üben A: Baue deinen Füllvorgang ---------- */
+const BR=Array(10).fill(0),BMIN=-3,BMAX=4;
+const CH=[
+ {id:'ch1',name:'12 Liter',goal:'Nach 10 Minuten sind genau 12 Liter im Gefäß.',
+  conds:(r,F)=>[[ 'F(10) = 12 Liter', Math.abs(F[10]-12)<1e-9 ]],target:[10,12]},
+ {id:'ch2',name:'Hochpunkt bei t = 6',goal:'Bis t = 6 steigt die Füllmenge, danach sinkt sie. Nach 10 Minuten sind noch 4 Liter drin.',
+  conds:(r,F)=>[[ 'Rate in den Minuten 1 bis 6 positiv (F steigt)', r.slice(0,6).every(v=>v>0) ],[ 'Rate in den Minuten 7 bis 10 negativ (F sinkt)', r.slice(6).every(v=>v<0) ],[ 'F(10) = 4 Liter', Math.abs(F[10]-4)<1e-9 ]],target:[10,4]},
+ {id:'ch3',name:'Nie gleichmäßig',goal:'Die durchschnittliche Zuflussrate von 0 bis 10 ist 1,5 L/min. Aber keine zwei aufeinanderfolgenden Minuten haben dieselbe Rate.',
+  conds:(r,F)=>[[ 'Durchschnitt 1,5 L/min, also F(10) = 15 Liter', Math.abs(F[10]-15)<1e-9 ],[ 'Benachbarte Minuten haben verschiedene Raten', r.every((v,k)=>k===0||v!==r[k-1]) ]],target:[10,15]},
+ {id:'ch4',name:'Zweimal gleich voll',goal:'Bei t = 4 und bei t = 10 ist gleich viel Wasser im Gefäß. Nach dem Start ist das Gefäß nie leer und nie über 10 Liter voll.',
+  conds:(r,F)=>[[ 'F(4) = F(10)', Math.abs(F[4]-F[10])<1e-9 ],[ 'F(t) > 0 für t = 1 bis 10', F.slice(1).every(v=>v>1e-9) ],[ 'F(t) ≤ 10 Liter', F.every(v=>v<=10+1e-9) ]]}];
+let chi=0;
+function bF(){const F=[0];BR.forEach((v,k)=>F.push(F[k]+v));return F;}
+function buildB(){const sel=document.getElementById('chsel');if(sel.childElementCount)return;
+  CH.forEach((c,i)=>{const b=document.createElement('button');b.type='button';b.textContent=(i+1)+' · '+c.name;b.setAttribute('aria-pressed',i===chi);b.onclick=()=>{chi=i;[...sel.children].forEach((x,j)=>x.setAttribute('aria-pressed',j===i));drawB();};sel.appendChild(b);});
+  const box=document.getElementById('brates');
+  BR.forEach((v,k)=>{const l=document.createElement('label');l.innerHTML='<span>'+k+'–'+(k+1)+'</span>';const i=document.createElement('input');i.type='number';i.step='.5';i.min=BMIN;i.max=BMAX;i.value=0;i.inputMode='decimal';i.setAttribute('aria-label','Rate von Minute '+k+' bis '+(k+1));
+    i.oninput=()=>{const x=num(i.value);if(!isNaN(x)){BR[k]=Math.max(BMIN,Math.min(BMAX,Math.round(x*2)/2));drawB(true);}};i.onchange=()=>{i.value=BR[k];};l.appendChild(i);box.appendChild(l);});
+  document.getElementById('breset').onclick=()=>{BR.fill(0);drawB();};
+  const cv=document.getElementById('cb1');let drag=false;
+  const at=e=>{const g=cv._geo;if(!g)return;const r=cv.getBoundingClientRect(),px=e.clientX-r.left,py=e.clientY-r.top;
+    const x=g.xr[0]+(px-g.b.l)/g.b.w*(g.xr[1]-g.xr[0]),y=g.yr[0]+(g.b.t+g.b.h-py)/g.b.h*(g.yr[1]-g.yr[0]),k=Math.floor(x);
+    if(k<0||k>9)return;BR[k]=Math.max(BMIN,Math.min(BMAX,Math.round(y*2)/2));drawB();};
+  cv.addEventListener('pointerdown',e=>{drag=true;cv.setPointerCapture(e.pointerId);at(e);});
+  cv.addEventListener('pointermove',e=>{if(drag)at(e);});
+  ['pointerup','pointercancel'].forEach(t=>cv.addEventListener(t,()=>drag=false));}
+function drawB(fromInput){const p=document.getElementById('p5');if(!p||p.hidden)return;
+  const F=bF(),c=CH[chi];
+  if(!fromInput)document.querySelectorAll('#brates input').forEach((i,k)=>i.value=BR[k]);
+  // oben: Balken
+  const cv=document.getElementById('cb1'),nar=cv.getBoundingClientRect().width<600;cv.dataset.ratio=nar?.62:.3;
+  let{g,w,h}=setup(cv);let b={l:40,t:10,w:w-52,h:h-34},xr=[0,10.2],yr=[BMIN-.3,BMAX+.4];
+  let t=frame(g,b,xr,yr,{tx:1,ty:1});cv._geo={b,xr,yr};
+  BR.forEach((v,k)=>{if(v===0){hline(g,t.sy(0),t.sx(k)+2,t.sx(k+1)-2,css('--muted'),[],3);return;}
+    const neg=v<0;g.save();g.fillStyle=css(neg?'--over':'--under');g.globalAlpha=k%2?.45:.65;const y0=t.sy(Math.max(0,v)),y1=t.sy(Math.min(0,v));g.fillRect(t.sx(k)+2,y0,t.sx(k+1)-t.sx(k)-4,y1-y0);g.restore();
+    hline(g,t.sy(v),t.sx(k)+2,t.sx(k+1)-2,css(neg?'--over':'--navy'),[],3);
+    if(!nar)tag(g,de(v,1),(t.sx(k)+t.sx(k+1))/2,neg?t.sy(v)+16:t.sy(v)-6,css('--ink'),'center');});
+  tag(g,nar?'f in L/min':'Zuflussrate f in L/min (Balken ziehen)',b.l+8,b.t+14,css('--navy'));
+  // unten: Füllmenge
+  const cv2=document.getElementById('cb2');cv2.dataset.ratio=nar?.62:.3;({g,w,h}=setup(cv2));
+  const lo=Math.min(0,...F),hi=Math.max(16,...F);b={l:40,t:10,w:w-52,h:h-34};yr=[lo-.5,hi+1];
+  t=frame(g,b,xr,yr,{tx:1,ty:niceStep((yr[1]-yr[0])/5)});
+  if(lo<0){g.save();g.fillStyle=css('--over');g.globalAlpha=.12;g.fillRect(b.l,t.sy(0),b.w,t.sy(yr[0])-t.sy(0));g.restore();tag(g,'unmöglich: weniger als leer',b.l+b.w-6,t.sy(0)+16,css('--over'),'right');}
+  if(c.target){g.save();g.strokeStyle=css('--over');g.lineWidth=2;g.setLineDash([4,3]);g.beginPath();g.arc(t.sx(c.target[0]),t.sy(c.target[1]),11,0,7);g.stroke();g.restore();tag(g,'Ziel',t.sx(c.target[0])-14,t.sy(c.target[1])-8,css('--over'),'right');}
+  if(chi===3)hline(g,t.sy(10),b.l,b.l+b.w,css('--over'),[6,4],1.4);
+  g.save();g.strokeStyle=css('--ok');g.lineWidth=3;g.beginPath();F.forEach((v,k)=>k?g.lineTo(t.sx(k),t.sy(v)):g.moveTo(t.sx(k),t.sy(v)));g.stroke();g.restore();
+  F.forEach((v,k)=>dot(g,t.sx(k),t.sy(v),3.5,css('--ok')));
+  tag(g,nar?'F in L':'Füllmenge F in Liter',b.l+8,b.t+14,css('--ok'));
+  document.getElementById('bF10').textContent=de(F[10],1)+' L';document.getElementById('bmax').textContent=de(Math.max(...F),1)+' L';document.getElementById('bavg').textContent=de(F[10]/10,2)+' L/min';
+  // Bedingungen
+  const cs=c.conds(BR,F),neg=F.some(v=>v<-1e-9),all=cs.every(x=>x[1])&&!neg;
+  let html='<b>Challenge '+(chi+1)+' · '+c.name+':</b> '+c.goal+'<ul class="goal-list">'+cs.map(x=>'<li>'+(x[1]?'<span class="ok">✓</span> ':'<span class="cr">○</span> ')+x[0]+'</li>').join('')+'</ul>';
+  if(neg)html+='<p class="cr" style="margin:4px 0 0">Die Füllmenge wird negativ. Ein Gefäß kann nicht weniger als leer sein.</p>';
+  if(all){html+='<p style="margin:6px 0 0"><span class="ok">Geschafft!</span> Kannst du es auch anders lösen? Probiere die nächste Challenge.</p>';if(!done[c.id]){done[c.id]=1;saveDone();updProg();}}
+  else if(done[c.id])html+='<p class="hs-sm" style="margin:6px 0 0">Diese Challenge hast du schon einmal geschafft.</p>';
+  document.getElementById('chgoal').innerHTML=html;}
+
+/* ---------- Üben B: Übungsserie mit Zufallszahlen ---------- */
+const ri=(a,b)=>a+Math.floor(Math.random()*(b-a+1)),pick=a=>a[Math.floor(Math.random()*a.length)];
+const fmt=v=>v<0?'('+de(v,3)+')':de(v,3);
+function segsRand(lvl){const n=3,s=[];let t=0;for(let i=0;i<n;i++){const d=ri(1,4);let r=lvl===1?pick([0,.5,1,1.5,2,2.5,3,3.5,4]):pick([-2,-1.5,-1,-.5,0,.5,1,1.5,2,2.5,3,3.5,4]);s.push({a:t,b:t+d,r});t+=d;}
+  if(s.every(x=>x.r===0))s[0].r=2;return s;}
+const segF=(s,T)=>s.reduce((acc,x)=>acc+x.r*Math.max(0,Math.min(T,x.b)-x.a),0);
+function segSteps(s,T){return s.filter(x=>x.a<T).map(x=>{const e=Math.min(T,x.b),d=e-x.a;return de(x.a)+' bis '+de(e)+' min: '+fmt(x.r)+' · '+de(d)+' = '+de(x.r*d,3)+' L';}).join('<br>');}
+function mkRekon(lvl){let s,F0,T,ans,tries=0;
+  do{s=segsRand(lvl);F0=lvl===1?0:ri(0,6);const tot=s[2].b;T=pick([tot,s[1].b,ri(1,tot)]);ans=F0+segF(s,T);tries++;}
+  while(tries<50&&(ans<0||[...Array(s[2].b+1).keys()].some(k=>F0+segF(s,k)<0)));
+  return{kind:'rate',segs:s,T,F0,q:'Die Zuflussrate f in ein Gefäß ist abschnittsweise konstant (Graph). '+(F0?'Zu Beginn '+(F0===1?'ist 1 Liter':'sind '+F0+' Liter')+' im Gefäß. ':'Das Gefäß ist zu Beginn leer. ')+'Wie viel Wasser ist nach <b>'+T+' Minuten</b> im Gefäß?'+(lvl===2&&s.some(x=>x.r<0)?' Negative Rate bedeutet Abfluss.':''),
+    lab:'F('+T+') =',unit:'Liter',ans,tol:.01,hint:'Teile in Abschnitte. Rechne für jeden Abschnitt Rate mal Dauer'+(s.some(x=>x.r<0)?' (Abfluss zählt negativ)':'')+', addiere und denk an die Anfangsfüllung.',
+    sol:segSteps(s,T)+'<br>F('+T+') = '+F0+' + ('+s.filter(x=>x.a<T).map(x=>de(x.r*(Math.min(T,x.b)-x.a),3)).join(' + ').replace(/\+ −/g,'− ')+') = <b>'+de(ans,3)+' Liter</b>.'};}
+function mkAvg(lvl){let s,n=0;do{s=segsRand(lvl);n++;}while(n<50&&[...Array(s[2].b+1).keys()].some(k=>segF(s,k)<0));const T=s[2].b,A=segF(s,T),ans=A/T;
+  return{kind:'rate',segs:s,T,F0:0,q:'Die Zuflussrate f ist abschnittsweise konstant (Graph). Mit welcher <i>konstanten</i> Zuflussrate wäre von 0 bis '+T+' Minuten genauso viel Wasser zugeflossen? Runde auf zwei Nachkommastellen.',
+    lab:'durchschnittliche Rate =',unit:'L/min',ans,tol:.006,disp:de(ans,2),hint:'Bestimme zuerst die Flächenbilanz von 0 bis '+T+' und teile sie dann durch die Zeitdauer.',
+    sol:segSteps(s,T)+'<br>Zusammen '+de(A,3)+' L. Durchschnittliche Rate = '+de(A,3)+' L : '+T+' min'+eq(ans,2)+'<b>'+de(ans,2)+' L/min</b>.'};}
+function polyStr(c){/* c=[c0,c1,c2] */const t=[];[[2,'x²'],[1,'x'],[0,'']].forEach(([k,s])=>{const v=c[k];if(!v)return;const a=Math.abs(v),sg=v<0?'−':'+';t.push((t.length?' '+sg+' ':(v<0?'−':''))+(a===1&&s?'':de(a,3)+(s?'·':''))+s);});return t.join('')||'0';}
+function mkHaupt(lvl){let c,a,b;
+  if(lvl===1){const n=ri(0,2);c=[0,0,0];c[n]=n===2?pick([3,6]):n===1?pick([2,4]):ri(1,5);a=ri(0,1);b=a+ri(1,3);}
+  else{c=[ri(-3,3),pick([-4,-2,2,4]),pick([-3,3,6])];a=ri(-1,1);b=a+ri(1,3);}
+  const C=[0,c[0],c[1]/2,c[2]/3],F=x=>C[1]*x+C[2]*x*x+C[3]*x**3,ans=F(b)-F(a),f=x=>c[0]+c[1]*x+c[2]*x*x;
+  const Fs=polyStr3(C);
+  return{kind:'fun',f,a,b,q:'Berechne mit dem Hauptsatz: ∫<sub>'+de(a)+'</sub><sup>'+de(b)+'</sup> ('+polyStr(c)+') dx',lab:'Ergebnis:',unit:'',ans,tol:.01,
+    hint:'Suche eine Stammfunktion F (Probe: F′ = f) und rechne F('+de(b)+') − F('+de(a)+').',
+    sol:'Stammfunktion: F(x) = '+Fs+'. F('+de(b)+') − F('+de(a)+') = '+de(F(b),3)+' − '+fmt(F(a))+' = <b>'+de(ans,3)+'</b>.'+(lvl===2?' Liegt der Graph teilweise unter der x-Achse, ist das eine Flächenbilanz.':'')};}
+function polyStr3(C){const t=[];[[3,'x³'],[2,'x²'],[1,'x']].forEach(([k,s])=>{const v=C[k];if(!v)return;const a=Math.abs(v),sg=v<0?'−':'+';t.push((t.length?' '+sg+' ':(v<0?'−':''))+(a===1?'':de(a,3)+'·')+s);});return t.join('')||'0';}
+function mkBilanz(){const m=pick([1,2]),z=pick([1,2]),c=m*z,b=z+ri(1,3),V0=ri(2,8),f=t=>m*t-c,A=m*b*b/2-c*b,ans=V0+A;
+  return{kind:'fun',f,a:0,b,q:'In einem Tank sind zu Beginn '+V0+' m³ Wasser. Zufluss minus Abfluss ist f(t) = '+(m===1?'':m+'·')+'t − '+c+' (in m³/min). Wie viel Wasser ist nach <b>'+b+' Minuten</b> im Tank?',
+    lab:'Wassermenge =',unit:'m³',ans,tol:.01,hint:'Bis t = '+z+' fließt mehr ab als zu. Bilde die Flächenbilanz mit einer Stammfunktion von f und addiere den Anfangsbestand.',
+    sol:'Stammfunktion: F(t) = '+(m===2?'':'0,5·')+'t² − '+c+'t. Änderung: F('+b+') − F(0) = '+de(A,3)+' m³. Wassermenge: '+V0+' + '+fmt(A)+' = <b>'+de(ans,3)+' m³</b>.',segsTxt:''};}
+let US=null,ulvl=1;
+function newSeries(){const gens=ulvl===1?[mkRekon,mkAvg,mkHaupt,mkRekon,mkHaupt]:[mkRekon,mkBilanz,mkHaupt,mkAvg,mkHaupt];
+  US={i:0,score:0,tasks:gens.map(g=>g(ulvl)),att:0,closed:false,end:false};showTask();}
+function showTask(){const T=US.tasks[US.i];US.att=0;US.closed=false;
+  document.getElementById('uhead').textContent='Aufgabe '+(US.i+1)+' von 5 · Punkte: '+US.score;
+  document.getElementById('uq').innerHTML=T.q;document.getElementById('ulab').textContent=T.lab;document.getElementById('uunit').textContent=T.unit;
+  const inp=document.getElementById('uin');inp.value='';inp.classList.remove('right','wrong');inp.disabled=false;document.getElementById('utry').hidden=false;document.getElementById('ustage').hidden=false;
+  document.getElementById('ucheck').hidden=false;document.getElementById('unext').hidden=true;document.getElementById('ufb').innerHTML='';drawU();}
+function checkU(){if(!US||US.closed)return;const T=US.tasks[US.i],inp=document.getElementById('uin'),v=num(inp.value),fb=document.getElementById('ufb');
+  if(isNaN(v)){fb.textContent='Trage zuerst eine Zahl ein.';return;}
+  const ok=Math.abs(v-T.ans)<=T.tol;inp.classList.remove('right','wrong');inp.classList.add(ok?'right':'wrong');
+  if(ok){if(US.att===0)US.score++;fb.innerHTML='<span class="ok">✓ Richtig!</span>'+(US.att?' (im zweiten Versuch, ohne Punkt)':' +1 Punkt')+'<br>'+T.sol;close();}
+  else if(US.att===0){US.att=1;fb.innerHTML='<span class="cr">Noch nicht.</span> Tipp: '+T.hint+' Du hast noch einen Versuch.';}
+  else{fb.innerHTML='<span class="cr">Leider nicht.</span> Richtig ist '+(T.disp||de(T.ans,3))+'.<br>'+T.sol;close();}
+  function close(){US.closed=true;inp.disabled=true;document.getElementById('ucheck').hidden=true;const n=document.getElementById('unext');n.hidden=false;n.textContent=US.i<4?'Nächste Aufgabe ▶':'Auswertung ▶';n.focus();
+    document.getElementById('uhead').textContent='Aufgabe '+(US.i+1)+' von 5 · Punkte: '+US.score;}}
+function nextU(){if(US.i<4){US.i++;showTask();return;}
+  const s=US.score;document.getElementById('uhead').textContent='Serie beendet';document.getElementById('utry').hidden=true;document.getElementById('ustage').hidden=true;
+  if(s>=4&&!done.serie){done.serie=1;saveDone();updProg();}
+  document.getElementById('uq').innerHTML='<p style="margin:0 0 8px">Du hast <b>'+s+' von 5</b> Punkten.'+(s===5?' <span class="ok">Perfekt!</span>':s>=4?' <span class="ok">Geschafft!</span>':s>=2?' Gut, das wird. Schau dir die Lösungen der falschen Aufgaben noch einmal an.':' Schau dir Phase 0 und Phase 3 noch einmal an und versuche es erneut.')+(ulvl===1&&s>=4?' Probiere jetzt „Fortgeschritten“.':'')+'</p><button type="button" class="trybtn" id="unew">Neue Serie</button>';
+  document.getElementById('unew').onclick=newSeries;}
+function drawU(){const p=document.getElementById('p5');if(!p||p.hidden||!US||US.i>4||document.getElementById('ustage').hidden)return;const T=US.tasks[US.i];
+  const cv=document.getElementById('cu'),nar=cv.getBoundingClientRect().width<600;cv.dataset.ratio=nar?.7:.4;const{g,w,h}=setup(cv);const b={l:42,t:12,w:w-56,h:h-38};
+  if(T.kind==='rate'){const s=T.segs,tot=s[2].b,rs=s.map(x=>x.r),xr=[0,tot+.4],yr=[Math.min(0,...rs)-.5,Math.max(...rs,1)+.8];const t=frame(g,b,xr,yr,{tx:1,ty:1});
+    s.forEach(x=>{const e=Math.min(T.T,x.b);if(e>x.a&&x.r){g.save();g.fillStyle=css(x.r<0?'--over':'--under');g.globalAlpha=.4;const y0=t.sy(Math.max(0,x.r)),y1=t.sy(Math.min(0,x.r));g.fillRect(t.sx(x.a),y0,t.sx(e)-t.sx(x.a),y1-y0);g.restore();}});
+    g.save();g.strokeStyle=css('--navy');g.lineWidth=2.6;g.beginPath();s.forEach((x,i)=>{if(i)g.lineTo(t.sx(x.a),t.sy(x.r));else g.moveTo(t.sx(x.a),t.sy(x.r));g.lineTo(t.sx(x.b),t.sy(x.r));});g.stroke();g.restore();
+    vline(g,t.sx(T.T),b.t,b.t+b.h,css('--ink'),[5,4],1.2);tag(g,'t = '+T.T,t.sx(T.T)-4,b.t+14,css('--ink'),'right');tag(g,'f(t) in L/min',b.l+8,b.t+14,css('--navy'));if(!nar)tag(g,'t in min',b.l+b.w-4,b.t+b.h-6,css('--muted'),'right');}
+  else{const L=T.b-T.a,xr=[Math.min(0,T.a)-.3,T.b+L*.15+.2];let lo=0,hi=0;for(let i=0;i<=100;i++){const v=T.f(xr[0]+(xr[1]-xr[0])*i/100);lo=Math.min(lo,v);hi=Math.max(hi,v);}
+    const pad=(hi-lo)*.1||1,yr=[lo-pad,hi+pad],t=frame(g,b,xr,yr,{tx:1,ty:niceStep((yr[1]-yr[0])/5)});
+    sshade(g,t.sx,t.sy,T.f,T.a,T.b,css('--under'),.4);curve(g,t.sx,t.sy,T.f,xr[0],xr[1],css('--navy'),2.6,xr,yr);
+    [T.a,T.b].forEach(x=>vline(g,t.sx(x),b.t,b.t+b.h,css('--muted'),[2,4],1));tag(g,'f',b.l+8,b.t+14,css('--navy'));}}
+function initU(){if(document.getElementById('ucheck').onclick)return;
+  document.getElementById('ucheck').onclick=checkU;document.getElementById('unext').onclick=nextU;
+  document.getElementById('uin').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();checkU();}});
+  document.querySelectorAll('#ulevel button').forEach(b=>b.onclick=()=>{ulvl=+b.dataset.l;document.querySelectorAll('#ulevel button').forEach(x=>x.setAttribute('aria-pressed',x===b));newSeries();});
+  newSeries();}
+function drawUeben(){buildB();drawB();if(!US)initU();else drawU();}
+
 /* ---------- Zuordnungsquiz f → F (Phase 0, Auftrag 6) ---------- */
 const QF=[
  {n:'A',f:t=>1.5,ans:'2',hint:'f ist konstant: Jede Minute kommt gleich viel dazu. F ist eine steigende Gerade.'},
@@ -975,14 +1137,14 @@ function drawQuiz(){const a=document.getElementById('qzf');if(!a||!a.offsetParen
   [...a.querySelectorAll('canvas')].forEach((cv,i)=>one(cv,QF[i].f,[-2.2,2.6],2,css('--navy')));
   [...document.querySelectorAll('#qzF canvas')].forEach((cv,i)=>one(cv,QG[i],[0,6.5],2,css('--ok')));}
 
-function redraw(){const i=tabs.findIndex(b=>b.getAttribute('aria-selected')==='true');[drawV,draw1,drawG,draw2,draw3][i]();if(i===0)drawQuiz();}
+function redraw(){const i=tabs.findIndex(b=>b.getAttribute('aria-selected')==='true');[drawV,draw1,drawG,draw2,draw3,drawUeben][i]();if(i===0)drawQuiz();}
 let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(redraw,80)});
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change',redraw);
 new MutationObserver(redraw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
 let t0=0;try{const sid=localStorage.getItem('integral-tabid');if(sid)t0=Math.max(0,tabs.findIndex(b=>b.id===sid));else{const ov=localStorage.getItem('integral-tab');if(ov!==null){const o=+ov||0;t0=o<2?o+1:o+2;}}}catch(e){}
 document.fonts&&document.fonts.ready.then(redraw);
 {const hh=location.hash.slice(1),hi=tabs.findIndex(b=>b.id===hh||b.getAttribute('aria-controls')===hh);if(hi>=0)t0=hi;}
-buildQuiz();document.querySelectorAll('.try').forEach(initTry);updProg();
+buildQuiz();document.querySelectorAll('.try[data-id]').forEach(initTry);updProg();
 f2.value=0;x3.value=.5;f3.value=0;fg.value=0;show(Math.min(t0,tabs.length-1));
 /* Plus-/Minus-Knöpfe an den Reglern (Touch) und Ansage geänderter Messwerte */
 [['n1',0],['ng',1],['tv',.25],['v0',.5],['x3',.025],['x4',.025],['x5',.025],['a6',.025],['b6',.025],['k6',.5],['c2',.5]].forEach(([id,step])=>{const el=document.getElementById(id);if(!el)return;
