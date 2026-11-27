@@ -93,7 +93,7 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
 .try.solved::before{content:'✓ gelöst';display:inline-block;font:700 .8rem var(--sans);color:var(--ok);margin-bottom:2px}
 .prog{display:inline-block;margin-left:5px;font-size:.78em;font-weight:700;opacity:.85}
 .quiz{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:8px 0}.quiz figure{margin:0;background:var(--card);border:1px solid var(--line);padding:4px}.quiz figcaption{font:600 .85rem var(--sans);color:var(--navy);padding:2px 4px}
-.quiz select{margin-top:4px;font:.95rem var(--sans);padding:6px}
+.quiz select{margin:4px;font:.95rem var(--sans);padding:6px;min-height:40px;background:var(--card);color:var(--ink);border:1px solid var(--line)}.quiz select.right{outline:3px solid var(--ok)}.quiz select.wrong{outline:3px solid var(--over)}.quiz canvas{width:100%}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -171,6 +171,11 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
       <label>konstante Rate = <input inputmode="decimal" aria-label="Rate in Litern pro Minute" data-name="Rate" data-ans="1.65" data-wrong="16.5:Das ist die Wassermenge. Verteile sie gleichmäßig auf 10 Minuten.|1.5:Du hast die drei Raten gemittelt. Die Abschnitte sind aber verschieden lang: 3 min, 2 min, 5 min.|2.25:Du hast 3 und 1,5 gemittelt. Die Pause und die Längen der Abschnitte zählen mit."> L/min</label>
       <button type="button" class="trybtn">Prüfen</button><span class="tryfb" role="status"></span></div>
     <details class="more" hidden data-after="p0a5"><summary>Ausführliche Antwort</summary><p>Nach 10 Minuten sind 16,5 Liter zugeflossen. Gleich viel ergibt eine konstante Rate von 16,5 L : 10 min = 1,65 L/min. Das Rechteck mit Höhe 1,65 und Breite 10 hat denselben Flächeninhalt wie die Fläche unter dem Graphen von f: Was über die rote Linie hinausragt, füllt genau die Lücken darunter. Allgemein: durchschnittliche Rate = Fläche unter der Rate : Zeitdauer.</p></details></div>
+  <div class="note"><b>6 · Zuordnen.</b> Oben siehst du vier Zuflussraten f, darunter fünf Graphen von Füllmengen F (t von 0 bis 4 Minuten). Welcher Graph von F gehört zu welchem f? Ein Graph von F bleibt übrig.
+    <div class="quiz" id="qzf"></div>
+    <div class="quiz" id="qzF"></div>
+    <div class="try" data-id="p0a6" data-quiz><button type="button" class="trybtn">Prüfen</button><span class="tryfb" role="status"></span></div>
+    <details class="more" hidden data-after="p0a6"><summary>Ausführliche Antwort</summary><p>A → 2: f ist konstant, jede Minute kommt gleich viel dazu, F ist eine steigende Gerade. B → 5: f fällt, bleibt aber positiv. Es kommt immer Wasser dazu, nur immer weniger, also steigt F immer flacher. C → 4: f wächst, also steigt F immer steiler. D → 1: Bis t = 2 ist f positiv, danach negativ. F hat bei t = 2 einen Hochpunkt und fällt danach. Graph 3 passt zu keinem f: Er sieht aus wie f bei B, aber eine fallende Füllmenge würde bedeuten, dass Wasser abfließt. <b>Merke:</b> Der Graph von F sieht nicht aus wie der Graph von f. Das Vorzeichen von f sagt, ob F steigt oder fällt; der Betrag von f sagt, wie steil.</p></details></div>
   <h2 style="font-size:1.15rem;color:var(--navy);margin:22px 0 6px">Sichern</h2>
   <div class="defbox"><b>Merke (Füllmenge und Zuflussrate):</b><br>
     <b>Von F zu f:</b> Die Zuflussrate ist die momentane Änderungsrate der Füllmenge, also ihre Ableitung: <b>F′ = f</b>. Je größer f(t), desto steiler steigt der Graph von F an der Stelle t. Ist f(t) = 0, verläuft er dort waagerecht.<br>
@@ -277,7 +282,7 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
   <p class="lead">Der <b>Hauptsatz der Differential- und Integralrechnung</b> verbindet zwei Ideen, die du schon kennst: den Flächeninhalt als Grenzwert von Rechtecksummen und die Stammfunktion als Umkehrung des Ableitens. In vier Schritten siehst du, warum beides zusammenpasst.</p>
   <p class="hs-key"><b>Farben in allen vier Schritten:</b> <span class="k-a">■ blau</span> = Integralfunktion A (Fläche und ihre Kurve), <span class="k-f">■ grün</span> = die Stammfunktion F, <span class="k-d">■ rot</span> = Zuwachs oder Höhenunterschied.</p>
   <div class="controls">
-    <div><label for="f3">Funktion f (in diesen Beispielen verläuft der Graph nicht unterhalb der x-Achse)</label><select id="f3"></select></div>
+    <div><label for="f3">Funktion f</label><select id="f3"></select></div>
   </div>
   <div class="chips hs-steps" role="group" aria-label="Schritte zum Hauptsatz">
     <button type="button" id="hs1" aria-pressed="true">1 · Integralfunktion A</button>
@@ -299,7 +304,14 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
       <div><small>Funktionswert f(x)</small><b id="rf">–</b></div>
       <div class="o"><small>Steigung der Spur von A bei x (aus Zahlen berechnet)</small><b id="rS">–</b></div>
     </div>
-    <p class="note"><b>Beobachte:</b> A(a) = 0, und A wächst weiter, solange f(x) &gt; 0. Wo f groß ist, steigt die Spur von A steil, wo f klein ist, flach. Vergleiche die Kästen „Steigung der Spur von A bei x“ und „Funktionswert f(x)“. <b>Vermutung: Die Steigung von A an der Stelle x ist f(x).</b> Das prüfen wir im nächsten Schritt.</p>
+    <p class="note"><b>Beobachte:</b> A(a) = 0. A wächst, solange f(x) &gt; 0. Wo f groß ist, steigt die Spur von A steil, wo f klein ist, flach. Vergleiche die Kästen „Steigung der Spur von A bei x“ und „Funktionswert f(x)“. <b>Vermutung: Die Steigung von A an der Stelle x ist f(x).</b> Das prüfen wir im nächsten Schritt.</p>
+    <div class="note"><b>Auftrag mit Abfluss:</b> Wähle „Zu- und Abfluss: f(x) = x − 1“. Wo fällt die Kurve von A, wo steigt sie? An welcher Stelle hat sie ihren tiefsten Punkt, und welchen Wert hat A dort?
+      <div class="try" data-id="p3s1" data-hint="Achte auf das Vorzeichen von f: Liegt die Fläche unter der x-Achse, zählt sie negativ und A fällt.">
+        <label>tiefster Punkt bei x = <input inputmode="decimal" aria-label="Stelle des Tiefpunkts" data-name="Stelle" data-ans="1" data-wrong="0:Bei x = 0 beginnt A mit 0. Danach fällt A noch weiter, solange f negativ ist.|4:Das ist der rechte Rand. Wo wechselt f das Vorzeichen?"></label>
+        <label>A = <input inputmode="decimal" aria-label="Wert von A am Tiefpunkt" data-name="Wert" data-ans="-0.5" data-wrong="0.5:Der Betrag stimmt. Die Fläche liegt aber unter der x-Achse und zählt negativ.|-1:Das ist f(0). Gesucht ist die Fläche des Dreiecks von 0 bis 1."></label>
+        <button type="button" class="trybtn">Prüfen</button><span class="tryfb" role="status"></span></div>
+      <details class="more" hidden data-after="p3s1"><summary>Ausführliche Antwort</summary><p>Von 0 bis 1 ist f(x) &lt; 0. Die Fläche liegt unter der x-Achse und zählt negativ, also fällt A. Bei x = 1 ist f(1) = 0, dort hat A einen Tiefpunkt: A(1) = −0,5 (Dreieck mit Breite 1 und Höhe 1, negativ gezählt). Danach ist f &gt; 0 und A steigt. Auch hier stimmen „Steigung der Spur von A“ und „f(x)“ überein: Die Vermutung A′ = f gilt auch, wenn A fällt.</p></details></div>
+</p>
     <p><button type="button" class="hs-next" data-to="1">Weiter zu Schritt 2 ▶</button></p>
   </div>
 
@@ -371,7 +383,7 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
     <div class="stage"><canvas id="c6" width="1600" height="1000" role="img" aria-label="Oben f mit Fläche zwischen a und b, unten die Stammfunktion F + c mit dem Höhenunterschied zwischen a und b"></canvas></div>
     <div class="tl" style="margin-top:4px"><span><span style="color:var(--under)">■</span> blau: Fläche I zwischen a und b</span><span><span style="color:var(--ok)">━</span> grün: Stammfunktion F + c</span><span><span style="color:var(--over)">┃</span> rot: Höhenunterschied von F zwischen a und b</span></div>
     <div class="read">
-      <div class="u"><small>Fläche I (numerisch berechnet)</small><b id="r6a">–</b></div>
+      <div class="u"><small>Integral I (Flächenbilanz, numerisch)</small><b id="r6a">–</b></div>
       <div class="e"><small>F(a) + c</small><b id="r6b">–</b></div>
       <div class="e"><small>F(b) + c</small><b id="r6c">–</b></div>
       <div class="o"><small>(F(b) + c) − (F(a) + c)</small><b id="r6d">–</b></div>
@@ -392,13 +404,13 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
         <p><b>(1)</b> <i>(Schritt 2)</i> Die Integralfunktion A(x) = ∫<sub>a</sub><sup>x</sup> f(t) dt ist eine Stammfunktion von f: <b>A′(x) = f(x)</b>. Jede stetige Funktion hat also eine Stammfunktion, auch wenn man keine Formel dafür findet.</p>
         <p><b>(2)</b> <i>(Schritte 3 und 4)</i> Ist F irgendeine Stammfunktion von f, dann ist ∫<sub>a</sub><sup>b</sup> f(x) dx = F(b) − F(a). <b>Aus (1) folgt (2):</b> A und F unterscheiden sich nur um eine Konstante, und A(a) = 0.</p>
         <p class="hs-sm"><b>Deutung als Bestand:</b> Ist f eine Änderungsrate (z. B. ein Zufluss in Litern pro Minute wie beim Gefäß in Phase 0), dann ist A(x) der Bestand, der seit dem Start dazugekommen ist. Mit dem Anfangsbestand B(a) gilt: <b>Bestand B(x) = B(a) + A(x)</b>, genau wie F(t) = F(0) + Fläche beim Gefäß. Teil (2) sagt: Die Änderung des Bestands ist das Integral der Änderungsrate. Ein Beispiel mit negativer Rate findest du in Phase 0 (Auftrag 4) und in Phase 1 („Zu- und Abfluss“).</p>
-        <p class="hs-sm"><b>Zwei Hinweise:</b> Ein bestimmtes Integral ist eine <i>Zahl</i>, eine Stammfunktion ist eine <i>Funktion</i>. Und: In diesen Beispielen verläuft der Graph von f nicht unterhalb der x-Achse. Der Satz gilt auch sonst; dann zählen Flächenstücke unterhalb der x-Achse negativ, das Integral ist eine Flächenbilanz.</p>
+        <p class="hs-sm"><b>Zwei Hinweise:</b> Ein bestimmtes Integral ist eine <i>Zahl</i>, eine Stammfunktion ist eine <i>Funktion</i>. Und: Der Satz gilt auch, wenn der Graph von f unter der x-Achse verläuft (Beispiel „Zu- und Abfluss“). Dann zählen diese Flächenstücke negativ, das Integral ist eine Flächenbilanz.</p>
       </details>
     </div>
     <p><button type="button" class="hs-next" data-to="2">◀ Zurück zu Schritt 3</button></p>
   </div>
 </section>
-<p class="stand" style="margin:18px 0 0;font:.8rem var(--sans);color:var(--muted)">Version: 12.11.2026, 0:30 Uhr</p>
+<p class="stand" style="margin:18px 0 0;font:.8rem var(--sans);color:var(--muted)">Version: 27.11.2026, 13:15 Uhr</p>
 </div>
 
 <script>
@@ -448,6 +460,11 @@ function initTry(box){const id=box.dataset.id,fb=box.querySelector('.tryfb'),det
   const reveal=()=>{if(det)det.hidden=false;};
   const solved=()=>{done[id]=1;saveDone();box.classList.add('solved');reveal();updProg();};
   if(done[id]){box.classList.add('solved');reveal();}
+  if(box.hasAttribute('data-quiz')){const sels=[...document.querySelectorAll('#qzf select')];sels.forEach(s=>s.onchange=()=>s.classList.remove('right','wrong'));
+    box.querySelector('.trybtn').onclick=()=>{if(sels.every(s=>!s.value)){fb.textContent='Wähle zuerst zu jedem f einen Graphen von F.';return;}
+      let ok=0;const ms=[];sels.forEach(s=>{s.classList.remove('right','wrong');if(!s.value)return;const r=s.value===s.dataset.ans;s.classList.add(r?'right':'wrong');if(r)ok++;else ms.push('<b>'+s.dataset.name+':</b> '+(s.value==='3'&&s.dataset.w3?s.dataset.w3:s.dataset.hint));});
+      if(ok===sels.length){fb.innerHTML='<span class="ok">✓ Alles richtig zugeordnet!</span>';solved();}
+      else{fb.innerHTML=(ms.length?ms.join('<br>'):'Ordne noch die übrigen Raten zu.')+'<br><span class="hs-sm">Die ausführliche Antwort kannst du jetzt aufklappen.</span>';reveal();}};return;}
   if(box.hasAttribute('data-mc')){const bs=[...box.querySelectorAll('.mc button')];bs.forEach(b=>{b.setAttribute('aria-pressed','false');b.onclick=()=>{bs.forEach(x=>x.setAttribute('aria-pressed',x===b));
     const ok=b.hasAttribute('data-ok');fb.innerHTML=(ok?'<span class="ok">✓ Richtig.</span> ':'<span class="cr">Noch nicht.</span> ')+(b.dataset.msg||'');reveal();if(ok)solved();};});return;}
   const btn=box.querySelector('.trybtn'),ins=[...box.querySelectorAll('input')];
@@ -524,7 +541,7 @@ function drawG(){
   const cv=document.getElementById('cg1');const narrow=cv.getBoundingClientRect().width<600;cv.dataset.ratio=narrow?.8:.45;
   const{g,w,h}=setup(cv);const box={l:44,t:30,w:w-60,h:h-58};
   const extra=Math.max(dx,L*.12);
-  const xr=[o.a-L*.06,o.b+(slideTarget?extra+L*(narrow?.1:.32):L*.08)],yr=[0,o.ym];
+  const xr=[o.a-L*.06,o.b+(slideTarget?extra+L*(narrow?.1:.32):L*.08)],yr=Y1(o);
   const{sx,sy}=frame(g,box,xr,yr,{tx:L>4?1:.5,ty:o.ty});
   const thin=n<=60,fa=o.f(o.a),fb=o.f(o.b);
   for(let i=0;i<n;i++){const x0=o.a+i*dx,x1=x0+dx,y0=o.f(x0),y1=o.f(x1);
@@ -701,7 +718,11 @@ document.getElementById('bf').onclick=()=>{bk++;draw2()};document.getElementById
 const F3=[
  {t:'f(x) = x + 2,  linke Grenze a = 0',f:x=>x+2,a:0,b:5,F:x=>x*x/2+2*x+3,Ft:'x²/2 + 2x + 3',ym:8,Am:25},
  {t:'f(x) = 0,1·x²,  linke Grenze a = −3',f:x=>.1*x*x,a:-3,b:4,F:x=>x**3/30+2,Ft:'x³/30 + 2',ym:2,Am:4},
- {t:'f(x) = 0,2·x² + 1,  linke Grenze a = 0',f:x=>.2*x*x+1,a:0,b:6,F:x=>x**3/15+x+3,Ft:'x³/15 + x + 3',ym:9,Am:24}];
+ {t:'f(x) = 0,2·x² + 1,  linke Grenze a = 0',f:x=>.2*x*x+1,a:0,b:6,F:x=>x**3/15+x+3,Ft:'x³/15 + x + 3',ym:9,Am:24},
+ {t:'Zu- und Abfluss: f(x) = x − 1,  linke Grenze a = 0',f:x=>x-1,a:0,b:4,F:x=>x*x/2-x+1,Ft:'x²/2 − x + 1',ym:3.5,yn:-1.5,Am:4.5,An:-1}];
+const Y1=o=>[o.yn||0,o.ym],Y2=o=>[o.An||0,o.Am];
+/* Fläche mit Vorzeichen: über der Achse blau, unter der Achse rot */
+function sshade(g,sx,sy,f,u,v,col,al){shade(g,sx,sy,x=>Math.max(0,f(x)),u,v,col,al);shade(g,sx,sy,x=>Math.min(0,f(x)),u,v,css('--over'),al);}
 const f3=document.getElementById('f3');F3.forEach((o,i)=>f3.add(new Option(o.t,i)));
 const E3=id=>document.getElementById(id);
 /* Fläche zwischen Graph und x-Achse von u bis v, Simpson-Regel (für Polynome bis Grad 3 exakt) */
@@ -727,13 +748,13 @@ function d31(){
   const o=F3[f3.value],x=o.a+(o.b-o.a)*(+E3('x3').value);E3('x3v').textContent=de(x,2);
   const{g,w,h,b1,b2}=twoPanels(E3('c3'),1.0,1.2,.5);
   const xr=[o.a-(o.b-o.a)*.06,o.b+(o.b-o.a)*.04],tx=niceStep((o.b-o.a)/6);
-  const t1=frame(g,b1,xr,[0,o.ym],{tx,ty:o.ym>8?2:1}),t2=frame(g,b2,xr,[0,o.Am],{tx,ty:o.Am>10?5:1});
-  shade(g,t1.sx,t1.sy,o.f,o.a,x,css('--under'),.35);
-  curve(g,t1.sx,t1.sy,o.f,o.a,o.b,css('--navy'),2.6,xr,[0,o.ym]);
+  const t1=frame(g,b1,xr,Y1(o),{tx,ty:o.ym>8?2:1}),t2=frame(g,b2,xr,Y2(o),{tx,ty:o.Am>10?5:1});
+  sshade(g,t1.sx,t1.sy,o.f,o.a,x,css('--under'),.35);
+  curve(g,t1.sx,t1.sy,o.f,o.a,o.b,css('--navy'),2.6,xr,Y1(o));
   vline(g,t1.sx(x),t1.sy(0),t1.sy(o.f(x)),css('--ink'),[5,4],1.4);
   tag(g,'a',t1.sx(o.a)+4,t1.sy(0)-6,css('--ink'));tag(g,'x',t1.sx(x)+4,t1.sy(0)-6,css('--ink'));
-  tag(g,'f(x)',b1.l+8,b1.t+16,css('--navy'));tag(g,'A(x) = Fläche von a bis x',b2.l+8,b2.t+16,css('--navy'));
-  curve(g,t2.sx,t2.sy,xx=>Aof(o,xx),o.a,x,css('--under'),3.2,xr,[0,o.Am]);
+  tag(g,'f(x)',b1.l+8,b1.t+16,css('--navy'));tag(g,'A(x) = Flächenbilanz von a bis x',b2.l+8,b2.t+16,css('--navy'));
+  curve(g,t2.sx,t2.sy,xx=>Aof(o,xx),o.a,x,css('--under'),3.2,xr,Y2(o));
   const A=Aof(o,x);dot(g,t2.sx(x),t2.sy(A),6,css('--under'));vline(g,t2.sx(x),t2.sy(0),t2.sy(A),css('--ink'),[5,4],1.2);
   const e=.01,u=Math.max(x-e,o.a),v=Math.min(x+e,o.b),S=(Aof(o,v)-Aof(o,u))/(v-u),ts=(o.b-o.a)*.12;
   g.save();g.strokeStyle=css('--navy');g.lineWidth=2;g.beginPath();g.moveTo(t2.sx(x-ts),t2.sy(A-S*ts));g.lineTo(t2.sx(x+ts),t2.sy(A+S*ts));g.stroke();g.restore();
@@ -747,12 +768,12 @@ function d32(){
   const{g,w,h,nar,b1,b2}=twoPanels(E3('c4'),1.05,1.3,.5);
   let xr,yr1,yr2;
   if(zoom){const hw=Math.max(Math.abs(fxh-fx),.3*hh),m=Math.max(Math.abs(dA),.3*hh);xr=[x-1.5*hh,x+2.5*hh];yr1=[fx-2.5*hw,fx+2.5*hw];yr2=[Ax-m,Ax+2.6*m];}
-  else{xr=[o.a-L*.06,o.b+L*.04];yr1=[0,o.ym];yr2=[0,o.Am];}
+  else{xr=[o.a-L*.06,o.b+L*.04];yr1=Y1(o);yr2=Y2(o);}
   const stepx=niceStep((xr[1]-xr[0])/6),dec=n=>Math.min(6,Math.max(2,Math.ceil(-Math.log10(n))+1));
   const t1=frame(g,b1,xr,yr1,{tx:stepx,ty:niceStep((yr1[1]-yr1[0])/5),dec:dec(stepx)}),t2=frame(g,b2,xr,yr2,{tx:stepx,ty:niceStep((yr2[1]-yr2[0])/5),dec:dec(stepx)});
   // oben: blaue Fläche, roter Streifen, Rechteck
   g.save();g.beginPath();g.rect(b1.l,b1.t,b1.w,b1.h);g.clip();
-  shade(g,t1.sx,t1.sy,o.f,o.a,x,css('--under'),.3);shade(g,t1.sx,t1.sy,o.f,x,x+hh,css('--over'),.55);
+  sshade(g,t1.sx,t1.sy,o.f,o.a,x,css('--under'),.3);shade(g,t1.sx,t1.sy,o.f,x,x+hh,css('--over'),.55);
   g.strokeStyle=css('--ink');g.lineWidth=1.6;g.setLineDash([6,4]);g.strokeRect(t1.sx(x),t1.sy(fx),t1.sx(x+hh)-t1.sx(x),t1.sy(0)-t1.sy(fx));g.setLineDash([]);g.restore();
   curve(g,t1.sx,t1.sy,o.f,Math.max(o.a,xr[0]),Math.min(o.b,xr[1]),css('--navy'),2.6,xr,yr1);
   vline(g,t1.sx(x),b1.t,b1.t+b1.h,css('--muted'),[2,4],1);vline(g,t1.sx(x+hh),b1.t,b1.t+b1.h,css('--muted'),[2,4],1);
@@ -786,8 +807,8 @@ function d33(){
   const xr=[o.a-L*.06,o.b+L*.04],tx=niceStep(L/6);
   const[l1,h1]=rangeOf(o.F,o.a,o.b),[l2,h2]=rangeOf(xx=>Aof(o,xx),o.a,o.b);
   const lo=Math.min(0,l1,l2),hi=Math.max(h1,h2),pad=(hi-lo)*.08,yr2=[lo-pad*(lo<0?1:0),hi+pad];
-  const t1=frame(g,b1,xr,[0,o.ym],{tx,ty:o.ym>8?2:1}),t2=frame(g,b2,xr,yr2,{tx,ty:niceStep((yr2[1]-yr2[0])/5)});
-  shade(g,t1.sx,t1.sy,o.f,o.a,x,css('--under'),.35);curve(g,t1.sx,t1.sy,o.f,o.a,o.b,css('--navy'),2.6,xr,[0,o.ym]);
+  const t1=frame(g,b1,xr,Y1(o),{tx,ty:o.ym>8?2:1}),t2=frame(g,b2,xr,yr2,{tx,ty:niceStep((yr2[1]-yr2[0])/5)});
+  sshade(g,t1.sx,t1.sy,o.f,o.a,x,css('--under'),.35);curve(g,t1.sx,t1.sy,o.f,o.a,o.b,css('--navy'),2.6,xr,Y1(o));
   tag(g,'f(x), Fläche A(x) von a bis x',b1.l+8,b1.t+16,css('--navy'));
   curve(g,t2.sx,t2.sy,o.F,o.a,o.b,css('--ok'),3,xr,yr2);
   curve(g,t2.sx,t2.sy,xx=>Aof(o,xx),o.a,o.b,css('--under'),1.6,xr,yr2);
@@ -813,8 +834,8 @@ function d34(){
   const{g,w,h,b1,b2}=twoPanels(E3('c6'),1.05,1.3,.42);
   const xr=[o.a-L*.06,o.b+L*.04],tx=niceStep(L/6);
   const[l1,h1]=rangeOf(xx=>o.F(xx)+c,o.a,o.b),lo=Math.min(0,l1),hi=Math.max(0,h1),pad=(hi-lo)*.1,yr2=[lo-pad,hi+pad];
-  const t1=frame(g,b1,xr,[0,o.ym],{tx,ty:o.ym>8?2:1}),t2=frame(g,b2,xr,yr2,{tx,ty:niceStep((yr2[1]-yr2[0])/5)});
-  shade(g,t1.sx,t1.sy,o.f,a,b,css('--under'),.4);curve(g,t1.sx,t1.sy,o.f,o.a,o.b,css('--navy'),2.6,xr,[0,o.ym]);
+  const t1=frame(g,b1,xr,Y1(o),{tx,ty:o.ym>8?2:1}),t2=frame(g,b2,xr,yr2,{tx,ty:niceStep((yr2[1]-yr2[0])/5)});
+  sshade(g,t1.sx,t1.sy,o.f,a,b,css('--under'),.4);curve(g,t1.sx,t1.sy,o.f,o.a,o.b,css('--navy'),2.6,xr,Y1(o));
   tag(g,'f(x), Fläche I zwischen a und b',b1.l+8,b1.t+16,css('--navy'));
   const mid=(a+b)/2;tag(g,'I',t1.sx(mid),t1.sy(o.f(mid)/2)+6,css('--ink'),'center','alphabetic','700 17px '+FONT);
   curve(g,t2.sx,t2.sy,xx=>o.F(xx)+c,o.a,o.b,css('--ok'),3,xr,yr2);
@@ -880,7 +901,8 @@ function drawV(){
     const right=t<7.5;tag(g,'Steigung '+de(r,2),t2.sx(t+(right?d:-d))+(right?6:-6),t2.sy(lev+(right?r:-r)*d)+(r>=0===right?0:12),css('--ink'),right?'left':'right');}
   dot(g,t2.sx(t),t2.sy(lev),6,css('--ok'));
   }else{g.save();g.fillStyle=css('--panel');g.globalAlpha=.85;g.fillRect(b2.l+1,b2.t+1,b2.w-2,b2.h-2);g.restore();
-    tag(g,'Verdeckt: Bestimme die Füllmenge zuerst mit dem oberen Graphen.',b2.l+b2.w/2,b2.t+b2.h/2,css('--muted'),'center','middle',(nar?'600 12px ':'600 15px ')+FONT);
+    if(nar){tag(g,'Verdeckt.',b2.l+b2.w/2,b2.t+b2.h/2-10,css('--muted'),'center','middle','600 14px '+FONT);tag(g,'Erst vorhersagen,',b2.l+b2.w/2,b2.t+b2.h/2+10,css('--muted'),'center','middle','13px '+FONT);tag(g,'dann aufdecken.',b2.l+b2.w/2,b2.t+b2.h/2+28,css('--muted'),'center','middle','13px '+FONT);}
+    else tag(g,'Verdeckt: Bestimme die Füllmenge zuerst mit dem oberen Graphen.',b2.l+b2.w/2,b2.t+b2.h/2,css('--muted'),'center','middle','600 15px '+FONT);
     if(!nar)tag(g,'Dann: Haken bei „Füllmenge verdecken“ entfernen.',b2.l+b2.w/2,b2.t+b2.h/2+22,css('--muted'),'center','middle','13px '+FONT);}
   tag(g,nar?'F(t) in L':'F(t) in Liter',b2.l+8,b2.t+15,css('--ok'));
   tag(g,'t in min',b2.l+b2.w-4,t2.sy(0)-6,css('--muted'),'right');
@@ -935,14 +957,32 @@ EV('vnull').onclick=()=>{stopV();EV('tv').value=0;drawV();};
 EV('tv').oninput=()=>{stopV();drawV();};
 fv.onchange=()=>{stopV();drawV();};EV('v0').oninput=drawV;['vhide','vstr','vtan','vall','vavg'].forEach(i=>EV(i).onchange=drawV);
 
-function redraw(){const i=tabs.findIndex(b=>b.getAttribute('aria-selected')==='true');[drawV,draw1,drawG,draw2,draw3][i]();}
+/* ---------- Zuordnungsquiz f → F (Phase 0, Auftrag 6) ---------- */
+const QF=[
+ {n:'A',f:t=>1.5,ans:'2',hint:'f ist konstant: Jede Minute kommt gleich viel dazu. F ist eine steigende Gerade.'},
+ {n:'B',f:t=>2-.5*t,ans:'5',hint:'f fällt, bleibt aber positiv. Es kommt immer Wasser dazu, nur immer weniger: F steigt immer flacher.',w3:'Typischer Fehler: Der Graph von F sieht nicht aus wie der von f. f ist immer positiv, also steigt F, nur immer flacher.'},
+ {n:'C',f:t=>.5*t,ans:'4',hint:'f wächst: Jede Minute kommt mehr dazu als vorher. F steigt immer steiler.'},
+ {n:'D',f:t=>2-t,ans:'1',hint:'Ab t = 2 ist f negativ: Dann fließt Wasser ab. F hat bei t = 2 einen Hochpunkt.'}];
+const QG=[t=>2*t-.5*t*t,t=>1.5*t,t=>4-.5*t,t=>.25*t*t,t=>2*t-.25*t*t];
+function buildQuiz(){const a=document.getElementById('qzf'),b=document.getElementById('qzF');if(!a||a.childElementCount)return;
+  QF.forEach(q=>{const fig=document.createElement('figure');fig.innerHTML='<figcaption>'+q.n+': Zuflussrate f</figcaption><canvas width="400" height="250" role="img" aria-label="Zuflussrate '+q.n+'"></canvas>';
+    const s=document.createElement('select');s.dataset.ans=q.ans;s.dataset.name=q.n;s.dataset.hint=q.hint;if(q.w3)s.dataset.w3=q.w3;s.setAttribute('aria-label','Graph von F zu '+q.n);
+    s.innerHTML='<option value="">passt zu F …</option>'+[1,2,3,4,5].map(k=>'<option value="'+k+'">Graph '+k+'</option>').join('');fig.appendChild(s);a.appendChild(fig);});
+  QG.forEach((F,k)=>{const fig=document.createElement('figure');fig.innerHTML='<figcaption>Graph '+(k+1)+': Füllmenge F</figcaption><canvas width="400" height="250" role="img" aria-label="Füllmenge Graph '+(k+1)+'"></canvas>';b.appendChild(fig);});}
+function drawQuiz(){const a=document.getElementById('qzf');if(!a||!a.offsetParent)return;
+  const one=(cv,fn,yr,ty,col)=>{const{g,w,h}=setup(cv);const box={l:30,t:8,w:w-40,h:h-28};const xr=[0,4.2];const{sx,sy}=frame(g,box,xr,yr,{tx:1,ty});
+    if(yr[0]<0){sshade(g,sx,sy,fn,0,4,css('--under'),.25);}curve(g,sx,sy,fn,0,4,col,2.6,xr,yr);};
+  [...a.querySelectorAll('canvas')].forEach((cv,i)=>one(cv,QF[i].f,[-2.2,2.6],2,css('--navy')));
+  [...document.querySelectorAll('#qzF canvas')].forEach((cv,i)=>one(cv,QG[i],[0,6.5],2,css('--ok')));}
+
+function redraw(){const i=tabs.findIndex(b=>b.getAttribute('aria-selected')==='true');[drawV,draw1,drawG,draw2,draw3][i]();if(i===0)drawQuiz();}
 let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(redraw,80)});
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change',redraw);
 new MutationObserver(redraw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
 let t0=0;try{const sid=localStorage.getItem('integral-tabid');if(sid)t0=Math.max(0,tabs.findIndex(b=>b.id===sid));else{const ov=localStorage.getItem('integral-tab');if(ov!==null){const o=+ov||0;t0=o<2?o+1:o+2;}}}catch(e){}
 document.fonts&&document.fonts.ready.then(redraw);
 {const hh=location.hash.slice(1),hi=tabs.findIndex(b=>b.id===hh||b.getAttribute('aria-controls')===hh);if(hi>=0)t0=hi;}
-document.querySelectorAll('.try').forEach(initTry);updProg();
+buildQuiz();document.querySelectorAll('.try').forEach(initTry);updProg();
 f2.value=0;x3.value=.5;f3.value=0;fg.value=0;show(Math.min(t0,tabs.length-1));
 /* Plus-/Minus-Knöpfe an den Reglern (Touch) und Ansage geänderter Messwerte */
 [['n1',0],['ng',1],['tv',.25],['v0',.5],['x3',.025],['x4',.025],['x5',.025],['a6',.025],['b6',.025],['k6',.5],['c2',.5]].forEach(([id,step])=>{const el=document.getElementById(id);if(!el)return;
