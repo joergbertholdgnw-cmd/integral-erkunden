@@ -138,23 +138,57 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
   </div>
 </header>
 <nav class="nav" aria-label="Abschnitte"><div class="in">
-  <a href="#einstieg">Einstieg</a><a href="#phase1">Phase 1</a><a href="#phase2">Phase 2</a><a href="#phase3">Phase 3</a><a href="#abschluss">Abschluss</a>
+  <a href="#gefaess">Start</a><a href="#einstieg">Einstieg</a><a href="#phase1">Phase 1</a><a href="#phase2">Phase 2</a><a href="#phase3">Phase 3</a><a href="#abschluss">Abschluss</a>
   <a href="#lehrkraft" class="teacher" style="display:none" id="navT">Lehrkraft</a>
 </div></nav>
 
 <div class="box" style="margin-top:16px">
   <p><b>Dein Weg heute</b></p>
+  <p><b>Start · Gefäß füllen.</b> Du kennst nur die Zuflussrate und bestimmst daraus, wie viel Wasser im Gefäß ist.</p>
   <p><b>Phase 1 · Flächen mit Rechtecken einfangen.</b> Du näherst Flächeninhalte durch Rechtecke an und findest das <b>bestimmte Integral</b>.</p>
   <p><b>Phase 2 · Rückwärts ableiten.</b> Du suchst zu einer Steigungsfunktion die Funktion selbst: die <b>Stammfunktion</b>.</p>
   <p><b>Phase 3 · Beides verbinden.</b> Du entdeckst, warum Flächeninhalt und Stammfunktion zusammengehören: der <b>Hauptsatz</b>.</p>
   <p style="font-style:italic;font-size:.92rem">Deine Eingaben bleiben in diesem Browser gespeichert und werden nicht verschickt. Auf geteilten Geräten am Ende „Meine Eingaben löschen“ drücken. Zum Abgeben: drucken oder als PDF speichern. Zum Ausprobieren mit ausführlichen Begründungen gibt es die App <a href="./">„Von der Summe zum Integral“</a>.</p>
 </div>
 
+<!-- ============ START: GEFÄSS FÜLLEN ============ -->
+<section id="gefaess">
+<h2>Start · Wie viel Wasser ist im Gefäß?</h2>
+<p>Aus einem Hahn läuft Wasser in ein Gefäß, mal schneller, mal langsamer. Du kennst nur die <b>Zuflussrate</b> f(t) in Litern pro Minute. Gesucht ist die <b>Füllmenge</b> F(t) in Litern nach t Minuten. Öffne dazu in der App den Reiter <a href="./#t1c" target="_blank" rel="noopener">„0 · Gefäß füllen“</a>. Lass den Haken bei „Füllmenge verdecken“ zunächst gesetzt.</p>
+<h3>Aufgabe 0 · Aus der Zuflussrate die Füllmenge bestimmen</h3>
+<div class="task" data-num>
+  <div class="q"><b>a)</b><span>Wähle „Pumpe mit Pause“ und F(0) = 0. Bestimme nur mit dem Graphen von f, wie viel Wasser nach 3, nach 5 und nach 10 Minuten im Gefäß ist. Prüfe deine Werte, decke danach in der App die Füllmenge auf und vergleiche.</span></div>
+  <div class="scroll"><table class="t">
+    <tr><th>t in min</th><th>3</th><th>5</th><th>10</th></tr>
+    <tr><td>F(t) in Liter</td><td><input data-save="a0a1" aria-label="F(3)" data-name="F(3)" data-ans="9" data-wrong="3:Das ist die Zuflussrate f(3), nicht die Menge. Die Menge ist Rate mal Zeit."></td><td><input data-save="a0a2" aria-label="F(5)" data-name="F(5)" data-ans="9" data-wrong="15:Zwischen t = 3 und t = 5 ist f = 0. Fließt dann noch Wasser zu?|0:Das ist die Zuflussrate f(5). Gefragt ist, wie viel schon im Gefäß ist."></td><td><input data-save="a0a3" aria-label="F(10)" data-name="F(10)" data-ans="16.5" data-wrong="1.5:Das ist die Zuflussrate f(10), nicht die Menge.|7.5:Das ist nur der Zufluss von 5 bis 10. Was war vorher schon drin?"></td></tr>
+  </table></div>
+  <p><button class="btn" type="button" data-numcheck>Prüfen</button></p><div class="numfb" role="status" style="font:.9rem var(--sans)"></div>
+  <details class="tip"><summary>Tipp</summary><p>Teile die Zeit in Abschnitte, in denen f konstant ist. Für jeden Abschnitt rechnest du Rate mal Dauer, dann addierst du.</p></details>
+  <div class="sol teacher"><b class="l">Lösung</b>F(3) = 3 · 3 = 9 L; von 3 bis 5 ist f = 0, also F(5) = 9 L; F(10) = 9 + 5 · 1,5 = 16,5 L.</div>
+  <div class="q"><b>b)</b><span>Erkläre in zwei Sätzen, warum die zugeflossene Wassermenge eine Fläche unter dem Graphen von f ist. Welche Einheit hat diese Fläche?</span></div>
+  <textarea data-save="a0b" aria-label="Antwort Aufgabe 0 b"></textarea>
+  <div class="sol teacher"><b class="l">Lösung</b>In jedem Abschnitt ist die Wassermenge Rate mal Dauer, also Höhe mal Breite eines Rechtecks unter dem Graphen von f. Die Einheit ist L/min · min = L.</div>
+</div>
+<div class="task" data-num>
+  <div class="q"><b>c)</b><span>Wähle „Zufluss wird zum Abfluss“ und F(0) = 2. Wann ist am meisten Wasser im Gefäß, und wie viel ist es? Wie viel ist nach 10 Minuten darin?</span></div>
+  <div class="scroll"><table class="t">
+    <tr><th>am meisten bei t (min)</th><th>höchste Füllmenge (L)</th><th>F(10) (L)</th></tr>
+    <tr><td><input data-save="a0c1" aria-label="Zeitpunkt" data-name="Zeitpunkt" data-ans="5" data-wrong="10:Ab t = 5 ist f negativ. Dann fließt mehr ab als zu.|0:Bis f das Vorzeichen wechselt, kommt Wasser dazu."></td><td><input data-save="a0c2" aria-label="höchste Füllmenge" data-name="höchste Füllmenge" data-ans="9.5" data-wrong="7.5:Das ist der Zufluss von 0 bis 5. Die Anfangsfüllung kommt dazu."></td><td><input data-save="a0c3" aria-label="F(10)" data-name="F(10)" data-ans="2" data-wrong="17:Die Fläche unter der t-Achse ist Abfluss und zählt negativ.|0:Die Bilanz von 0 bis 10 ist 0. Was war am Anfang im Gefäß?|9.5:Das ist der Stand bei t = 5. Danach fließt Wasser ab."></td></tr>
+  </table></div>
+  <p><button class="btn" type="button" data-numcheck>Prüfen</button></p><div class="numfb" role="status" style="font:.9rem var(--sans)"></div>
+  <div class="sol teacher"><b class="l">Lösung</b>Bis t = 5 ist f &gt; 0, danach f &lt; 0: höchster Stand bei t = 5 mit 2 + 7,5 = 9,5 L. Die Fläche unter der t-Achse (7,5) zählt negativ, Bilanz 7,5 − 7,5 = 0, also F(10) = 2 L.</div>
+  <div class="q"><b>d)</b><span>Wähle „Pumpe mit Pause“, F(0) = 0. Mit welcher <i>konstanten</i> Zuflussrate wäre nach 10 Minuten genauso viel Wasser im Gefäß?</span></div>
+  <div class="scroll"><table class="t"><tr><th>konstante Rate (L/min)</th></tr><tr><td><input data-save="a0d" aria-label="konstante Rate" data-name="Rate" data-ans="1.65" data-wrong="16.5:Das ist die Wassermenge. Verteile sie gleichmäßig auf 10 Minuten.|1.5:Du hast die drei Raten gemittelt. Die Abschnitte sind aber verschieden lang.|2.25:Die Pause und die Längen der Abschnitte zählen mit."></td></tr></table></div>
+  <p><button class="btn" type="button" data-numcheck>Prüfen</button></p><div class="numfb" role="status" style="font:.9rem var(--sans)"></div>
+  <div class="sol teacher"><b class="l">Lösung</b>16,5 L : 10 min = 1,65 L/min (durchschnittliche Zuflussrate). Das Rechteck mit Höhe 1,65 und Breite 10 hat dieselbe Fläche wie die Fläche unter f.</div>
+</div>
+</section>
+
 <!-- ============ EINSTIEG ============ -->
 <section id="einstieg">
 <h2>Einstieg · Wie weit fährt das Auto?</h2>
 <p>Ein Auto fährt 4 s lang mit der konstanten Geschwindigkeit 15 m/s. Dann gilt für den zurückgelegten Weg s = v · t = 15 m/s · 4 s = 60 m. Im v-t-Diagramm ist das genau der <b>Flächeninhalt des Rechtecks</b> unter dem Graphen.</p>
-<div class="box"><p><b>Leitidee:</b> Die Geschwindigkeit ist eine <b>Änderungsrate</b> (Weg pro Zeit), der Weg ein <b>Bestand</b>. Die Fläche unter dem Graphen einer Änderungsrate gibt an, wie sich der Bestand insgesamt ändert. Diese Idee begleitet dich durch alle drei Phasen.</p></div>
+<div class="box"><p><b>Leitidee (kennst du aus Aufgabe 0):</b> Die Geschwindigkeit ist eine <b>Änderungsrate</b> (Weg pro Zeit), der Weg ein <b>Bestand</b>. Die Fläche unter dem Graphen einer Änderungsrate gibt an, wie sich der Bestand insgesamt ändert. Diese Idee begleitet dich durch alle drei Phasen.</p></div>
 <p>Jetzt beschleunigt das Auto gleichmäßig. Seine Geschwindigkeit beträgt v(t) = 0,5·t + 2 (v in m/s, t in s) für 0 ≤ t ≤ 4.</p>
 
 <div class="applet" id="ap1">
@@ -565,20 +599,24 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
 <!-- ============ LEHRKRAFT ============ -->
 <section id="lehrkraft" class="teacher teachsec">
 <h2>Lehrkraft · Verlauf und didaktischer Kommentar</h2>
-<h3>Verlaufsplan (90 min)</h3>
+<h3>Verlaufsplan (zwei Doppelstunden)</h3>
 <div class="scroll"><table class="t teacher">
  <tr><th>Zeit</th><th>Phase</th><th>Inhalt</th><th>Sozialform</th></tr>
- <tr><td>0–10</td><td>Einstieg</td><td>Impuls Weg = Fläche, Aufgabe 1 a</td><td>Plenum, EA</td></tr>
- <tr><td>10–35</td><td>Phase 1</td><td>Aufgabe 1 b, c und 2, Sicherung Merke 1</td><td>PA, Plenum</td></tr>
- <tr><td>35–55</td><td>Phase 2</td><td>Aufgabe 4, 5, Merke 2</td><td>PA, Plenum</td></tr>
- <tr><td>55–80</td><td>Phase 3</td><td>Aufgabe 6, 7, Merke 3</td><td>PA, Plenum</td></tr>
- <tr><td>80–90</td><td>Abschluss</td><td>Aufgabe 8, 9 (9 auch Hausaufgabe)</td><td>EA</td></tr>
+ <tr><td colspan="4"><b>Doppelstunde 1</b></td></tr>
+ <tr><td>0–30</td><td>Start</td><td>Aufgabe 0 mit App Phase 0 (Vorhersage, Prüfen, Aufdecken), Merke in Phase 0</td><td>PA, Plenum</td></tr>
+ <tr><td>30–40</td><td>Einstieg</td><td>Aufgabe 1 a (Weg = Fläche)</td><td>EA</td></tr>
+ <tr><td>40–75</td><td>Phase 1</td><td>Aufgabe 1 b, c und 2, Sicherung Merke 1</td><td>PA, Plenum</td></tr>
+ <tr><td>75–90</td><td>Puffer</td><td>Aufgabe 3 (★) für Schnelle, sonst Sicherung und Hausaufgabe</td><td>EA</td></tr>
+ <tr><td colspan="4"><b>Doppelstunde 2</b></td></tr>
+ <tr><td>0–25</td><td>Phase 2</td><td>Aufgabe 4, 5, Merke 2</td><td>PA, Plenum</td></tr>
+ <tr><td>25–65</td><td>Phase 3</td><td>Aufgabe 6, 7, Merke 3 (App Phase 3 mit Beispiel x − 1)</td><td>PA, Plenum</td></tr>
+ <tr><td>65–90</td><td>Abschluss</td><td>Aufgabe 8 a, 8 b, 9 (9 auch Hausaufgabe)</td><td>EA</td></tr>
 </table></div>
-<p>Zusatz (★) für schnelle Paare: Aufgabe 3, 4 c, 7 e. Aufgabe 8 b (Bilanz mit Abfluss) ist Pflicht, weil das Integral als orientierte Fläche zum Integralbegriff gehört. Das Vier-Schritte-Werkzeug in Phase 3 wird erst nach Aufgabe 7 b freigeschaltet (Vorhersage und Beobachtung zuerst, Beweisidee nach Aufgabe 7 d). Der Plan ist dicht: Bei Zeitnot Aufgabe 6 als Ausblick nehmen und Aufgabe 9 als Hausaufgabe oder Einstieg der Folgestunde geben; die vollständige Begründung des Hauptsatzes kann in der Folgestunde erfolgen.</p>
+<p>Zusatz (★) für schnelle Paare: Aufgabe 3, 4 c, 7 e. Aufgabe 8 b (Bilanz mit Abfluss) ist Pflicht, weil das Integral als orientierte Fläche zum Integralbegriff gehört. Das Vier-Schritte-Werkzeug in Phase 3 wird erst nach Aufgabe 7 b freigeschaltet (Vorhersage und Beobachtung zuerst, Beweisidee nach Aufgabe 7 d). Der Plan ist auf zwei Doppelstunden angelegt und kann bei Bedarf gestreckt werden. Aufgabe 0 und die App-Aufträge in Phase 0 geben sofort Rückmeldung; die ausführliche Antwort lässt sich erst nach einem eigenen Versuch aufklappen.</p>
 
 <h3>Didaktischer Kommentar</h3>
 <ul class="l">
- <li><b>Zugang:</b> Fläche und Bestand werden durchgängig verknüpft: Tacho-Einstieg (Weg), Wassertank (Aufgabe 2), Auto (Aufgabe 6), Regenwassertank (Aufgabe 7). A(x) wird als Bestandsfunktion gedeutet, A′ = f als Änderungsrate des Bestands. Das begründet den Hauptsatz inhaltlich.</li>
+ <li><b>Zugang:</b> Fläche und Bestand werden durchgängig verknüpft: Gefäß (Aufgabe 0, Rekonstruktion zuerst), Tacho-Einstieg (Weg), Wassertank (Aufgabe 2), Auto (Aufgabe 6), Regenwassertank (Aufgabe 7). A(x) wird als Bestandsfunktion gedeutet, A′ = f als Änderungsrate des Bestands. Das begründet den Hauptsatz inhaltlich.</li>
  <li><b>Erst linear, dann gekrümmt:</b> Bei v(t) = 0,5t + 2 ist der exakte Wert bekannt und prüft die Einschließung.</li>
  <li><b>Nur wachsende Funktionen:</b> Unter- und Obersumme sind ohne Fallunterscheidung definiert. Bei fallenden Funktionen vertauschen sich die Randwerte.</li>
  <li><b>Stammfunktion nach dem Integralbegriff:</b> Rückwärts-Ableiten mit Richtungsfeld; die Konstante c wird erlebt, nicht behauptet.</li>
@@ -608,8 +646,8 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
 <h4>Wo das Vorgehen von der aktuellen Diskussion abweicht oder verbessert werden sollte</h4>
 <ul class="l">
  <li><b>Flächenvorstellung dominiert (in der App umgesetzt: Aufgaben 2, 6, 7, 8, 9 sowie Merke 1 und 3 tragen jetzt Kontext und Deutungsfragen).</b> Nach dem Einstieg werden Aufgaben 2 bis 8 kontextfrei und rein geometrisch bearbeitet. In der aktuellen Diskussion gilt das Integral als „Bestand aus Änderungsrate“ (Kirsch 1976; Hahn &amp; Prediger 2008) als tragfähiger Zugang, weil er den Hauptsatz inhaltlich begründet: A(x) ist der Bestand, f die Änderungsrate. Empfehlung: Aufgabe 2 und 7 in einem Kontext (Zufluss in l/min, Verbrauch in kW) führen und A(x) ausdrücklich als Bestandsfunktion deuten. In der App ist die Bestandsdeutung in Phase 3 ergänzt.</li>
- <li><b>Hauptsatz in derselben Doppelstunde.</b> Der Hauptsatz ist die zentrale Idee der Analysis und wird hier aus zwei Beispielen vermutet; Aufgabe 7 d ergänzt das Streifenargument als Begründung. Das ist als <i>Ausblick</i> vertretbar, als <i>Erarbeitung</i> in 25 Minuten zu knapp; das Risiko ist ein Rezept ohne Verständnis (Danckwerts &amp; Vogel). Empfehlung: Stunde als Überblick und Vermutung kennzeichnen, die Begründung (A′ = f über den Differenzenquotienten) und die Anwendung in einer eigenen Folgestunde.</li>
- <li><b>Umfang und kognitive Last.</b> Neun Aufgaben, drei Merkkästen und drei Werkzeuge in 90 Minuten sind sehr dicht. Empfehlung: Aufgabe 3 und 9 streichen oder auslagern, Aufgabe 5 auf zwei Zeilen kürzen.</li>
+ <li><b>Hauptsatz in derselben Doppelstunde (umgesetzt: eigene Doppelstunde).</b> Der Hauptsatz ist die zentrale Idee der Analysis und wird hier aus zwei Beispielen vermutet; Aufgabe 7 d ergänzt das Streifenargument als Begründung. Das ist als <i>Ausblick</i> vertretbar, als <i>Erarbeitung</i> in 25 Minuten zu knapp; das Risiko ist ein Rezept ohne Verständnis (Danckwerts &amp; Vogel). Empfehlung: Stunde als Überblick und Vermutung kennzeichnen, die Begründung (A′ = f über den Differenzenquotienten) und die Anwendung in einer eigenen Folgestunde.</li>
+ <li><b>Umfang und kognitive Last (umgesetzt: Verteilung auf zwei Doppelstunden).</b> Neun Aufgaben, drei Merkkästen und drei Werkzeuge in 90 Minuten sind sehr dicht. Empfehlung: Aufgabe 3 und 9 streichen oder auslagern, Aufgabe 5 auf zwei Zeilen kürzen.</li>
  <li><b>Merke 1 überzieht die Evidenz.</b> Der Satz gilt für stetige Funktionen, beobachtet wurde er an wachsenden. In der App steht ein Hinweis; im Arbeitsblatt sollte ebenfalls die Beschränkung genannt werden.</li>
  <li><b>Vorhersage vor dem Experiment.</b> Nach dem Predict-Observe-Explain-Muster sollen die SuS vor dem Schieberegler eine Vorhersage notieren. Das ist in Aufgabe 7 a eingebaut, in Aufgabe 2 durch den verborgenen Grenzwert. Im Papierarbeitsblatt fehlt das noch.</li>
  <li><b>Applet zeigt zu viel.</b> In der ersten Fassung war der Grenzwert sofort sichtbar und entwertete die Schätzaufgabe. In der App ist er verborgen, bis die SuS ihn einblenden.</li>
@@ -655,6 +693,15 @@ const store={get(k){try{return localStorage.getItem('ia12:'+k)}catch(e){return n
 document.querySelectorAll('[data-save]').forEach(el=>{
   const v=store.get(el.dataset.save);if(v!==null)el.value=v;
   el.addEventListener('input',()=>store.set(el.dataset.save,el.value));});
+/* ---------- Zahlenwerte prüfen (Aufgabe 0) ---------- */
+const numv=s=>{const t=String(s).trim().replace(/\s/g,'').replace(/−/g,'-').replace(',','.');return t===''||isNaN(+t)?NaN:+t;};
+document.querySelectorAll('[data-numcheck]').forEach(btn=>{const wrap=btn.closest('[data-num]'),p=btn.parentElement,fb=p.nextElementSibling;
+  const tab=p.previousElementSibling,ins=[...tab.querySelectorAll('input[data-ans]')];
+  btn.addEventListener('click',()=>{const msgs=[];let ok=0,any=0;ins.forEach(i=>{i.classList.remove('right','wrong');const v=numv(i.value);if(isNaN(v))return;any++;
+    if(Math.abs(v-+i.dataset.ans)<=.01){i.classList.add('right');ok++;return;}i.classList.add('wrong');let m='';
+    (i.dataset.wrong||'').split('|').forEach(q=>{const k=q.indexOf(':');if(k>0&&!m&&Math.abs(v-numv(q.slice(0,k)))<=.01)m=q.slice(k+1);});
+    msgs.push('<b>'+i.dataset.name+':</b> '+(m||'Noch nicht richtig. Rechne Abschnitt für Abschnitt Rate mal Dauer.'));});
+    fb.innerHTML=!any?'Trage zuerst Werte ein.':ok===ins.length?'<span style="color:var(--ok);font-weight:700">✓ Alles richtig!</span>':msgs.join('<br>')||'Fülle noch die leeren Felder aus.';});});
 /* ---------- Lücken prüfen ---------- */
 document.querySelectorAll('[data-merke]').forEach(m=>{
   const btn=m.querySelector('[data-check]');if(!btn)return;

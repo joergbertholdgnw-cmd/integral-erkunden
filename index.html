@@ -82,6 +82,18 @@ details.more{margin:10px 0 0;max-width:calc(70ch + 76px)}details.more>summary{cu
 input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px;height:28px}input[type=range]::-moz-range-thumb{width:28px;height:28px}
 .sl-pm{display:flex;gap:8px;margin-top:4px}.sl-pm button{font:600 1rem var(--sans);min-width:44px;min-height:40px;border:1px solid var(--line);background:var(--card);color:var(--navy);border-radius:999px;cursor:pointer}
 [hidden]{display:none!important}
+.try{margin:8px 0 2px;font:.95rem var(--sans)}.try label{display:inline-flex;flex-wrap:wrap;gap:6px;align-items:center;margin:4px 16px 4px 0;font-weight:600}
+.try input,.estin{width:6.5em;font:1rem var(--sans);padding:6px 8px;border:1px solid var(--line);border-radius:3px;background:var(--card);color:var(--ink);min-height:40px}
+.estin{width:100%;max-width:12em}
+.try input.right{border-color:var(--ok);box-shadow:0 0 0 2px color-mix(in srgb,var(--ok) 35%,transparent)}.try input.wrong{border-color:var(--over);box-shadow:0 0 0 2px color-mix(in srgb,var(--over) 30%,transparent)}
+.trybtn{font:600 .9rem var(--sans);min-height:40px;padding:8px 16px;border:1px solid var(--navy);background:var(--navy);color:var(--bg);border-radius:999px;cursor:pointer;margin:4px 0}
+.trybtn:focus-visible,.try input:focus-visible,.estin:focus-visible{outline:3px solid var(--under);outline-offset:2px}
+.tryfb{display:block;margin-top:4px;line-height:1.4}.tryfb:empty{display:none}
+.try .mc{margin-top:6px}.try .mc button{text-align:left}
+.try.solved::before{content:'✓ gelöst';display:inline-block;font:700 .8rem var(--sans);color:var(--ok);margin-bottom:2px}
+.prog{display:inline-block;margin-left:5px;font-size:.78em;font-weight:700;opacity:.85}
+.quiz{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:8px 0}.quiz figure{margin:0;background:var(--card);border:1px solid var(--line);padding:4px}.quiz figcaption{font:600 .85rem var(--sans);color:var(--navy);padding:2px 4px}
+.quiz select{margin-top:4px;font:.95rem var(--sans);padding:6px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -89,7 +101,7 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
 <div class="wrap">
 <h1>Von der Summe zum Integral</h1>
 <p class="sub">Zum Arbeitsblatt „Integralrechnung – Einstieg“, Jahrgang 12</p>
-<p class="purpose">Diese Seite ist zum Ausprobieren und Nachbereiten, mit ausführlichen Begründungen. Die Aufgaben und Eingabefelder stehen im Arbeitsblatt. Phase 0 passt zum Einstieg und zur Leitidee des Arbeitsblatts: Aus der Zuflussrate wird die Wassermenge in einem Gefäß rekonstruiert (vgl. auch Aufgabe 8 b). Phase 1 gehört zu Aufgabe 2, Phase 1b ist eine Vertiefung zu Aufgabe 3 (Zusatz). Phase 2 gehört zu den Aufgaben 4 und 5, Phase 3 zu den Aufgaben 6 und 7.</p>
+<p class="purpose">Diese Seite ist zum Ausprobieren und Nachbereiten. Phase 0 gehört zu Aufgabe 0 des Arbeitsblatts (Einstieg): Aus der Zuflussrate wird die Wassermenge in einem Gefäß rekonstruiert. Phase 1 gehört zu den Aufgaben 1 und 2, Phase 1b ist eine Vertiefung zu Aufgabe 3 (Zusatz). Phase 2 gehört zu den Aufgaben 4 und 5, Phase 3 zu den Aufgaben 6 und 7. Die Zahl im Reiter zeigt, wie viele Aufträge du dort schon gelöst hast.</p>
 <div class="tabs" role="tablist">
   <button role="tab" id="t1c" aria-selected="true" aria-controls="p1c"><span class="lg">Phase </span>0 · Gefäß füllen</button>
   <button role="tab" id="t1" aria-selected="false" aria-controls="p1"><span class="lg">Phase </span>1 · Rechtecksummen</button>
@@ -99,8 +111,9 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
 </div>
 
 <section id="p1c" role="tabpanel" aria-labelledby="t1c">
-  <p class="lead">In ein Gefäß fließt Wasser. <b>F(t)</b> ist die <b>Füllmenge</b> in Litern nach t Minuten. <b>f(t)</b> ist die <b>Zuflussrate</b> in Litern pro Minute: Sie gibt an, wie schnell sich die Füllmenge in diesem Moment ändert. Die Ableitung kennst du schon: f ist die Änderungsrate von F, also <b>F′ = f</b>.</p>
-  <p class="lead"><b>Leitfrage:</b> Man kennt nur die Zuflussrate f. Wie kann man daraus ablesen, wie viel Wasser im Gefäß ist? Schiebe die Zeit t oder starte den Füllvorgang. Rechts oben siehst du den Graphen von f, rechts unten entsteht der Graph von F, links steigt das Wasser im Gefäß.</p>
+  <p class="lead"><b>Aus einem Hahn läuft Wasser in ein Gefäß, mal schneller, mal langsamer. Du siehst nur, wie stark es gerade fließt. Kannst du trotzdem sagen, wie viel Wasser nach 10 Minuten drin ist?</b></p>
+  <p class="lead"><b>F(t)</b> ist die <b>Füllmenge</b> in Litern nach t Minuten. <b>f(t)</b> ist die <b>Zuflussrate</b> in Litern pro Minute: Sie gibt an, wie schnell sich die Füllmenge in diesem Moment ändert. Die Ableitung kennst du schon: f ist die Änderungsrate von F, also <b>F′ = f</b>.</p>
+  <p class="lead">Schiebe die Zeit t oder drücke „Abspielen“. Oben siehst du den Graphen von f, unten entsteht der Graph von F, links steigt das Wasser. Die Füllmenge ist zuerst verdeckt: Sage sie vorher, dann decke sie auf.</p>
   <div class="controls">
     <div><label for="fv">Füllvorgang</label><select id="fv"></select></div>
     <div><label for="v0">Anfangsfüllung F(0) = <span class="val" id="v0v">0</span> Liter</label><input type="range" id="v0" min="0" max="5" step="0.5" value="0"></div>
@@ -109,6 +122,7 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
     <div><label for="tv">Zeit t = <span class="val" id="tvv">0</span> min</label><input type="range" id="tv" min="0" max="10" step="0.01" value="4">
       <div class="chips"><button id="vplay" type="button" aria-pressed="false">▶ Abspielen</button><button id="vnull" type="button">zurück auf t = 0</button></div></div>
     <div>
+      <label class="check"><input type="checkbox" id="vhide" checked> Füllmenge verdecken (erst vorhersagen, dann aufdecken)</label>
       <label class="check"><input type="checkbox" id="vstr" checked> Minutenstreifen und Wasserschichten färben</label>
       <label class="check"><input type="checkbox" id="vtan" checked> Tangente an den Graphen von F zeigen</label>
       <label class="check"><input type="checkbox" id="vall"> Ganzen Graphen von F zeigen (erst nach deiner Vorhersage)</label>
@@ -126,17 +140,37 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
   </div>
   <div class="note" id="vnote" aria-live="off"></div>
   <h2 style="font-size:1.15rem;color:var(--navy);margin:22px 0 6px">Aufträge</h2>
-  <p class="lead" style="margin:0 0 4px;font-size:.92rem;color:var(--muted)">Bearbeite die Aufträge der Reihe nach und notiere deine Antwort, bevor du die Lösung aufklappst. Zum Warmwerden: Wähle „Konstanter Zufluss“ und erkläre, warum nach 4 Minuten 8 Liter zugeflossen sind.</p>
-  <div class="note"><b>1 · Ablesen.</b> Wähle „Pumpe mit Pause“ und F(0) = 0. Bestimme nur mit dem Graphen von f, wie viel Wasser nach 3, nach 5 und nach 10 Minuten im Gefäß ist. Prüfe dann mit dem Regler.
-    <details class="more"><summary>Antwort</summary><p>Nach 3 min: 3 · 3 = 9 Liter. Von 3 bis 5 min ist f = 0, es kommt nichts dazu: F(5) = 9 Liter, der Graph von F verläuft dort waagerecht. Danach kommen 5 · 1,5 = 7,5 Liter dazu: F(10) = 16,5 Liter. Jede Wassermenge ist hier eine Rechteckfläche unter dem Graphen von f.</p></details></div>
-  <div class="note"><b>2 · Vorhersagen.</b> Wähle „Hahn wird aufgedreht“. Ist der Graph von F eine Gerade oder eine Kurve? Begründe mit den Minutenstreifen, bevor du den ganzen Graphen einblendest.
-    <details class="more"><summary>Antwort</summary><p>Die Minutenstreifen unter f werden immer größer (0,2; 0,6; 1,0; 1,4 … Liter), weil f wächst. Darum werden die Wasserschichten dicker und die Stufen am Graphen von F höher. Der Graph von F wird immer steiler, er ist eine Kurve: F(t) = 0,2 · t² (bei F(0) = 0). Probe mit der Ableitung: F′(t) = (0,2 · t²)′ = 0,4 · t = f(t). <i>Vergleich:</i> Bei „Hahn wird zugedreht“ werden die Streifen immer kleiner, der Graph von F wird immer flacher.</p></details></div>
-  <div class="note"><b>3 · Anfangsfüllung.</b> Verändere F(0). Was ändert sich am Graphen von f, was am Graphen von F?
-    <details class="more"><summary>Antwort</summary><p>Der Graph von f bleibt gleich: Wie schnell Wasser zufließt, hängt nicht davon ab, wie viel schon im Gefäß ist. Der Graph von F wird um F(0) nach oben verschoben. Verschiedene Füllmengenfunktionen können also dieselbe Zuflussrate haben. Das begegnet dir in Phase 2 wieder: Eine Funktion F mit F′ = f heißt dort <b>Stammfunktion</b> von f, und die Anfangsfüllung spielt die Rolle der Konstanten c.</p></details></div>
-  <div class="note"><b>4 · Zufluss und Abfluss.</b> Wähle „Zufluss wird zum Abfluss“. Wann ist am meisten Wasser im Gefäß? Wie viel ist nach 10 Minuten darin?
-    <details class="more"><summary>Antwort</summary><p>Am meisten bei t = 5: Bis dahin ist f(t) &gt; 0, danach ist f(t) &lt; 0, dann fließt mehr ab als zu. Der Graph von F hat bei t = 5 einen Hochpunkt mit waagerechter Tangente, denn f(5) = 0. Die Fläche über der t-Achse (7,5) und die unter der t-Achse (7,5) sind gleich groß, die Flächenbilanz ist 7,5 − 7,5 = 0: Nach 10 Minuten ist wieder genau die Anfangsfüllung im Gefäß.</p></details></div>
+  <p class="lead" style="margin:0 0 4px;font-size:.92rem;color:var(--muted)">Bearbeite die Aufträge der Reihe nach. Trage dein Ergebnis ein und drücke „Prüfen“. Danach kannst du die ausführliche Antwort aufklappen. Zum Warmwerden: Wähle „Konstanter Zufluss“ und erkläre, warum nach 4 Minuten 8 Liter zugeflossen sind.</p>
+  <div class="note"><b>1 · Ablesen.</b> Wähle „Pumpe mit Pause“ und F(0) = 0. Lass die Füllmenge verdeckt. Bestimme nur mit dem Graphen von f, wie viel Wasser nach 3, nach 5 und nach 10 Minuten im Gefäß ist.
+    <div class="try" data-id="p0a1" data-hint="Teile die Zeit in Abschnitte. Für jeden Abschnitt rechnest du Rate mal Dauer, dann addierst du." data-okmsg="Decke jetzt die Füllmenge auf und vergleiche mit dem Gefäß.">
+      <label>F(3) = <input inputmode="decimal" aria-label="F(3) in Litern" data-name="F(3)" data-ans="9" data-wrong="3:Das ist die Zuflussrate f(3), nicht die Menge. Die Menge ist Rate mal Zeit."> L</label>
+      <label>F(5) = <input inputmode="decimal" aria-label="F(5) in Litern" data-name="F(5)" data-ans="9" data-wrong="15:Zwischen t = 3 und t = 5 ist f = 0. Fließt dann noch Wasser zu?|0:Das ist die Zuflussrate f(5). Gefragt ist, wie viel schon im Gefäß ist."> L</label>
+      <label>F(10) = <input inputmode="decimal" aria-label="F(10) in Litern" data-name="F(10)" data-ans="16.5" data-wrong="1.5:Das ist die Zuflussrate f(10), nicht die Menge.|7.5:Das ist nur der Zufluss von 5 bis 10. Was war vorher schon drin?|24:Von 3 bis 5 ist f = 0. Dort kommt nichts dazu."> L</label>
+      <button type="button" class="trybtn">Prüfen</button><span class="tryfb" role="status"></span></div>
+    <details class="more" hidden data-after="p0a1"><summary>Ausführliche Antwort</summary><p>Nach 3 min: 3 · 3 = 9 Liter. Von 3 bis 5 min ist f = 0, es kommt nichts dazu: F(5) = 9 Liter, der Graph von F verläuft dort waagerecht. Danach kommen 5 · 1,5 = 7,5 Liter dazu: F(10) = 16,5 Liter. Jede Wassermenge ist hier eine Rechteckfläche unter dem Graphen von f.</p></details></div>
+  <div class="note"><b>2 · Vorhersagen.</b> Wähle „Hahn wird aufgedreht“. Wie sieht der Graph von F aus? Entscheide mit den Minutenstreifen, bevor du die Füllmenge aufdeckst.
+    <div class="try" data-id="p0a2" data-mc><div class="mc chips">
+      <button type="button" data-msg="Die Minutenstreifen werden immer größer. Jede Minute kommt mehr Wasser dazu als in der Minute davor. Eine Gerade würde bedeuten: jede Minute gleich viel.">eine Gerade</button>
+      <button type="button" data-ok data-msg="Die Streifen werden immer größer, also wird F immer steiler.">eine Kurve, die immer steiler wird</button>
+      <button type="button" data-msg="Flacher würde heißen: Jede Minute kommt weniger dazu. Schau, wie sich die Streifen unter f verändern.">eine Kurve, die immer flacher wird</button></div><span class="tryfb" role="status"></span></div>
+    <details class="more" hidden data-after="p0a2"><summary>Ausführliche Antwort</summary><p>Die Minutenstreifen unter f werden immer größer (0,2; 0,6; 1,0; 1,4 … Liter), weil f wächst. Darum werden die Wasserschichten dicker und die Stufen am Graphen von F höher. Der Graph von F wird immer steiler, er ist eine Kurve: F(t) = 0,2 · t² (bei F(0) = 0). Probe mit der Ableitung: F′(t) = (0,2 · t²)′ = 0,4 · t = f(t). <i>Vergleich:</i> Bei „Hahn wird zugedreht“ werden die Streifen immer kleiner, der Graph von F wird immer flacher.</p></details></div>
+  <div class="note"><b>3 · Anfangsfüllung.</b> Verändere F(0). Was passiert mit dem Graphen von f?
+    <div class="try" data-id="p0a3" data-mc><div class="mc chips">
+      <button type="button" data-msg="Probiere es aus: Der obere Graph bewegt sich nicht. Wie schnell Wasser zufließt, hängt nicht davon ab, wie viel schon drin ist.">Er wird nach oben verschoben.</button>
+      <button type="button" data-ok data-msg="Nur der Graph von F wird um F(0) nach oben verschoben.">Er bleibt gleich.</button>
+      <button type="button" data-msg="Probiere es aus: Der obere Graph bleibt genau gleich. Die Anfangsfüllung ändert nur, wie viel im Gefäß ist.">Er wird steiler.</button></div><span class="tryfb" role="status"></span></div>
+    <details class="more" hidden data-after="p0a3"><summary>Ausführliche Antwort</summary><p>Der Graph von f bleibt gleich: Wie schnell Wasser zufließt, hängt nicht davon ab, wie viel schon im Gefäß ist. Der Graph von F wird um F(0) nach oben verschoben. Verschiedene Füllmengenfunktionen können also dieselbe Zuflussrate haben. Das begegnet dir in Phase 2 wieder: Eine Funktion F mit F′ = f heißt dort <b>Stammfunktion</b> von f, und die Anfangsfüllung spielt die Rolle der Konstanten c.</p></details></div>
+  <div class="note"><b>4 · Zufluss und Abfluss.</b> Wähle „Zufluss wird zum Abfluss“ und F(0) = 0. Wann ist am meisten Wasser im Gefäß? Wie viel ist nach 10 Minuten darin?
+    <div class="try" data-id="p0a4" data-hint="Achte auf das Vorzeichen von f: Über der t-Achse fließt Wasser zu, darunter fließt es ab.">
+      <label>am meisten bei t = <input inputmode="decimal" aria-label="Zeitpunkt in Minuten" data-name="Zeitpunkt" data-ans="5" data-wrong="0:Bei t = 0 ist das Gefäß noch leer. Bis f das Vorzeichen wechselt, kommt Wasser dazu.|10:Ab t = 5 ist f negativ. Dann fließt mehr ab als zu, die Menge sinkt."> min</label>
+      <label>F(10) = <input inputmode="decimal" aria-label="F(10) in Litern" data-name="F(10)" data-ans="0" data-wrong="15:Du hast beide Flächen addiert. Die Fläche unter der t-Achse ist Abfluss und zählt negativ.|7.5:Das ist die Menge bei t = 5. Danach fließt Wasser ab.|-7.5:Die Fläche über der Achse ist auch noch da: Bilanz 7,5 − 7,5."> L</label>
+      <button type="button" class="trybtn">Prüfen</button><span class="tryfb" role="status"></span></div>
+    <details class="more" hidden data-after="p0a4"><summary>Ausführliche Antwort</summary><p>Am meisten bei t = 5: Bis dahin ist f(t) &gt; 0, danach ist f(t) &lt; 0, dann fließt mehr ab als zu. Der Graph von F hat bei t = 5 einen Hochpunkt mit waagerechter Tangente, denn f(5) = 0. Die Fläche über der t-Achse (7,5) und die unter der t-Achse (7,5) sind gleich groß, die Flächenbilanz ist 7,5 − 7,5 = 0: Nach 10 Minuten ist wieder genau die Anfangsfüllung im Gefäß.</p></details></div>
   <div class="note"><b>5 · Durchschnittliche Zuflussrate.</b> Wähle „Pumpe mit Pause“, F(0) = 0 und t = 10. Mit welcher <i>konstanten</i> Zuflussrate wäre nach 10 Minuten genauso viel Wasser im Gefäß? Schalte danach die durchschnittliche Zuflussrate ein und vergleiche die Flächen.
-    <details class="more"><summary>Antwort</summary><p>Nach 10 Minuten sind 16,5 Liter zugeflossen. Gleich viel ergibt eine konstante Rate von 16,5 L : 10 min = 1,65 L/min. Das Rechteck mit Höhe 1,65 und Breite 10 hat denselben Flächeninhalt wie die Fläche unter dem Graphen von f: Was über die rote Linie hinausragt, füllt genau die Lücken darunter. Allgemein: durchschnittliche Rate = Fläche unter der Rate : Zeitdauer.</p></details></div>
+    <div class="try" data-id="p0a5" data-hint="Gleich viel Wasser in 10 Minuten: Menge geteilt durch Zeit.">
+      <label>konstante Rate = <input inputmode="decimal" aria-label="Rate in Litern pro Minute" data-name="Rate" data-ans="1.65" data-wrong="16.5:Das ist die Wassermenge. Verteile sie gleichmäßig auf 10 Minuten.|1.5:Du hast die drei Raten gemittelt. Die Abschnitte sind aber verschieden lang: 3 min, 2 min, 5 min.|2.25:Du hast 3 und 1,5 gemittelt. Die Pause und die Längen der Abschnitte zählen mit."> L/min</label>
+      <button type="button" class="trybtn">Prüfen</button><span class="tryfb" role="status"></span></div>
+    <details class="more" hidden data-after="p0a5"><summary>Ausführliche Antwort</summary><p>Nach 10 Minuten sind 16,5 Liter zugeflossen. Gleich viel ergibt eine konstante Rate von 16,5 L : 10 min = 1,65 L/min. Das Rechteck mit Höhe 1,65 und Breite 10 hat denselben Flächeninhalt wie die Fläche unter dem Graphen von f: Was über die rote Linie hinausragt, füllt genau die Lücken darunter. Allgemein: durchschnittliche Rate = Fläche unter der Rate : Zeitdauer.</p></details></div>
   <h2 style="font-size:1.15rem;color:var(--navy);margin:22px 0 6px">Sichern</h2>
   <div class="defbox"><b>Merke (Füllmenge und Zuflussrate):</b><br>
     <b>Von F zu f:</b> Die Zuflussrate ist die momentane Änderungsrate der Füllmenge, also ihre Ableitung: <b>F′ = f</b>. Je größer f(t), desto steiler steigt der Graph von F an der Stelle t. Ist f(t) = 0, verläuft er dort waagerecht.<br>
@@ -146,7 +180,8 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
 </section>
 
 <section id="p1" role="tabpanel" aria-labelledby="t1" hidden>
-  <p class="lead">In Phase 0 waren die Flächen unter der Zuflussrate Rechtecke oder Dreiecke, ihren Inhalt konntest du genau berechnen. Ist der Graph gekrümmt, geht das nicht mehr. Dann nähert man die Fläche unter dem Graphen durch n Rechtecke an, jedes Rechteck ist „Rate mal Zeitschritt“. Die Untersumme nimmt je Streifen den kleinsten, die Obersumme den größten Funktionswert. Auftrag: Stelle n = 6, 60 und 600 ein (Knöpfe unter dem Regler), notiere Untersumme, Obersumme und Differenz und schätze den Grenzwert. Blende ihn erst danach ein.</p>
+  <p class="lead">In Phase 0 waren die Flächen unter der Zuflussrate Rechtecke oder Dreiecke. Ist der Graph gekrümmt, nähert man die Fläche durch n schmale Rechtecke an, jedes ist „Rate mal Zeitschritt“. Die Untersumme nimmt je Streifen den kleinsten, die Obersumme den größten Funktionswert.</p>
+  <p class="lead"><b>Auftrag:</b> Stelle n = 6, 60 und 600 ein (Knöpfe unter dem Regler) und notiere Untersumme, Obersumme und Differenz. Trage dann deinen Schätzwert für den Grenzwert ein. Erst danach lässt sich der Grenzwert einblenden.</p>
   <div class="controls">
     <div><label for="f1">Funktion</label><select id="f1"></select></div>
     <div><label for="n1">Anzahl der Streifen n = <span class="val" id="n1v">4</span></label><input type="range" id="n1" min="1" max="1000" value="4"><div class="chips" id="n1c"></div></div>
@@ -155,7 +190,8 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
     <label class="check"><input type="checkbox" id="showU" checked> Untersumme zeigen</label>
     <label class="check"><input type="checkbox" id="showO" checked> Obersumme zeigen</label>
     <label class="check"><input type="checkbox" id="showM"> Mittelpunktsumme zeigen</label>
-    <label class="check"><input type="checkbox" id="showE"> Grenzwert anzeigen (erst nach deiner Schätzung)</label>
+    <div><label for="est1" style="display:block;font-weight:600;font-size:.9rem;margin-bottom:4px">Mein Schätzwert für den Grenzwert</label><input id="est1" inputmode="decimal" class="estin" placeholder="z. B. 20"></div>
+    <label class="check"><input type="checkbox" id="showE" disabled> Grenzwert anzeigen (erst nach deiner Schätzung)</label>
   </div>
   <div class="stage"><canvas id="c1" width="1600" height="760" role="img" aria-label="Graph mit Rechtecken für Unter- und Obersumme"></canvas></div>
   <div class="read">
@@ -199,7 +235,13 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
     <li><span style="color:var(--ok)">▮</span> <b>Grüne Marke</b>: Flächeninhalt I <span id="sbe4">=</span> <b id="sbk4">–</b>, liegt immer im roten Abschnitt</li>
   </ul>
   <details class="more"><summary>Warum reicht es, nur Rot anzuschauen? (zum Aufklappen)</summary><p class="note"><b>Warum reicht es, nur Rot anzuschauen?</b> Blau zusammen ist die Untersumme U<sub>n</sub>. Die Obersumme besteht aus denselben blauen Rechtecken und den roten Stücken obendrauf: O<sub>n</sub> = U<sub>n</sub> + Rot. Die Fläche I liegt immer zwischen U<sub>n</sub> und O<sub>n</sub>, im Balken also immer im roten Abschnitt. Ob U<sub>n</sub> und O<sub>n</sub> denselben Grenzwert haben, hängt deshalb nur davon ab, ob Rot gegen 0 geht. Wie groß Blau genau ist, müssen wir dafür nicht wissen. Das ist der Vorteil: Blau ist schwer zu berechnen, Rot passt in eine Säule und ist einfach Höhe mal Breite.</p></details>
-  <p class="note"><b>Zwischenfrage:</b> Du verdoppelst n. Was passiert mit O<sub>n</sub> − U<sub>n</sub>? <details class="more"><summary>Antwort</summary><p>Der Unterschied halbiert sich: Die rote Säule hat dieselbe Höhe, aber nur die halbe Breite. Es gilt O<sub>n</sub> − U<sub>n</sub> = (f(b) − f(a)) · (b − a)/n.</p></details></p>
+  <div class="note"><b>Zwischenfrage:</b> Du verdoppelst n. Was passiert mit O<sub>n</sub> − U<sub>n</sub>?
+    <div class="try" data-id="p1b1" data-mc><div class="mc chips">
+      <button type="button" data-msg="Probiere es mit „n · 2“ aus. Die rote Säule bleibt gleich hoch, wird aber schmaler.">Der Unterschied verdoppelt sich.</button>
+      <button type="button" data-ok data-msg="Die rote Säule hat dieselbe Höhe, aber nur die halbe Breite.">Der Unterschied halbiert sich.</button>
+      <button type="button" data-msg="Probiere es mit „n · 2“ aus und vergleiche die Werte im Kasten O<sub>n</sub> − U<sub>n</sub>.">Der Unterschied bleibt gleich.</button></div><span class="tryfb" role="status"></span></div>
+    <details class="more" hidden data-after="p1b1"><summary>Ausführliche Antwort</summary><p>Der Unterschied halbiert sich: Die rote Säule hat dieselbe Höhe, aber nur die halbe Breite. Es gilt O<sub>n</sub> − U<sub>n</sub> = (f(b) − f(a)) · (b − a)/n.</p></details></div>
+</details></p>
   <p class="note" id="gwhy"></p>
   <h2 style="font-size:1.15rem;color:var(--navy);margin:22px 0 6px">Die Folgen U<sub>n</sub> und O<sub>n</sub></h2>
   <p class="lead" style="margin-bottom:8px">Jeder Punkt ist ein Wert für ein n. Der grüne Streifen reicht von I − ε bis I + ε, dabei ist I der Grenzwert. Ab welchem n bleiben alle Punkte darin?</p>
@@ -211,7 +253,10 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
 </section>
 
 <section id="p3" role="tabpanel" aria-labelledby="t3" hidden>
-  <p class="lead">In Phase 0 hast du aus der Zuflussrate auf die Füllmenge zurückgeschlossen. Hier geht es um dieselbe Frage ohne Gefäß: Die Steigung f ist gegeben, gesucht ist eine Funktion F mit F′ = f, so wie die Füllmenge F zur Zuflussrate f. Die Konstante c entspricht dabei der Anfangsfüllung: Sie verschiebt den Graphen von F nach oben oder unten, an der Steigung ändert sie nichts. Jeder Strich zeigt die Steigung f(x) an seiner Stelle. Alle Striche zusammen heißen Richtungsfeld. Eine Funktion F, deren Graph den Strichen folgt, ist eine Stammfunktion von f. Verschiebe die Kurve mit c. Unten kannst du Schritt für Schritt verfolgen, wie der Graph von F aus f entsteht.</p>
+  <p class="lead">In Phase 0 kanntest du die Zuflussrate und hast die Füllmenge gesucht. Jetzt ist nur die Steigung f gegeben, gesucht ist eine Funktion F mit F′ = f. Ohne Sachkontext schreiben wir dafür x statt t.</p>
+  <p class="lead"><b>Auftrag:</b> Wähle f und verschiebe die Kurve mit c so, dass sie den Strichen folgt. Unten kannst du Schritt für Schritt verfolgen, wie der Graph von F aus f entsteht.</p>
+  <details class="more"><summary>Was zeigen die Striche? (zum Aufklappen)</summary><p class="note">Jeder Strich zeigt die Steigung f(x) an seiner Stelle. Alle Striche zusammen heißen <b>Richtungsfeld</b>. Eine Funktion F, deren Graph den Strichen folgt, ist eine Stammfunktion von f. Die Konstante c entspricht der Anfangsfüllung beim Gefäß: Sie verschiebt den Graphen von F nach oben oder unten, an der Steigung ändert sie nichts.</p></details>
+</p>
   <div class="defbox"><b>Definition (Stammfunktion):</b> Eine Funktion F heißt <b>Stammfunktion</b> von f, wenn ihre Ableitung die Funktion f ist: F′(x) = f(x) für alle x. <i>Beispiel:</i> F(x) = x² ist eine Stammfunktion von f(x) = 2x, denn (x²)′ = 2x. Mit F ist auch F(x) + c für jede Konstante c eine Stammfunktion, denn eine Konstante hat die Ableitung 0. <i>Im Gefäß-Bild:</i> Zur selben Zuflussrate gehören viele Füllmengen-Funktionen, je nach Anfangsfüllung.</div>
   <div class="controls">
     <div><label for="f2">Steigungsfunktion f</label><select id="f2"></select></div>
@@ -280,7 +325,12 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
       <span class="hs-li">① Auf dem schmalen Streifen liegt f zwischen seinem kleinsten Wert m und seinem größten Wert M. Der Streifen passt also zwischen zwei Rechtecke: m · h ≤ ΔA ≤ M · h, nach Teilen durch h also <b>m ≤ ΔA / h ≤ M</b>. (Das ist dieselbe Unter-/Obersummen-Idee wie in Phase 1.)</span>
       <span class="hs-li">② Wird h kleiner, rücken m und M beide an f(x) heran, weil der Graph von f keine Sprünge hat (f ist stetig). ΔA / h ist zwischen m und M eingeklemmt und rückt deshalb ebenfalls an f(x) heran.</span>
       <span class="hs-li">③ Wir schauen nur nach rechts; nach links, mit A(x) − A(x − h), geht es genauso. Ein vollständiger Beweis macht das „Heranrücken“ mit ε und δ genau.</span></p></details>
-    <p class="note"><b>Selbsttest:</b> Bei f(x) = x + 2 ist f(3) = 5. Um etwa wie viel wächst A, wenn du x von 3 auf 3,01 schiebst? <details class="more"><summary>Antwort</summary><p>ΔA ≈ f(3) · 0,01 = 5 · 0,01 = 0,05. Probiere es mit x = 3 und h = 0,01 aus (Vergrößerung an).</p></details></p>
+    <div class="note"><b>Selbsttest:</b> Bei f(x) = x + 2 ist f(3) = 5. Um etwa wie viel wächst A, wenn du x von 3 auf 3,01 schiebst?
+      <div class="try" data-id="p3s2" data-hint="Der Streifen ist fast ein Rechteck: Höhe f(3), Breite 0,01.">
+        <label>ΔA ≈ <input inputmode="decimal" aria-label="Zuwachs von A" data-name="ΔA" data-ans="0.05" data-tol="0.002" data-wrong="5:Das ist f(3), die Höhe des Streifens. Wie breit ist er?|0.5:Prüfe die Breite: Von 3 auf 3,01 sind es 0,01, nicht 0,1."></label>
+        <button type="button" class="trybtn">Prüfen</button><span class="tryfb" role="status"></span></div>
+      <details class="more" hidden data-after="p3s2"><summary>Ausführliche Antwort</summary><p>ΔA ≈ f(3) · 0,01 = 5 · 0,01 = 0,05. Probiere es mit x = 3 und h = 0,01 aus (Vergrößerung an).</p></details></div>
+</details></p>
     <p><button type="button" class="hs-next" data-to="2">Weiter zu Schritt 3 ▶</button></p>
   </div>
 
@@ -332,7 +382,12 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
       <b>Hauptsatz der Differential- und Integralrechnung</b>
       <p class="hs-big">Ist f auf [a; b] stetig und F irgendeine Stammfunktion von f, dann gilt: ∫<sub>a</sub><sup>b</sup> f(x) dx = F(b) − F(a)</p>
       <p><b>Rechenbeispiel:</b> ∫<sub>0</sub><sup>3</sup> (x + 2) dx = [x²/2 + 2x]<sub>0</sub><sup>3</sup> = (4,5 + 6) − 0 = 10,5. Beim Rechnen nimmt man die einfachste Stammfunktion (c = 0), weil c bei der Differenz herausfällt. [F(x)]<sub>a</sub><sup>b</sup> ist die Kurzschreibweise für F(b) − F(a).</p>
-      <p class="selftest"><b>Selbsttest:</b> Berechne ∫<sub>0</sub><sup>2</sup> 3x² dx. <details class="more"><summary>Antwort</summary><p>F(x) = x³, also ∫<sub>0</sub><sup>2</sup> 3x² dx = 2³ − 0³ = 8.</p></details></p>
+      <div class="selftest"><b>Selbsttest:</b> Berechne ∫<sub>0</sub><sup>2</sup> 3x² dx.
+        <div class="try" data-id="p3s4" data-hint="Suche zuerst eine Stammfunktion F von 3x² und rechne dann F(2) − F(0).">
+          <label>Ergebnis: <input inputmode="decimal" aria-label="Wert des Integrals" data-name="Integral" data-ans="8" data-wrong="12:Das ist f(2) = 3 · 2², nicht das Integral. Du brauchst eine Stammfunktion.|24:Hast du abgeleitet statt aufgeleitet? Gesucht ist F mit F′(x) = 3x².|6:Prüfe die Stammfunktion: (x³)′ = 3x². Dann ist F(2) = 8."></label>
+          <button type="button" class="trybtn">Prüfen</button><span class="tryfb" role="status"></span></div>
+        <details class="more" hidden data-after="p3s4"><summary>Ausführliche Antwort</summary><p>F(x) = x³, also ∫<sub>0</sub><sup>2</sup> 3x² dx = 2³ − 0³ = 8.</p></details></div>
+</details></p>
       <details class="more"><summary>Mehr dazu: zwei Teile, Bestand, Hinweise (zum Aufklappen)</summary>
         <p><b>(1)</b> <i>(Schritt 2)</i> Die Integralfunktion A(x) = ∫<sub>a</sub><sup>x</sup> f(t) dt ist eine Stammfunktion von f: <b>A′(x) = f(x)</b>. Jede stetige Funktion hat also eine Stammfunktion, auch wenn man keine Formel dafür findet.</p>
         <p><b>(2)</b> <i>(Schritte 3 und 4)</i> Ist F irgendeine Stammfunktion von f, dann ist ∫<sub>a</sub><sup>b</sup> f(x) dx = F(b) − F(a). <b>Aus (1) folgt (2):</b> A und F unterscheiden sich nur um eine Konstante, und A(a) = 0.</p>
@@ -353,6 +408,8 @@ const de=(v,d=3)=>{const t=v.toLocaleString('de-DE',{minimumFractionDigits:0,max
 const ex=(v,d)=>Math.abs(v-Math.round(v*10**d)/10**d)<1e-9*Math.max(1,Math.abs(v));
 const eq=(v,d)=>ex(v,d)?' = ':' ≈ ';
 const ap=(v,d)=>(ex(v,d)?'':'≈ ')+de(v,d);
+/* Zahl aus Eingabe: Komma, Minuszeichen, Leerzeichen erlaubt */
+const num=s=>{const t=String(s).trim().replace(/\s/g,'').replace(/−/g,'-').replace(',','.');return t===''||isNaN(+t)?NaN:+t;};
 const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 const FONT='"Source Sans 3",system-ui,sans-serif';
 function setup(cv){const r=cv.getBoundingClientRect();const k=Math.max(1,window.devicePixelRatio||1);const w=Math.round(r.width||800);
@@ -381,6 +438,29 @@ function show(i){tabs.forEach((b,j)=>{b.setAttribute('aria-selected',j===i);docu
   try{localStorage.setItem('integral-tabid',tabs[i].id)}catch(e){} if(tabs[i].id!=='t1c')stopV(); redraw();}
 tabs.forEach((b,i)=>b.addEventListener('click',()=>show(i)));
 
+/* ---------- Aufträge mit Eingabe und Rückmeldung; Fortschritt im Reiter ---------- */
+let done={};try{done=JSON.parse(localStorage.getItem('integral-done')||'{}')||{}}catch(e){}
+function saveDone(){try{localStorage.setItem('integral-done',JSON.stringify(done))}catch(e){}}
+function updProg(){tabs.forEach(b=>{const p=document.getElementById(b.getAttribute('aria-controls')),all=[...p.querySelectorAll('.try')];let s=b.querySelector('.prog');
+  if(!all.length){if(s)s.remove();return;}if(!s){s=document.createElement('span');s.className='prog';b.appendChild(s);}
+  const k=all.filter(x=>done[x.dataset.id]).length;s.textContent=(k===all.length?'✓ ':'')+k+'/'+all.length;s.setAttribute('aria-label',k+' von '+all.length+' Aufträgen gelöst');});}
+function initTry(box){const id=box.dataset.id,fb=box.querySelector('.tryfb'),det=document.querySelector('details[data-after="'+id+'"]');
+  const reveal=()=>{if(det)det.hidden=false;};
+  const solved=()=>{done[id]=1;saveDone();box.classList.add('solved');reveal();updProg();};
+  if(done[id]){box.classList.add('solved');reveal();}
+  if(box.hasAttribute('data-mc')){const bs=[...box.querySelectorAll('.mc button')];bs.forEach(b=>{b.setAttribute('aria-pressed','false');b.onclick=()=>{bs.forEach(x=>x.setAttribute('aria-pressed',x===b));
+    const ok=b.hasAttribute('data-ok');fb.innerHTML=(ok?'<span class="ok">✓ Richtig.</span> ':'<span class="cr">Noch nicht.</span> ')+(b.dataset.msg||'');reveal();if(ok)solved();};});return;}
+  const btn=box.querySelector('.trybtn'),ins=[...box.querySelectorAll('input')];
+  btn.onclick=()=>{const msgs=[];let all=true,any=false;
+    ins.forEach(inp=>{inp.classList.remove('right','wrong');const v=num(inp.value);if(isNaN(v)){all=false;return;}any=true;
+      const a=+inp.dataset.ans,tol=+(inp.dataset.tol||.01);if(Math.abs(v-a)<=tol){inp.classList.add('right');return;}
+      all=false;inp.classList.add('wrong');let m='';(inp.dataset.wrong||'').split('|').forEach(p=>{const k=p.indexOf(':');if(k<0||m)return;if(Math.abs(v-num(p.slice(0,k)))<=tol)m=p.slice(k+1);});
+      msgs.push('<b>'+inp.dataset.name+':</b> '+(m||box.dataset.hint||'Prüfe deine Rechnung noch einmal.'));});
+    if(!any){fb.textContent='Trage zuerst einen Wert ein.';return;}
+    if(all){fb.innerHTML='<span class="ok">✓ Richtig!</span> '+(box.dataset.okmsg||'');solved();}
+    else{fb.innerHTML=(msgs.length?msgs.join('<br>'):'Fülle noch die leeren Felder aus.')+(det?'<br><span class="hs-sm">Die ausführliche Antwort kannst du jetzt aufklappen.</span>':'');reveal();}};
+  ins.forEach(i=>i.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();btn.click();}}));}
+
 /* ---------- Phase 1 ---------- */
 const F1=[
  {t:'Geschwindigkeit: f(t) = 0,5·t + 2 (in m/s, t in s) auf [0; 4]',f:x=>.5*x+2,a:0,b:4,F:x=>.25*x*x+2*x,ym:5,xm:4.4,chips:[4,10,50,200],ctx:{r:'Geschwindigkeit',ru:'m/s',xu:'s',su:'m',b:'zurückgelegter Weg'}},
@@ -393,6 +473,7 @@ function sums(o,n){const w=(o.b-o.a)/n;let u=0,s=0,m=0;for(let i=0;i<n;i++){u+=o
 function chips1(){const box=document.getElementById('n1c');box.innerHTML='';F1[f1.value].chips.forEach(v=>{const b=document.createElement('button');b.textContent='n = '+v;b.setAttribute('aria-pressed',+n1.value===v);b.onclick=()=>{n1.value=v;draw1();};box.appendChild(b);});}
 function draw1(){
   const o=F1[f1.value],n=+n1.value;document.getElementById('n1v').textContent=n;
+  const estv=num(document.getElementById('est1').value),seb=document.getElementById('showE');seb.disabled=isNaN(estv);if(seb.disabled)seb.checked=false;const showE=seb.checked;
   const cv=document.getElementById('c1'),{g,w,h}=setup(cv);const box={l:44,t:12,w:w-60,h:h-40};
   const xr=[-.3,o.xm],yr=[o.yn||0,o.ym];const{sx,sy}=frame(g,box,xr,yr,{ty:o.ym>10?5:(o.ym>6?2:1)});
   const wd=(o.b-o.a)/n,thin=n<=80;
@@ -409,15 +490,16 @@ function draw1(){
   const k=o.ctx,kx=document.getElementById('n1k');
   kx.innerHTML=(k?'<b>Im Sachzusammenhang:</b> Jedes Rechteck ist '+k.r+' mal Zeitschritt, also '+k.ru+' · '+k.xu+' = '+k.su+'. Die Summen schätzen die '+k.b+' von '+de(o.a)+' bis '+de(o.b)+' '+k.xu+'. ':'')
     +(o.yn?'Rechtecke unterhalb der '+(k?'t':'x')+'-Achse haben eine negative Höhe und zählen negativ: Hier fließt mehr ab als zu. ':'')
+    +(showE?'<b>Dein Schätzwert</b> '+de(estv,3)+' liegt '+de(Math.abs(estv-E),3)+' vom Grenzwert '+de(E,4)+' entfernt'+(Math.abs(estv-E)<=.03*Math.abs(E)+.01?'. <span class="ok">Sehr gut geschätzt!</span> ':'. ')+'Was ist der Grenzwert im Sachzusammenhang? ':'')
     +(sm?'<b>Mittelpunktsumme</b> (Funktionswert in der Mitte jedes Streifens, grün gepunktet): M<sub>'+n+'</sub> '+(ex(M,3)?'= ':'≈ ')+de(M)+'. Sie liegt meist schon für kleine n sehr nah am Grenzwert.':'');
   kx.hidden=!kx.innerHTML;
   document.getElementById('rU').textContent=de(U);document.getElementById('rO').textContent=de(O);
-  document.getElementById('rD').textContent=de(O-U);const showE=document.getElementById('showE').checked;document.getElementById('rE').textContent=showE?de(E,4):'verborgen';document.getElementById('ex').style.display=showE?'':'none';document.getElementById('n1o').hidden=!showE;
+  document.getElementById('rD').textContent=de(O-U);document.getElementById('rE').textContent=showE?de(E,4):'verborgen';document.getElementById('ex').style.display=showE?'':'none';document.getElementById('n1o').hidden=!showE;
   const lo=E*.6,hi=E*1.4,p=v=>Math.max(0,Math.min(100,(v-lo)/(hi-lo)*100));
   const band=document.getElementById('band');band.style.left=p(U)+'%';band.style.width=Math.max(.4,p(O)-p(U))+'%';
   document.getElementById('ex').style.left='calc('+p(E)+'% - 1px)';document.getElementById('tlo').textContent=de(lo,1);document.getElementById('thi').textContent=de(hi,1);
   chips1();}
-f1.onchange=()=>{n1.value=F1[f1.value].chips[0];draw1();};n1.oninput=draw1;
+f1.onchange=()=>{n1.value=F1[f1.value].chips[0];document.getElementById('est1').value='';draw1();};document.getElementById('est1').oninput=draw1;n1.oninput=draw1;
 ['showU','showO','showE','showM'].forEach(i=>document.getElementById(i).onchange=draw1);
 
 
@@ -762,7 +844,7 @@ FV.forEach((o,i)=>fv.add(new Option(o.t,i)));fv.value=0;
 /* Farbe eines Minutenstreifens: abwechselnd kräftig/hell, Abfluss rot */
 const sCol=(k,neg)=>({c:css(neg?'--over':'--under'),a:neg?(k%2?.22:.45):(k%2?.28:.6)});
 function drawV(){
-  const o=FV[fv.value],t=+EV('tv').value,V0=+EV('v0').value,strips=EV('vstr').checked;
+  const o=FV[fv.value],t=+EV('tv').value,V0=+EV('v0').value,strips=EV('vstr').checked,hide=EV('vhide').checked;
   const r=o.r(t),A=o.F(t),lev=V0+A;
   EV('tvv').textContent=de(t,2);EV('v0v').textContent=de(V0,1);
   const cv=EV('cv5'),cw=cv.getBoundingClientRect().width||800,nar=cw<600;cv.dataset.ratio=nar?1.3:.72;
@@ -782,10 +864,11 @@ function drawV(){
   vline(g,t1.sx(t),b1.t,b1.t+b1.h,css('--ink'),[5,4],1.2);dot(g,t1.sx(t),t1.sy(r),5.5,css('--navy'));
   tag(g,nar?'f(t) in L/min':'f(t) in Liter pro Minute',b1.l+8,b1.t+15,css('--navy'));
   tag(g,'t in min',b1.l+b1.w-4,t1.sy(0)-6,css('--muted'),'right');
-  const avgOn=EV('vavg').checked&&t>0.05,avg=t>0?A/t:0;
+  const avgOn=EV('vavg').checked&&t>0.05&&!hide,avg=t>0?A/t:0;
   if(avgOn){hline(g,t1.sy(avg),t1.sx(0),t1.sx(t),css('--over'),[8,5],2.2);tag(g,'Durchschnitt '+ap(avg,2)+' L/min',t1.sx(t)-6,t1.sy(avg)-6,css('--over'),'right');}
-  if(t>0)tag(g,'Fläche von 0 bis '+de(t,2)+': '+ap(A,2),b1.l+b1.w-4,b1.t+(nar?33:15),css('--under'),'right');
-  /* unten: Füllmenge f */
+  if(t>0&&!hide)tag(g,'Fläche von 0 bis '+de(t,2)+': '+ap(A,2),b1.l+b1.w-4,b1.t+(nar?33:15),css('--under'),'right');
+  /* unten: Füllmenge F (im Vorhersage-Modus verdeckt) */
+  if(!hide){
   if(EV('vall').checked){g.save();g.setLineDash([6,5]);g.globalAlpha=.6;curve(g,t2.sx,t2.sy,x=>V0+o.F(x),0,TMAX,css('--ok'),1.6,xr,yr2);g.restore();}
   if(strips)parts.forEach(p=>{const y0=V0+o.F(p.u),y1=V0+o.F(p.v),c=sCol(p.k,p.d<0);
     hline(g,t2.sy(y0),t2.sx(p.u),t2.sx(p.v),css('--muted'),[3,4],1.1);
@@ -796,10 +879,15 @@ function drawV(){
     g.moveTo(t2.sx(t-d),t2.sy(lev-r*d));g.lineTo(t2.sx(t+d),t2.sy(lev+r*d));g.stroke();g.restore();
     const right=t<7.5;tag(g,'Steigung '+de(r,2),t2.sx(t+(right?d:-d))+(right?6:-6),t2.sy(lev+(right?r:-r)*d)+(r>=0===right?0:12),css('--ink'),right?'left':'right');}
   dot(g,t2.sx(t),t2.sy(lev),6,css('--ok'));
+  }else{g.save();g.fillStyle=css('--panel');g.globalAlpha=.85;g.fillRect(b2.l+1,b2.t+1,b2.w-2,b2.h-2);g.restore();
+    tag(g,'Verdeckt: Bestimme die Füllmenge zuerst mit dem oberen Graphen.',b2.l+b2.w/2,b2.t+b2.h/2,css('--muted'),'center','middle',(nar?'600 12px ':'600 15px ')+FONT);
+    if(!nar)tag(g,'Dann: Haken bei „Füllmenge verdecken“ entfernen.',b2.l+b2.w/2,b2.t+b2.h/2+22,css('--muted'),'center','middle','13px '+FONT);}
   tag(g,nar?'F(t) in L':'F(t) in Liter',b2.l+8,b2.t+15,css('--ok'));
   tag(g,'t in min',b2.l+b2.w-4,t2.sy(0)-6,css('--muted'),'right');
   /* links: Gefäß, gleicher Maßstab wie die Achse von f */
   const vx0=8,vx1=col-8,yB=t2.sy(0),yT=t2.sy(VMAX),xm=(vx0+vx1)/2;
+  if(hide){g.save();g.fillStyle=css('--panel');g.fillRect(vx0,yT-8,vx1-vx0,yB-yT+8);g.restore();tag(g,'?',xm,(yT+yB)/2,css('--muted'),'center','middle','700 34px '+FONT);}
+  else{
   if(strips){const st=[];if(V0>0)st.push({v:V0,c:css('--muted'),a:.35});
     parts.forEach(p=>{if(p.d>=0){const c=sCol(p.k,false);st.push({v:p.d,c:c.c,a:c.a});}
       else{let rem=-p.d;while(rem>1e-12&&st.length){const top=st[st.length-1],take=Math.min(rem,top.v);top.v-=take;rem-=take;if(top.v<=1e-12)st.pop();}}});
@@ -807,11 +895,12 @@ function drawV(){
   else{g.save();g.fillStyle=css('--under');g.globalAlpha=.5;g.fillRect(vx0,t2.sy(lev),vx1-vx0,yB-t2.sy(lev));g.restore();}
   hline(g,t2.sy(lev),vx0,vx1,css('--under'),[],2.2);
   hline(g,t2.sy(lev),vx1+2,t2.sx(t)-6,css('--ok'),[3,4],1.2);
+  }
   for(let v=5;v<=VMAX;v+=5)hline(g,t2.sy(v),vx1-9,vx1,css('--muted'),[],1.2);
   g.save();g.strokeStyle=css('--ink');g.lineWidth=2.6;g.lineJoin='round';g.beginPath();g.moveTo(vx0,yT-8);g.lineTo(vx0,yB);g.lineTo(vx1,yB);g.lineTo(vx1,yT-8);g.stroke();g.restore();
   // Wasserhahn oben, Strahl so breit wie der Zufluss stark ist
   const tapY=b1.t+44;g.save();g.fillStyle=css('--muted');g.fillRect(0,tapY-5,xm+5,10);g.fillRect(xm-5,tapY-5,10,16);
-  if(r>0){g.fillStyle=css('--under');g.globalAlpha=.6;const sw=Math.min(vx1-vx0-6,2+r*(nar?2.6:4));g.fillRect(xm-sw/2,tapY+11,sw,t2.sy(lev)-tapY-11);}
+  if(r>0){g.fillStyle=css('--under');g.globalAlpha=.6;const sw=Math.min(vx1-vx0-6,2+r*(nar?2.6:4));g.fillRect(xm-sw/2,tapY+11,sw,(hide?yB:t2.sy(lev))-tapY-11);}
   if(r<0){g.fillStyle=css('--muted');g.fillRect(vx1,yB-13,12,8);g.fillStyle=css('--over');g.globalAlpha=.6;const sw=2+(-r)*(nar?1.6:2.4);g.fillRect(vx1+9-sw/2,yB-5,sw,22);}
   g.restore();
   tag(g,'f('+de(t,2)+') =',2,tapY-26,css('--navy'),'left','alphabetic','600 12px '+FONT);
@@ -821,19 +910,20 @@ function drawV(){
   const ts=de(t,2),tan=EV('vtan').checked;
   EV('vrl').textContent='Zuflussrate f('+ts+')';EV('vAl').textContent='Fläche unter f von 0 bis '+ts;EV('vfl').textContent='Füllmenge F('+ts+')';
   EV('vtanlg').textContent=tan?'gepunktet: Tangente, Steigung f('+ts+') = '+de(r,2):'gepunktet: Tangente an den Graphen von F';
-  EV('vt').textContent=ts+' min';EV('vr').textContent=de(r,2)+' L/min';EV('vA').textContent=ap(A,2)+' L';EV('vf').textContent=ap(lev,2)+' L';
+  EV('vt').textContent=ts+' min';EV('vr').textContent=de(r,2)+' L/min';EV('vA').textContent=hide?'verdeckt':ap(A,2)+' L';EV('vf').textContent=hide?'verdeckt':ap(lev,2)+' L';
   const li=[];
   li.push('<b>Zufluss in diesem Moment:</b> '+(r>0?'f('+ts+') = '+de(r,2)+' L/min. Es fließt Wasser zu, der Graph von F steigt.'
     :r<0?'f('+ts+') = '+de(r,2)+' L/min. Es fließt mehr ab als zu, die Füllmenge nimmt ab, der Graph von F fällt.'
     :'f('+ts+') = 0 L/min. Die Füllmenge ändert sich gerade nicht, der Graph von F verläuft waagerecht.')
-    +(tan?' Die Tangente an den Graphen von F hat die Steigung f('+ts+') = '+de(r,2)+'.':''));
-  if(t>0){let P=0,N=0;parts.forEach(q=>{if(q.d>0)P+=q.d;else N-=q.d;});/* Streifen wechseln nie innen das Vorzeichen */
+    +(tan&&!hide?' Die Tangente an den Graphen von F hat die Steigung f('+ts+') = '+de(r,2)+'.':''));
+  if(hide)li.push('<i>Füllmenge verdeckt. Bestimme sie zuerst selbst, dann entferne den Haken bei „Füllmenge verdecken“.</i>');
+  else if(t>0){let P=0,N=0;parts.forEach(q=>{if(q.d>0)P+=q.d;else N-=q.d;});/* Streifen wechseln nie innen das Vorzeichen */
     li.push('<b>Zugeflossen seit dem Start:</b> '+(N>1e-6
       ?'Die Fläche über der t-Achse ist '+ap(P,2)+', die unter der t-Achse '+ap(N,2)+' (zählt negativ). Flächenbilanz von 0 bis '+ts+': '+de(P,2)+' − '+de(N,2)+eq(A,2)+de(A,2)+', also insgesamt '+ap(A,2)+' Liter.'
       :'Die Fläche unter dem Graphen von f von 0 bis '+ts+' ist '+ap(A,2)+'. Genau so viele Liter sind dazugekommen.'));
     li.push('<b>Füllmenge:</b> F('+ts+') = F(0) + Fläche = '+de(V0,1)+' + '+(A<0?'('+de(A,2)+')':de(A,2))+eq(lev,2)+de(lev,2)+' Liter.');}
   if(avgOn)li.push('<b>Durchschnittliche Zuflussrate von 0 bis '+ts+':</b> '+de(A,2)+' L : '+ts+' min'+eq(avg,2)+de(avg,2)+' L/min. Das Rechteck unter der roten Linie (Höhe '+ap(avg,2)+', Breite '+ts+') hat dieselbe Fläche wie die Fläche unter f: Was über die rote Linie hinausragt, füllt genau die Lücken darunter.');
-  if(t<=0)li.push('<b>Füllmenge:</b> Noch ist nichts zugeflossen: F(0) = '+de(V0,1)+' Liter.');
+  if(t<=0&&!hide)li.push('<b>Füllmenge:</b> Noch ist nichts zugeflossen: F(0) = '+de(V0,1)+' Liter.');
   EV('vnote').innerHTML='<b>Bei t = '+ts+' min:</b><ul style="margin:4px 0 0;padding-left:1.2em">'+li.map(x=>'<li>'+x+'</li>').join('')+'</ul>';}
 let vraf=0,vlast=0;
 function stopV(){if(vraf){cancelAnimationFrame(vraf);vraf=0;}const b=EV('vplay');if(b){b.setAttribute('aria-pressed','false');b.textContent='▶ Abspielen';}}
@@ -843,7 +933,7 @@ EV('vplay').onclick=()=>{if(vraf){stopV();return;}const s=EV('tv');if(+s.value>=
   EV('vplay').setAttribute('aria-pressed','true');EV('vplay').textContent='⏸ Anhalten';vraf=requestAnimationFrame(stepV);};
 EV('vnull').onclick=()=>{stopV();EV('tv').value=0;drawV();};
 EV('tv').oninput=()=>{stopV();drawV();};
-fv.onchange=()=>{stopV();drawV();};EV('v0').oninput=drawV;['vstr','vtan','vall','vavg'].forEach(i=>EV(i).onchange=drawV);
+fv.onchange=()=>{stopV();drawV();};EV('v0').oninput=drawV;['vhide','vstr','vtan','vall','vavg'].forEach(i=>EV(i).onchange=drawV);
 
 function redraw(){const i=tabs.findIndex(b=>b.getAttribute('aria-selected')==='true');[drawV,draw1,drawG,draw2,draw3][i]();}
 let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(redraw,80)});
@@ -851,6 +941,8 @@ matchMedia('(prefers-color-scheme: dark)').addEventListener('change',redraw);
 new MutationObserver(redraw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
 let t0=0;try{const sid=localStorage.getItem('integral-tabid');if(sid)t0=Math.max(0,tabs.findIndex(b=>b.id===sid));else{const ov=localStorage.getItem('integral-tab');if(ov!==null){const o=+ov||0;t0=o<2?o+1:o+2;}}}catch(e){}
 document.fonts&&document.fonts.ready.then(redraw);
+{const hh=location.hash.slice(1),hi=tabs.findIndex(b=>b.id===hh||b.getAttribute('aria-controls')===hh);if(hi>=0)t0=hi;}
+document.querySelectorAll('.try').forEach(initTry);updProg();
 f2.value=0;x3.value=.5;f3.value=0;fg.value=0;show(Math.min(t0,tabs.length-1));
 /* Plus-/Minus-Knöpfe an den Reglern (Touch) und Ansage geänderter Messwerte */
 [['n1',0],['ng',1],['tv',.25],['v0',.5],['x3',.025],['x4',.025],['x5',.025],['a6',.025],['b6',.025],['k6',.5],['c2',.5]].forEach(([id,step])=>{const el=document.getElementById(id);if(!el)return;
