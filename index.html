@@ -95,7 +95,7 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
   <button role="tab" id="t1" aria-selected="false" aria-controls="p1"><span class="lg">Phase </span>1 · Rechtecksummen</button>
   <button role="tab" id="t2" aria-selected="false" aria-controls="p2"><span class="lg">Phase </span>1b · Vertiefung<span class="lg">: Grenzwert</span></button>
   <button role="tab" id="t3" aria-selected="false" aria-controls="p3"><span class="lg">Phase </span>2 · Stammfunktion</button>
-  <button role="tab" id="t4" aria-selected="false" aria-controls="p4"><span class="lg">Phase </span>3 · Flächenfunktion</button>
+  <button role="tab" id="t4" aria-selected="false" aria-controls="p4"><span class="lg">Phase </span>3 · Integralfunktion</button>
 </div>
 
 <section id="p1c" role="tabpanel" aria-labelledby="t1c">
@@ -167,7 +167,7 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
   <div class="track" aria-hidden="true"><div class="band" id="band"></div><div class="ex" id="ex"></div></div>
   <div class="tl"><span id="tlo"></span><span>grün: Grenzwert, farbiges Band: Bereich zwischen U<sub>n</sub> und O<sub>n</sub></span><span id="thi"></span></div>
   <p class="note" id="n1k" hidden></p>
-  <div class="defbox" id="n1o" hidden><b>Definition (bestimmtes Integral):</b> Ist f auf [a; b] stetig und streben die Untersumme U<sub>n</sub> und die Obersumme O<sub>n</sub> für n → ∞ gegen dieselbe Zahl, dann heißt diese Zahl das <b>bestimmte Integral</b> von f von a bis b: ∫<sub>a</sub><sup>b</sup> f(x) dx = lim<sub>n→∞</sub> U<sub>n</sub> = lim<sub>n→∞</sub> O<sub>n</sub>. (∫ ist ein gestrecktes S für „Summe“; a und b sind die Integrationsgrenzen.)<br><b>Deutung als Fläche:</b> Für f(x) ≥ 0 ist das Integral der Flächeninhalt zwischen dem Graphen von f und der x-Achse. Liegt der Graph teilweise unterhalb der x-Achse, zählen diese Flächenstücke negativ: Das Integral ist eine <b>Flächenbilanz</b> (orientierter Flächeninhalt).<br><b>Deutung als Bestandsänderung:</b> Ist f eine Änderungsrate, gibt das Integral die Gesamtänderung des Bestands von a bis b an, wie die Wassermenge beim Gefäß in Phase 0.<br><b>Beobachtung:</b> Das Band zwischen Unter- und Obersumme wird schmaler und schließt den grünen Wert immer enger ein; der grüne Wert ist hier das bestimmte Integral. <i>Beispiele:</i> ∫<sub>0</sub><sup>4</sup> 2 dx = 8 (Rechteck mit Breite 4 und Höhe 2). Bei „Zu- und Abfluss“ ist ∫<sub>0</sub><sup>4</sup> (x − 1) dx = 4,5 − 0,5 = 4: Das Dreieck oberhalb (4,5) zählt positiv, das unterhalb (0,5) negativ.</div>
+  <div class="defbox" id="n1o" hidden><b>Definition (bestimmtes Integral):</b> Ist f auf [a; b] stetig und streben die Untersumme U<sub>n</sub> und die Obersumme O<sub>n</sub> für n → ∞ gegen dieselbe Zahl, dann heißt diese Zahl das <b>bestimmte Integral</b> von f von a bis b: ∫<sub>a</sub><sup>b</sup> f(x) dx = lim<sub>n→∞</sub> U<sub>n</sub> = lim<sub>n→∞</sub> O<sub>n</sub>. (∫ ist ein gestrecktes S für „Summe“; a und b sind die Integrationsgrenzen.)<br><b>Deutung als Fläche:</b> Für f(x) ≥ 0 ist das Integral der Flächeninhalt zwischen dem Graphen von f und der x-Achse. Liegt der Graph teilweise unterhalb der x-Achse, zählen diese Flächenstücke negativ: Das Integral ist eine <b>Flächenbilanz</b> (orientierter Flächeninhalt).<br><b>Deutung als Bestandsänderung:</b> Ist f eine Änderungsrate, gibt das Integral die Gesamtänderung des Bestands von a bis b an, wie die Wassermenge beim Gefäß in Phase 0.<br><b>Beobachtung:</b> Das Band zwischen Unter- und Obersumme wird schmaler und schließt den grünen Wert immer enger ein; der grüne Wert ist hier das bestimmte Integral. <i>Beispiele:</i> ∫<sub>0</sub><sup>4</sup> 2 dx = 8 (Rechteck mit Breite 4 und Höhe 2). Bei „Zu- und Abfluss“ ist ∫<sub>0</sub><sup>4</sup> (t − 1) dt = 4,5 − 0,5 = 4: Das Dreieck oberhalb (4,5) zählt positiv, das unterhalb (0,5) negativ.</div>
 </section>
 
 <section id="p2" role="tabpanel" aria-labelledby="t2" hidden>
@@ -230,12 +230,12 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
 
 <section id="p4" role="tabpanel" aria-labelledby="t4" hidden>
   <p class="lead">Der <b>Hauptsatz der Differential- und Integralrechnung</b> verbindet zwei Ideen, die du schon kennst: den Flächeninhalt als Grenzwert von Rechtecksummen und die Stammfunktion als Umkehrung des Ableitens. In vier Schritten siehst du, warum beides zusammenpasst.</p>
-  <p class="hs-key"><b>Farben in allen vier Schritten:</b> <span class="k-a">■ blau</span> = Flächenfunktion A (Fläche und ihre Kurve), <span class="k-f">■ grün</span> = die Stammfunktion F, <span class="k-d">■ rot</span> = Zuwachs oder Höhenunterschied.</p>
+  <p class="hs-key"><b>Farben in allen vier Schritten:</b> <span class="k-a">■ blau</span> = Integralfunktion A (Fläche und ihre Kurve), <span class="k-f">■ grün</span> = die Stammfunktion F, <span class="k-d">■ rot</span> = Zuwachs oder Höhenunterschied.</p>
   <div class="controls">
     <div><label for="f3">Funktion f (in diesen Beispielen verläuft der Graph nicht unterhalb der x-Achse)</label><select id="f3"></select></div>
   </div>
   <div class="chips hs-steps" role="group" aria-label="Schritte zum Hauptsatz">
-    <button type="button" id="hs1" aria-pressed="true">1 · Flächenfunktion A</button>
+    <button type="button" id="hs1" aria-pressed="true">1 · Integralfunktion A</button>
     <button type="button" id="hs2" aria-pressed="false">2 · Wie schnell wächst A?</button>
     <button type="button" id="hs3" aria-pressed="false">3 · A und F</button>
     <button type="button" id="hs4" aria-pressed="false">4 · Fläche berechnen</button>
@@ -244,11 +244,11 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
   <!-- Schritt 1 -->
   <div id="st1" class="hs">
     <h3 class="hs-h">Schritt 1 von 4: Die Fläche bis zur Stelle x sammeln</h3>
-    <p class="lead">Die linke Grenze a bleibt fest, die rechte Grenze x wandert. <b>A(x)</b> ist der Flächeninhalt zwischen dem Graphen von f und der x-Achse von a bis x, kurz A(x) = ∫<sub>a</sub><sup>x</sup> f(t) dt (das t ist nur ein Platzhalter, weil x schon als Obergrenze vergeben ist). Wie in Phase 1b ist das der Grenzwert von Rechtecksummen; hier wird er mit sehr feinen Streifen berechnet. Schiebe x nach rechts: Unten entsteht die <b>Spur</b> von A, das ist die Kurve, die der Punkt (x | A(x)) beim Schieben zeichnet.</p>
+    <p class="lead">Die linke Grenze a bleibt fest, die rechte Grenze x wandert. <b>A(x)</b> ist die Flächenbilanz zwischen dem Graphen von f und der x-Achse von a bis x, kurz A(x) = ∫<sub>a</sub><sup>x</sup> f(t) dt (das t ist nur ein Platzhalter, weil x schon als Obergrenze vergeben ist). Die Funktion A heißt <b>Integralfunktion</b>. Liegt der Graph von f über der x-Achse, ist A(x) einfach der Flächeninhalt. Wie in Phase 1 ist das der Grenzwert von Rechtecksummen; hier wird er mit sehr feinen Streifen berechnet. Schiebe x nach rechts: Unten entsteht die <b>Spur</b> von A, das ist die Kurve, die der Punkt (x | A(x)) beim Schieben zeichnet.</p>
     <div class="controls">
       <div><label for="x3">Obere Grenze x = <span class="val" id="x3v"></span></label><input type="range" id="x3" min="0" max="1" step="0.001" value="0.5"></div>
     </div>
-    <div class="stage"><canvas id="c3" width="1600" height="1000" role="img" aria-label="Oben die Funktion f mit der Fläche von a bis x, unten die Flächeninhaltsfunktion A als Spur"></canvas></div>
+    <div class="stage"><canvas id="c3" width="1600" height="1000" role="img" aria-label="Oben die Funktion f mit der Fläche von a bis x, unten die Integralfunktion A als Spur"></canvas></div>
     <div class="read">
       <div class="u"><small>Fläche A(x)</small><b id="rA">–</b></div>
       <div><small>Funktionswert f(x)</small><b id="rf">–</b></div>
@@ -292,8 +292,8 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
       <div><label for="x5">Obere Grenze x = <span class="val" id="x5v"></span></label><input type="range" id="x5" min="0" max="1" step="0.001" value="0.6"></div>
     </div>
     <label class="check"><input type="checkbox" id="sh5"> A um F(a) nach oben schieben</label>
-    <div class="stage"><canvas id="c5" width="1600" height="1000" role="img" aria-label="Oben f mit Fläche von a bis x, unten eine Stammfunktion F und die um F(a) tiefer liegende Flächenfunktion A"></canvas></div>
-    <div class="tl" style="margin-top:4px"><span><span style="color:var(--ok)">━</span> grün: F (gegebene Stammfunktion)</span><span><span style="color:var(--under)">━</span> blau: A (Flächenfunktion)</span><span>schwarze Klammer: senkrechter Abstand F(a)</span></div>
+    <div class="stage"><canvas id="c5" width="1600" height="1000" role="img" aria-label="Oben f mit Fläche von a bis x, unten eine Stammfunktion F und die um F(a) tiefer liegende Integralfunktion A"></canvas></div>
+    <div class="tl" style="margin-top:4px"><span><span style="color:var(--ok)">━</span> grün: F (gegebene Stammfunktion)</span><span><span style="color:var(--under)">━</span> blau: A (Integralfunktion)</span><span>schwarze Klammer: senkrechter Abstand F(a)</span></div>
     <div class="read">
       <div class="u"><small>Fläche A(x)</small><b id="r5a">–</b></div>
       <div class="e"><small>F(x)</small><b id="r5b">–</b></div>
@@ -305,7 +305,7 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
       <span class="hs-li">① A und F sind Stammfunktionen von f, haben also an jeder Stelle dieselbe Steigung f(x). Ihre Differenz D = A − F hat dann die Ableitung D′ = f − f = 0.</span>
       <span class="hs-li">② Eine Funktion, deren Steigung überall 0 ist, ist auf einem Intervall konstant: Ihr Graph kann nirgends steigen oder fallen. (Streng beweist man das mit dem Mittelwertsatz.) Also gilt A(x) = F(x) + c.</span>
       <span class="hs-li">③ An der linken Grenze ist noch keine Fläche gesammelt: A(a) = 0. Daraus folgt 0 = F(a) + c, also c = −F(a). Damit ist <b>A(x) = F(x) − F(a)</b>.</span>
-      <span class="hs-li"><b>Wichtig:</b> A ist nicht „die“ Stammfunktion, sondern die eine Stammfunktion mit A(a) = 0. Zu f gibt es unendlich viele Stammfunktionen (Phase 2), aber zu festem a nur eine Flächenfunktion.</span></p></details>
+      <span class="hs-li"><b>Wichtig:</b> A ist nicht „die“ Stammfunktion, sondern die eine Stammfunktion mit A(a) = 0. Zu f gibt es unendlich viele Stammfunktionen (Phase 2), aber zu festem a nur eine Integralfunktion.</span></p></details>
     <p><button type="button" class="hs-next" data-to="3">Weiter zu Schritt 4 ▶</button></p>
   </div>
 
@@ -334,7 +334,7 @@ input[type=range]{height:32px}input[type=range]::-webkit-slider-thumb{width:28px
       <p><b>Rechenbeispiel:</b> ∫<sub>0</sub><sup>3</sup> (x + 2) dx = [x²/2 + 2x]<sub>0</sub><sup>3</sup> = (4,5 + 6) − 0 = 10,5. Beim Rechnen nimmt man die einfachste Stammfunktion (c = 0), weil c bei der Differenz herausfällt. [F(x)]<sub>a</sub><sup>b</sup> ist die Kurzschreibweise für F(b) − F(a).</p>
       <p class="selftest"><b>Selbsttest:</b> Berechne ∫<sub>0</sub><sup>2</sup> 3x² dx. <details class="more"><summary>Antwort</summary><p>F(x) = x³, also ∫<sub>0</sub><sup>2</sup> 3x² dx = 2³ − 0³ = 8.</p></details></p>
       <details class="more"><summary>Mehr dazu: zwei Teile, Bestand, Hinweise (zum Aufklappen)</summary>
-        <p><b>(1)</b> <i>(Schritt 2)</i> Die Flächenfunktion A(x) = ∫<sub>a</sub><sup>x</sup> f(t) dt ist eine Stammfunktion von f: <b>A′(x) = f(x)</b>. Jede stetige Funktion hat also eine Stammfunktion, auch wenn man keine Formel dafür findet.</p>
+        <p><b>(1)</b> <i>(Schritt 2)</i> Die Integralfunktion A(x) = ∫<sub>a</sub><sup>x</sup> f(t) dt ist eine Stammfunktion von f: <b>A′(x) = f(x)</b>. Jede stetige Funktion hat also eine Stammfunktion, auch wenn man keine Formel dafür findet.</p>
         <p><b>(2)</b> <i>(Schritte 3 und 4)</i> Ist F irgendeine Stammfunktion von f, dann ist ∫<sub>a</sub><sup>b</sup> f(x) dx = F(b) − F(a). <b>Aus (1) folgt (2):</b> A und F unterscheiden sich nur um eine Konstante, und A(a) = 0.</p>
         <p class="hs-sm"><b>Deutung als Bestand:</b> Ist f eine Änderungsrate (z. B. ein Zufluss in Litern pro Minute wie beim Gefäß in Phase 0), dann ist A(x) der Bestand, der seit dem Start dazugekommen ist. Mit dem Anfangsbestand B(a) gilt: <b>Bestand B(x) = B(a) + A(x)</b>, genau wie F(t) = F(0) + Fläche beim Gefäß. Teil (2) sagt: Die Änderung des Bestands ist das Integral der Änderungsrate. Ein Beispiel mit negativer Rate findest du in Phase 0 (Auftrag 4) und in Phase 1 („Zu- und Abfluss“).</p>
         <p class="hs-sm"><b>Zwei Hinweise:</b> Ein bestimmtes Integral ist eine <i>Zahl</i>, eine Stammfunktion ist eine <i>Funktion</i>. Und: In diesen Beispielen verläuft der Graph von f nicht unterhalb der x-Achse. Der Satz gilt auch sonst; dann zählen Flächenstücke unterhalb der x-Achse negativ, das Integral ist eine Flächenbilanz.</p>
@@ -383,9 +383,9 @@ tabs.forEach((b,i)=>b.addEventListener('click',()=>show(i)));
 
 /* ---------- Phase 1 ---------- */
 const F1=[
- {t:'Geschwindigkeit: f(x) = 0,5·x + 2 (in m/s, x in s) auf [0; 4]',f:x=>.5*x+2,a:0,b:4,F:x=>.25*x*x+2*x,ym:5,xm:4.4,chips:[4,10,50,200],ctx:{r:'Geschwindigkeit',ru:'m/s',xu:'s',su:'m',b:'zurückgelegter Weg'}},
- {t:'Zufluss: f(x) = 0,2·x² + 1 (in m³/min, x in min) auf [0; 6]',f:x=>.2*x*x+1,a:0,b:6,F:x=>x**3/15+x,ym:9,xm:6.4,chips:[6,12,30,60,600],ctx:{r:'Zuflussrate',ru:'m³/min',xu:'min',su:'m³',b:'zugeflossene Wassermenge'}},
- {t:'Zu- und Abfluss: f(x) = x − 1 (in m³/min, x in min) auf [0; 4]',f:x=>x-1,a:0,b:4,F:x=>x*x/2-x,ym:3.5,yn:-1.5,xm:4.4,chips:[4,8,40,400],ctx:{r:'Zuflussrate',ru:'m³/min',xu:'min',su:'m³',b:'Änderung der Wassermenge (Bilanz)'}},
+ {t:'Geschwindigkeit: f(t) = 0,5·t + 2 (in m/s, t in s) auf [0; 4]',f:x=>.5*x+2,a:0,b:4,F:x=>.25*x*x+2*x,ym:5,xm:4.4,chips:[4,10,50,200],ctx:{r:'Geschwindigkeit',ru:'m/s',xu:'s',su:'m',b:'zurückgelegter Weg'}},
+ {t:'Zufluss: f(t) = 0,2·t² + 1 (in m³/min, t in min) auf [0; 6]',f:x=>.2*x*x+1,a:0,b:6,F:x=>x**3/15+x,ym:9,xm:6.4,chips:[6,12,30,60,600],ctx:{r:'Zuflussrate',ru:'m³/min',xu:'min',su:'m³',b:'zugeflossene Wassermenge'}},
+ {t:'Zu- und Abfluss: f(t) = t − 1 (in m³/min, t in min) auf [0; 4]',f:x=>x-1,a:0,b:4,F:x=>x*x/2-x,ym:3.5,yn:-1.5,xm:4.4,chips:[4,8,40,400],ctx:{r:'Zuflussrate',ru:'m³/min',xu:'min',su:'m³',b:'Änderung der Wassermenge (Bilanz)'}},
  {t:'Ohne Sachkontext: f(x) = x² auf [1; 5]',f:x=>x*x,a:1,b:5,F:x=>x**3/3,ym:27,xm:5.4,chips:[4,10,100,1000]}];
 const f1=document.getElementById('f1'),n1=document.getElementById('n1');
 F1.forEach((o,i)=>f1.add(new Option(o.t,i)));f1.value=1;n1.value=6;
@@ -404,11 +404,11 @@ function draw1(){
   const sm=document.getElementById('showM').checked;
   if(sm){g.save();g.strokeStyle=css('--ok');g.lineWidth=1.8;g.setLineDash([2,3]);for(let i=0;i<n&&n<=80;i++){const x0=o.a+i*wd,y=o.f(x0+wd/2);g.strokeRect(sx(x0),sy(y),sx(x0+wd)-sx(x0),sy(0)-sy(y));}g.restore();}
   curve(g,sx,sy,o.f,o.a,o.b,css('--navy'),2.6,xr,yr);
-  g.fillStyle=css('--muted');g.font='13px '+FONT;g.textAlign='left';g.fillText(o.ctx?'x in '+o.ctx.xu:'x',box.l+box.w-(o.ctx?44:10),sy(0)-8);
+  g.fillStyle=css('--muted');g.font='13px '+FONT;g.textAlign='left';g.fillText(o.ctx?'t in '+o.ctx.xu:'x',box.l+box.w-(o.ctx?44:10),sy(0)-8);
   const[U,O,M]=sums(o,n),E=o.F(o.b)-o.F(o.a);
   const k=o.ctx,kx=document.getElementById('n1k');
   kx.innerHTML=(k?'<b>Im Sachzusammenhang:</b> Jedes Rechteck ist '+k.r+' mal Zeitschritt, also '+k.ru+' · '+k.xu+' = '+k.su+'. Die Summen schätzen die '+k.b+' von '+de(o.a)+' bis '+de(o.b)+' '+k.xu+'. ':'')
-    +(o.yn?'Rechtecke unterhalb der x-Achse haben eine negative Höhe und zählen negativ: Hier fließt mehr ab als zu. ':'')
+    +(o.yn?'Rechtecke unterhalb der '+(k?'t':'x')+'-Achse haben eine negative Höhe und zählen negativ: Hier fließt mehr ab als zu. ':'')
     +(sm?'<b>Mittelpunktsumme</b> (Funktionswert in der Mitte jedes Streifens, grün gepunktet): M<sub>'+n+'</sub> '+(ex(M,3)?'= ':'≈ ')+de(M)+'. Sie liegt meist schon für kleine n sehr nah am Grenzwert.':'');
   kx.hidden=!kx.innerHTML;
   document.getElementById('rU').textContent=de(U);document.getElementById('rO').textContent=de(O);
@@ -718,7 +718,7 @@ function d33(){
   dot(g,t2.sx(x),t2.sy(Fx),5.5,css('--ok'));dot(g,t2.sx(x),t2.sy(Ax),5.5,css('--under'));
   vline(g,t1.sx(x),t1.sy(0),t1.sy(o.f(x)),css('--ink'),[5,4],1.4);
   E3('r5a').textContent=de(Ax,4);E3('r5b').textContent=de(Fx,4);E3('r5c').textContent=de(Fa,4);E3('r5d').textContent=de(Fx-Fa,4);
-  E3('n5').innerHTML='<b>Gegebene Stammfunktion: F(x) = '+o.Ft+'.</b> Bei a hat sie den Wert F(a)'+eq(Fa,4)+de(Fa,4)+', also nicht 0; darum liegt ihr Graph höher als der von A. <b>Für x = '+de(x,2)+':</b> Die Flächenfunktion hat den Wert A(x)'+eq(Ax,4)+de(Ax,4)+', die Stammfunktion F(x)'+eq(Fx,4)+de(Fx,4)+'. Die Differenz F(x) − F(a)'+eq(Fx-Fa,4)+de(Fx-Fa,4)+' stimmt mit A(x) überein.'
+  E3('n5').innerHTML='<b>Gegebene Stammfunktion: F(x) = '+o.Ft+'.</b> Bei a hat sie den Wert F(a)'+eq(Fa,4)+de(Fa,4)+', also nicht 0; darum liegt ihr Graph höher als der von A. <b>Für x = '+de(x,2)+':</b> Die Integralfunktion hat den Wert A(x)'+eq(Ax,4)+de(Ax,4)+', die Stammfunktion F(x)'+eq(Fx,4)+de(Fx,4)+'. Die Differenz F(x) − F(a)'+eq(Fx-Fa,4)+de(Fx-Fa,4)+' stimmt mit A(x) überein.'
     +' Der senkrechte Abstand der beiden Kurven ist an jeder Stelle F(a). Schiebt man A um F(a) nach oben, liegt es genau auf F.';}
 
 /* Schritt 4 */
